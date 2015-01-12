@@ -2,15 +2,15 @@
 
 % pour les polices accentuées francaises (avec pdfTeX)
 % décommenter pour pdflatex, commenter pour xelatex
-%\RequirePackage[utf8]{inputenc}
-%\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
 
 %font (commenter pour pdflatex, décommenter pour xelatex)
-\RequirePackage{fontspec}
-\defaultfontfeatures{Scale=MatchLowercase}
-\setmonofont[Mapping=tex-text,Scale=0.8, Numbers=SlashedZero]{DejaVuSansMono}
-\setromanfont[Mapping=tex-text, Numbers=Proportional, Numbers=OldStyle]{Linux Libertine O}
-\setsansfont[Mapping=tex-text, Numbers=Monospaced]{Linux Biolinum O}
+%\RequirePackage{fontspec}
+%\defaultfontfeatures{Scale=MatchLowercase}
+%\setmonofont[Mapping=tex-text,Scale=0.8, Numbers=SlashedZero]{DejaVuSansMono}
+%\setromanfont[Mapping=tex-text, Numbers=Proportional, Numbers=OldStyle]{Linux Libertine O}
+%\setsansfont[Mapping=tex-text, Numbers=Monospaced]{Linux Biolinum O}
 
 \RequirePackage{geometry}
 % pour l'impression taille A4
@@ -109,7 +109,7 @@
 %%%%%%%Définition des entetes et pieds de page%%%%%%%%%%
 
 % Choix de la licence du document. Par défaut CC by sa
-\def\@licencechoice{\includegraphics[width=1.1cm]{img/bysafr.png}~}
+\def\@licencechoice{\includegraphics[width=1.1cm]{images/bysafr.png}~}
 \def\licencechoice#1{\def\@licencechoice{#1}}
 
 \pagestyle{fancy}
@@ -214,7 +214,7 @@
 \def\@specialite{~}
 \def\specialite#1{\def\@specialite{#1}}
 % Logo de l'utc
-\newcommand{\logoutc}[1]{\includegraphics[#1]{img/utc.png}}
+\newcommand{\logoutc}[1]{\includegraphics[#1]{images/utc.png}}
 \newcommand{\logoutctext}{
   \textsc{\large Université de Technologie de Compiègne}
 }
