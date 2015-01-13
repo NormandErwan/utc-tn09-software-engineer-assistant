@@ -5,23 +5,21 @@
 
 \fancyhf{}               %initialise tous les champs dans head et foot
 \renewcommand{\chaptermark}[1]{%
-  \markboth{\thechapter.\ #1}{}}
-\fancyheadoffset[L]{1cm}
-\fancyfootoffset[L]{1cm}
+  \markboth{#1}{}}
 \renewcommand{\headrulewidth}{0pt}% met la largeur du trait à 0.2pt
 \renewcommand{\footrulewidth}{4pt}%
 \renewcommand{\footrule}{%
   {\color{jauneutc}%
     \hrule width\headwidth height\footrulewidth \vskip+\footrulewidth}
 }
-\fancyhead[LE]{\footnotesize{\textit{\@title}}}%
-\fancyhead[RO]{\footnotesize{\nouppercase{\leftmark}}}%
+\fancyhead[L]{\footnotesize{\@title}}%
+\fancyhead[R]{\footnotesize{\nouppercase{\leftmark}}}%
 \fancyfoot[C]{\thepage}
 \fancyfoot[R]{%
   \vspace*{-0.1in}%
   \logoutc{height=0.75cm}%
 }
-\fancyfoot[L]{\footnotesize{\textit{\@author\\ \@uv}}}
+\fancyfoot[L]{\footnotesize{\@author\\ \@uv}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Macros
@@ -46,56 +44,6 @@
 
 % Création de la page de titre
 \newcommand{\pagedetitre}{
-  \thispagestyle{empty}
-  \begin{titlepage} %%% page de titre
-    \begin{center}
-      \logoutctext
-      \vfill
-      \rule{\linewidth}{0.8mm}\vspace{3mm}\\
-      \setlength{\baselineskip}{1.5\baselineskip}
-      \Huge \@title\\
-      \setlength{\baselineskip}{0.67\baselineskip}
-      {\rule{\linewidth}{0.8mm}}
-      \vspace{3mm}\\
-      \large \textit{\@author}
-      \vfill
-      \normalsize{---~\@semestre~---}
-    \end{center}
-  \end{titlepage}
-}
-
-\newcommand{\groovypdtitre}{
-  \thispagestyle{empty}
-  \begin{titlepage} %%% page de titre
-    \logoutc{height=17mm}
-    \hfill
-    \begin{tabular}[b]{l}
-      \textbf{\@branche}\\
-      \textbf{\@filiere}\\
-      \textbf{\@specialite}
-    \end{tabular}
-
-    \vspace{1cm}
-
-    \begin{center}
-      \vspace{4cm}
-      {\color{jauneutc}\rule{\linewidth}{0.8mm}}\vspace{3mm}\\
-      \setlength{\baselineskip}{1.5\baselineskip}
-      \Huge \textsc{\@title}\\
-      \setlength{\baselineskip}{0.67\baselineskip}
-      {\color{jauneutc}\rule{\linewidth}{0.8mm}}
-      \vfill
-    \end{center}
-
-    \hfill
-    \begin{tabular}[b]{l}
-      UV~: \textbf{\@uv}\\
-      Semestre~: \textbf{\@semestre}
-    \end{tabular}
-  \end{titlepage}
-}
-
-\newcommand{\stagepdtitre}{
   \thispagestyle{empty}
   \begin{titlepage} %%% page de titre
     \logoutc{height=17mm}
