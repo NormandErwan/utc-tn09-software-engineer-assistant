@@ -1,7 +1,7 @@
 \documentclass[a4paper,12pt]{report}
 
 \usepackage{rapportutc}
-\usepackage[francais]{babel}
+\usepackage{gensymb}
 
 \title{C++/Qt}
 \author{Erwan Normand}
@@ -22,13 +22,11 @@
 
 \begin{document}
 
-\frontmatter
 \pagedetitre
-\include{remerciements}
+\include*{remerciements}
 \tableofcontents % sommaire
 \include{resume}
 
-\mainmatter
 \include{introduction}
 \include{presentation}
 \include{stage}
@@ -36,8 +34,7 @@
 
 \appendix
 
-\backmatter
-\include{bibliographie}
+\include*{bibliographie}
 \listoffigures
 
 \end{document}
