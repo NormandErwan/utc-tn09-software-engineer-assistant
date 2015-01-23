@@ -26,9 +26,12 @@
 \begin{document}
 
 \pagedetitre
-\include{remerciements}
-\tableofcontents % sommaire
-\include{resume}
+
+\include{avantpropos}
+
+\renewcommand{\contentsname}{Sommaire} % Titre de \tableofcontents
+\tableofcontents
+\addcontentsline{toc}{chapter}{Sommaire}
 
 \include{introduction}
 \include{presentation}
@@ -38,7 +41,9 @@
 \appendix
 
 \include{bibliographie}
+
 \listoffigures
+\addcontentsline{toc}{chapter}{Table des figures}
 
 \end{document}
 
