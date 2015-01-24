@@ -76,27 +76,37 @@ C'est ce qu'on appelle la vidéo 360.
 \end{figure}
 
 Cependant, comme le montre la figure~\ref{RochesterNY}, un panorama reste une image
-$-$ ou une vidéo $-$, c'est-à-dire une matrice plane consistuée de pixels\footnote{pour
+$-$ ou une vidéo $-$, c'est-à-dire une matrice plane consistuée de pixels\footnote{Pour
  \enquote{picture element}}. Or une vidéo 360 représentant une sphère virtuelle, ou
 plutôt sa surface, elle sera nécessairement une \emph{projection} de cette sphère, 
 c'est-à-dire une correspondance mathématique entre cette surface en 3 dimensions 
 et cette vidéo plane\cite{projection-cartographique}.\\
-Dans la vidéo 360, la projection la plus utilisée est la projection equirectangulaire.
-Un exemple en est le planisphère terrestre, comme le montre les figures \ref{projection-cylindrique}
-et \ref{planisphère}\cite{what-is-equirectangular}.
+Dans la vidéo 360, la projection la plus utilisée est la projection équirectangulaire\cite{what-is-equirectangular}.
+Un exemple en est le planisphère terrestre, où après une projection cylindrique équirectangulaire
+sur la figure~\ref{projection-cylindrique} le plan est déroulé pour obtenir le 
+planisphère de la figure~\ref{planisphère}.
 \begin{figure}
   \centering
-  \begin{subfigure}{0.5\textwidth}
-    \includegraphic[width=3cm]{images/Projection-cylindrique.jpg} 
-    \caption{}
+  \begin{minipage}{0.4\textwidth}
+    \centering
+    \includegraphics[width=4cm]{images/Projection-cylindrique.jpg}
+    \captionof{figure}{Schéma d'une projection équirectangulaire}
     \label{projection-cylindrique}
-  \end{subfigure}%
-  \begin{subfigure}{0.5\textwidth}
-    \includegraphic[width=8cm]{images/Equirectangular-projection.jpg}
-    \caption{}
-    \label{projection-cylindrique}
-  \end{subfigure}
+  \end{minipage}%
+  \begin{minipage}{0.6\textwidth}
+    \centering
+    \includegraphics[width=9cm]{images/Equirectangular-projection.jpg}
+    \captionof{figure}{Projection équirectangulaire de la Terre}
+    \label{planisphère}
+  \end{minipage}
 \end{figure}
+
+Un lecteur vidéo 360 est alors nécessaire pour lire correctement la vidéo~: 
+il va reconstruire la sphère, pour y projetter le panorama et y placer le
+spectateur au centre de cette sphère. Dès lors, le spectateur peut déplacer le 
+regard tout autour de lui pour embrasser le panorama : on entre dans le champs de 
+la réalité virtuelle\footnote{La réalité virtuelle est ici comprise dans son sens
+  de \enquote{Simulation sensorielle immersive de la réalité}\cite{definition-rv}}.
 
 % La vidéo 360 panoramique et la VR, les principaux acteurs, bref historique et portrait actuel
 
