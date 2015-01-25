@@ -89,13 +89,13 @@ sur la figure~\ref{projection-cylindrique} le plan est déroulé pour obtenir le
 planisphère de la figure~\ref{planisphère}.
 \begin{figure}
   \centering
-  \begin{minipage}{0.4\textwidth}
+  \begin{minipage}[t]{0.4\textwidth}
     \centering
-    \includegraphics[width=4cm]{images/Projection-cylindrique.jpg}
+    \includegraphics[width=3.5cm]{images/Projection-cylindrique.jpg}
     \captionof{figure}{Schéma d'une projection équirectangulaire}
     \label{projection-cylindrique}
   \end{minipage}%
-  \begin{minipage}{0.6\textwidth}
+  \begin{minipage}[t]{0.6\textwidth}
     \centering
     \includegraphics[width=9cm]{images/Equirectangular-projection.jpg}
     \captionof{figure}{Projection équirectangulaire de la Terre}
@@ -134,23 +134,26 @@ Par rapport à ce marché, VideoStitch se positionne aujourd'hui comme un challe
 et propose actuellement quatre produits\cite{videostitch-products}.
 \subsection{VideoStitch Studio}
 \label{videostitch-studio}
-Logiciel de référence de Videotitch, c'est le premier logiciel stage de l'entreprise,
-sortis en version stable en 2013.\\
-Il permet une utilisation post-production de captures vidéos 360, c'est-à-dire 
-la conception de vidéo 360. Il est intéressant de comprendre le \textit{workflow}
-du logiciel : 
+%\begin{wrapfigure}[5]{r}{5cm}
+%  \centering
+%  \includegraphics[width=4cm]{images/studio.png}
+%  \caption{Logo de VideoStitch Studio}
+%\end{wrapfigure}
+Premier logiciel de l'entreprise, sortis en version stable en 2013,
+il permet une utilisation post-production de captures vidéos 360, c'est-à-dire 
+la conception de vidéos 360. Le \textit{workflow} est le suivant : 
 \subsubsection{Importation des vidéos}
 Le cas le plus commun est de capturer la vidéo 360 à l'aide de 6 caméras GoPro 
 installées sur une monture spécialisée comme sur la figure~\ref{rig}. 
 Les caméras sont configurées pour filmer en HD, et, munies de leurs optiques 
-d'origine, six sont nécessaire pour filmer toute la sphère du panorama.
+d'origine, six sont nécessaires pour filmer toute la sphère du panorama.
 \begin{figure}
   \centering
   \begin{minipage}{0.4\textwidth}
     \centering
     \caption{Une monture 360}
     \label{rig}
-  \end{minipage}
+  \end{minipage}%
   \begin{minipage}{0.6\textwidth}
     \centering
     \caption{Équirectangulaire avec angle de capture des 6 caméras} 
@@ -159,47 +162,117 @@ d'origine, six sont nécessaire pour filmer toute la sphère du panorama.
 \end{figure}
 
 \subsubsection{Synchronisation des vidéos}
-Lors de la capture, les caméras sont bien souvent démarées en décalées, il s'agit
+Lors de la capture, les caméras sont bien souvent démarées en décalées. Il s'agit
 donc de resynchroniser les vidéos enregistrées.\\
 Pour cela, la méthode la plus pratique est le \textit{motion},
-où le logiciel analyse les mouvements de chaque vidéos, car les caméras étant fixés
-sur la même monture, elles décrivent donc les même mouvement dans l'espace, mais 
-en décalés sur les vidéos.
+où le logiciel analyse les mouvements de chaque vidéo : en effet les caméras étant fixées
+sur la même monture, elles ont donc décris les mêmes mouvements dans l'espace, mais 
+en décalé sur les vidéos.
 
 \subsubsection{Calibration}
-A cette étape est reconstituée la sphère, ce qui consiste à retrouver la 
-position relative de chaque caméra à la monture.\\
-A un même instant des vidéos choisis par l'utilisateur, le logiciel trouve des
+A cette étape est reconstituée la sphère; ce qui consiste à retrouver la 
+position relative de chaque caméra par rapport à la monture.\\
+A un même instant des vidéos, choisis par l'utilisateur, le logiciel trouve des
 points de contrôle entre les images des différentes caméras, c'est-à-dire des
-points identiques de la scène présent sur au moins deux images. C'est ici que les 
-zones de recouvrement entre les images trouve son importance.\\
+points identiques de la scène présents sur au moins deux images. C'est ici que les 
+zones de recouvrements entre les images trouvent leur importance.\\
 Une fois les points trouvés, les vidéos peuvent être superposées et être assemblées
 \footnote{C'est ce qu'on appelle le \textit{stitch}}.
 \begin{figure}
   \centering
-  \label{Les 6 entrées vidéos et les points de contrôles trouvés} 
+  \caption{Les 6 entrées vidéos ainsi que les points de contrôles trouvés} 
 \end{figure}
 
 \subsubsection{Correction d'exposition}
-Chaque caméra ayant filmé dans une direction, elles auront chacune enregistré leur
-vidéos avec différentes expositions. De même la balance des blanc peut différer
+Chaque caméra ayant filmé dans une direction, les différentes vidéos auronts chacune 
+des expositions différentes. De même, les balances des blancs peuvent différer
 entre les vidéos. Le logiciel corrige localement ces deux paramètres pour homogéiniser
 le panorama final.
 
 \subsubsection{Stabilisation}
-Le logiciel peut stabiliser le panorama, c'est-à-dire lisser les micro-mouvements 
-des vidéos lors de la capture. Si la monture s'est déplacée dans l'espace lors
-de l'enregistrement, cette étape est nécessaire : regarder dans un casque de réalité
+La stabilisation consiste à  lisser les micro-mouvements des vidéos, qui ont 
+pu se produire lors de la capture, par exemple si la monture s'est déplacée dans l'espace lors
+de l'enregistrement. Cette étape est nécessaire : regarder dans un casque de réalité
 virtuelle une vidéo non stabilisée est très désagréable.
 
 \subsubsection{Exportation}
-Enfin, la vidéo 360 peut être exportées, sous la forme d'un équirectangulaire, avec
+Enfin, la vidéo 360 peut être exportée sous la forme d'un équirectangulaire, avec
 possibilité d'intégrer le son d'unes des caméras.
 
 \subsection{Vahana VR}
+%\begin{wrapfigure}[7]{r}{4cm}
+%  \centering
+%  \includegraphics[width=3cm]{images/vahanavr.png}
+%  \caption{Logo de Vahana VR}
+%\end{wrapfigure}
+Ce nouveau logiciel, dont la sortie stable devrait s'effectuer en février 2015,
+permet de réaliser le travail de Studio en temps réel, ainsi qu'une diffusion
+de l'export en \textit{streaming live}. Les vidéos sont ici directement capturées des
+caméras via des cartes d'acquisitions, et après une étape de calibration, sont
+assemblées automatiquement. Le logiciel assure lui-même la bonne synchronisation
+des vidéos.\\
+Le panorama peut être alors exporté sur différents flux en même temps : 
+streaming RTMP, via une carte d'acquisition pour une sortie HDMI ou SDI, sur le
+disque dur. Ce logiciel ouvre la possibilité du \textit{streaming} 360 à des événéments 
+\textit{live}, comme les concerts, le sport, les défilés ou encore les conférences.
+\begin{figure}
+  \centering
+  \begin{minipage}{0.3\textwidth}
+    \centering
+    \caption{6 entrées vidéos sur Vahana VR}
+  \end{minipage}%
+  \begin{minipage}{0.3\textwidth}
+    \centering
+    \caption{Équirectangulaire assemblé après calibration des vidéos}
+  \end{minipage}
+  \begin{minipage}{0.3\textwidth}
+    \centering
+    \caption{Vue interactive de la vidéo 360}
+  \end{minipage}
+\end{figure}
 
 \subsection{VideoStitch Player}
+%\begin{wrapfigure}[7]{r}{4cm}
+%  \centering
+%  \includegraphics[width=3cm]{images/player.png}
+%  \caption{Logo de VideoStitch Player}
+%\end{wrapfigure}
+C'est un lecteur de vidéo 360, développé par Alexis Potin lors de son TN10 au précédent
+semestre de Printemps 2014. Le logiciel permet de lire des vidéos 360 depuis un 
+fichier vidéo équirectangulaire ou depuis un flux RTMP de Vahana VR. La vidéo peut-être
+lue dans un mode interactif avec utilisation de la souris pour déplacer le regard,
+ou en mode Oculus Rift, où la vidéo est projetée dans le casque de réalité virtuelle.
+L'utilisation du casque est tout à fait naturelle : le casque disposant d'un gyroscope
+et d'un accéléromètre, il renvoie au lecteur la position de la tête de l'utilisateur.\\
+Regarder une vidéo avec l'Oculus Rift depuis un flux RTMP de Vahana VR est une 
+expérience toute à fait singulière : le regard est téléporté à la place de la caméra.
+Il est possible de se voir sois-même en direct, créant un dédoublement du corps et du regard
+\footnote{Une démonstration est disponible en ligne : \url{https://www.youtube.com/watch?v=fQGLqAg0eRU}}.
+\begin{figure}
+  \centering
+  \caption{Illustration d'un visionnage d'une vidéo 360 dans un Oculus Rift}
+\end{figure}
+
 \subsection{VideoStitch SDK}
+\begin{wrapfigure}[7]{r}{6cm}
+  \centering
+  \includegraphics[width=6cm]{images/cuda.jpg}
+  \caption{CUDA}
+\end{wrapfigure}
+Ces applications s'appuient toute trois sur une librairie développée séparément,
+en C++/CUDA. C'est cette librairie qui implémente et éxecute tous les algorithmes
+de synchronisation, calibration, gestions des flux vidéos et audio et corrections
+vidéos.
+Toutes ces opérations sont très coûteuses en temps de calcul. C'est pourquoi
+la techologie CUDA de nVidia est utilisée pour exploiter le potentiel de la carte
+graphique\footnote{Ou \textit{GPU} pour \textit{Graphics Processing Unit}}. 
+En effet un \textit{GPU} est composé de milliers de c\oe urs fonctionnant en parallèles.
+Or la librairie travaille sur des images vidéos, c'est-à-dire des matrices de pixels,
+avec des calculs massivement parallélisable\cite{videostitch-cuda}.\\
+\newline
+Cette librairie est distribuée sous forme de \textit{SDK}\footnote{\textit{Software Development Kit}}
+pour des clients souhaitant concevoir leur propre caméra ou un logiciel exploitant
+les opérations \textit{stitch}.
 
 \subsection{Stratégies}
 Si VideoStitch est pendant un certain temps restée une petite start-up développant
