@@ -36,11 +36,10 @@ Si la création de photos panoramiques et à 360\degree est aisée, il manque to
 un logiciel complet et mature qui permetrait l'édition et le montage de vidéos paramiques.\\
 \newline
 M. Burtey décide alors de créer VideoStitch pour concevoir cet outil, un logiciel 
-d'édition et de montage de vidéos panoramiques : VideoStitch Studio.\\
+d'édition et de montage de vidéos panoramiques : VideoStitch Studio.
 Quand ce logiciel atteint une version stable, en 2014, VideoStitch oriente alors 
 ses efforts vers un nouveau logiciel, Vahana VR, permettant cette fois-ci une réalisation 
 et une diffusion en direct de vidéos panoramiques à 360\degree.\\
-\newline
 Le but de la société est de permettre une réalisation aisée et de qualité de vidéos 
 panoramiques à 360\degree, de la capture des images à la diffusion de la vidéo finale, 
 en passant par sa réalisation complète.
@@ -91,7 +90,7 @@ planisphère de la figure~\ref{planisphère}.
   \centering
   \begin{minipage}[t]{0.4\textwidth}
     \centering
-    \includegraphics[width=3.5cm]{images/Projection-cylindrique.jpg}
+    \includegraphics[width=3.6cm]{images/Projection-cylindrique.jpg}
     \captionof{figure}{Schéma d'une projection équirectangulaire}
     \label{projection-cylindrique}
   \end{minipage}%
@@ -194,6 +193,26 @@ La stabilisation consiste à  lisser les micro-mouvements des vidéos, qui ont
 pu se produire lors de la capture, par exemple si la monture s'est déplacée dans l'espace lors
 de l'enregistrement. Cette étape est nécessaire : regarder dans un casque de réalité
 virtuelle une vidéo non stabilisée est très désagréable.
+
+\subsubsection{Correction de l'orientation}
+Il s'agit simplement ici de redonner sens aux notions de haut et de bas dans la 
+vidéo 360. En effet, si la calibration a permis de retrouver les positions des 
+caméras par rapport à la monture, le logiciel n'a aucune information sur la position
+de la monture par rapport à la scène. Comme le montre figure~\ref{orientation},
+la correction s'effectue par un clic de souris enfoncé
+et glissé jusqu'à déplacer l'équirectangulaire dans la position voulue. Un bon résultat
+est obtenu quand l'horizon est redressé.
+\begin{figure}
+  \centering
+  \begin{minipage}{0.5\textwidth}
+    \centering
+  \end{minipage}%
+  \begin{minipage}{0.5\textwidth}
+    \centering
+  \end{minipage}
+  \caption{Correction de l'orientation : l'horizon est redressé}
+\end{figure}
+  \label{orientation}
 
 \subsubsection{Exportation}
 Enfin, la vidéo 360 peut être exportée sous la forme d'un équirectangulaire, avec
