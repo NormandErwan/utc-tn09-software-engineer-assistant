@@ -107,6 +107,16 @@
 \RequirePackage{pifont} % Dingbats font (useful for custom itemize)
 \RequirePackage{natbib}
 
+% Epigraphes de chapitres
+\RequirePackage{epigraph}
+
+\epigraphsize{\small}
+\setlength\epigraphwidth{12cm}
+\setlength\epigraphrule{0pt}
+
+\patchcmd{\epigraph}{\@epitext{#1}}{\textit{\@epitext{\enquote{#1}}}}{}{}
+
+
 %%%%%%%Définition des entetes et pieds de page%%%%%%%%%%
 
 % Choix de la licence du document. Par défaut CC by sa
@@ -217,8 +227,6 @@
 \newcommand{\logoutctext}{
   \textsc{\large Université de Technologie de Compiègne}
 }
-
-\newcommand{\cita}[1]{\og\emph{#1}\fg}
 
 \newcommand{\bcode}[1]{
   \begin{codebox}
