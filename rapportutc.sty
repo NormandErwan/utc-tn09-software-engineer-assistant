@@ -103,7 +103,7 @@
   \@endpart}
 
 \def\@makechapterhead#1{
-  \vspace*{50\p@}
+  \vspace*{30\p@}
   {
     \parindent \z@ \raggedright \normalfont
     \ifnum \c@secnumdepth >\m@ne
@@ -111,19 +111,19 @@
     \fi
     \textcolor{charcoal}{\Huge\bfseries #1}
     \par\nobreak
-    \vskip 40\p@
+    \vskip 30\p@
   }
 }
 
 \def\@makeschapterhead#1{
-  \vspace*{50\p@}
+  \vspace*{30\p@}
   {
     \parindent \z@ \raggedright
     \normalfont
     \interlinepenalty\@M
     \textcolor{charcoal}{\Huge \bfseries  #1}
     \par\nobreak
-    \vskip 40\p@
+    \vskip 30\p@
   }
 }
 
@@ -136,7 +136,7 @@
 \renewcommand\section{\@startsection{section}{1}{0cm}%
   {-3.5ex \@plus -1ex \@minus -.2ex}%
   {2.3ex \@plus.2ex}%
-  {\normalfont\Large\bfseries\color{charcoal!60}}%
+  {\normalfont\Large\bfseries\color{charcoal}}%
 }
 \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
   {3.25ex \@plus1ex \@minus.2ex}%
