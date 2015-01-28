@@ -79,7 +79,7 @@ téléphones portables, ou par un logiciel spécialisé, comme Photoshop\cite{ph
 ou PTgui\cite{PTgui}.
 \begin{figure}
   \centering
-  \includegraphics[width=12cm]{images/RochesterNY.jpg}
+  \includegraphics[width=11cm]{images/RochesterNY.jpg}
   \caption{Exemple d'assemblage de panorama avec détection des zones de recouvrement\cite{RochesterNY}}
   \label{RochesterNY}
 \end{figure}
@@ -89,11 +89,13 @@ capturant une partie du panorama, pour assembler les images capturées en une se
 vidéo par le même princique que la photo panoramique.\\
 Avec suffisament de caméras, il est possible de couvrir un angle de prise de vue 
 de 360\degree à l'horizontale et de 180\degree à la verticale. Le panorama créé
-forme alors une sphère virtuelle, comme le montre la figure~\ref{rig-sphère}. 
+forme alors une sphère virtuelle, comme le montre la figure~\ref{rig-sphere}. 
 C'est ce qu'on appelle la vidéo 360.
 \begin{figure}
   \centering
-  figure exemple, rig avec sphère virtuelle
+  \includegraphics[width=6.5cm]{images/camera-projection.png}
+  \caption{Exemple d'une scène filmée avec une caméra}
+  \label{rig-sphere}
 \end{figure}
 \newline
 Cependant, comme le montre la figure~\ref{RochesterNY}, un panorama reste une image
@@ -108,16 +110,17 @@ sur la figure~\ref{projection-cylindrique} le plan est déroulé pour obtenir le
 planisphère de la figure~\ref{planisphère}.
 \begin{figure}
   \centering
-  \begin{minipage}[t]{0.4\textwidth}
+  \begin{minipage}[t]{0.35\textwidth}
     \centering
-    \includegraphics[width=3.6cm]{images/Projection-cylindrique.jpg}
-    \captionof{figure}{Schéma d'une projection équirectangulaire}
+    \includegraphics[width=3.4cm]{images/Projection-cylindrique.jpg}
+    \captionof{figure}{Schéma d'une projection équirectangulaire\cite{projection-cylindrique}}
     \label{projection-cylindrique}
   \end{minipage}%
+  \hspace{0.04\textwidth}
   \begin{minipage}[t]{0.6\textwidth}
     \centering
-    \includegraphics[width=9cm]{images/Equirectangular-projection.jpg}
-    \captionof{figure}{Projection équirectangulaire de la Terre}
+    \includegraphics[width=8.5cm]{images/Equirectangular-projection.jpg}
+    \captionof{figure}{Projection équirectangulaire de la Terre\cite{planisphere}}
     \label{planisphère}
   \end{minipage}
 \end{figure}
@@ -164,19 +167,22 @@ il permet une utilisation post-production de captures vidéos 360, c'est-à-dire
 la conception de vidéos 360. Le \textit{workflow} est le suivant : 
 \subsubsection{Importation des vidéos}
 Le cas le plus commun est de capturer la vidéo 360 à l'aide de 6 caméras GoPro 
-installées sur une monture spécialisée comme sur la figure~\ref{rig}. 
+installées sur une monture spécialisée\footnote{Aussi appellée \textit{rig}} comme sur la figure~\ref{rig}. 
 Les caméras sont configurées pour filmer en HD, et, munies de leurs optiques 
 d'origine, six sont nécessaires pour filmer toute la sphère du panorama.
 \begin{figure}
   \centering
-  \begin{minipage}{0.4\textwidth}
+  \begin{minipage}[b]{0.3\textwidth}
     \centering
+    \includegraphics[width=3cm]{images/rig.png}
     \caption{Une monture 360}
     \label{rig}
   \end{minipage}%
-  \begin{minipage}{0.6\textwidth}
+  \hspace{0.04\textwidth}
+  \begin{minipage}[b]{0.65\textwidth}
     \centering
-    \caption{Les 6 fichiers vidéos source importés}
+    \includegraphics[width=9cm]{images/studio-sources-numeros.jpg}
+    \caption{Les 6 fichiers vidéos source numérotés importés dans Studio}
     \label{importation}
   \end{minipage}
 \end{figure}
@@ -200,7 +206,8 @@ Une fois les points trouvés, les vidéos peuvent être superposées et être as
 \footnote{C'est ce qu'on appelle le \textit{stitch}}.
 \begin{figure}
   \centering
-  \caption{Équirectangulaire avec angle de capture et numéros des 6 sources} 
+  \includegraphics[width=11cm]{images/studio-output-angles-numeros.jpg}
+  \caption{Équirectangulaire avec angle de capture colorisés et numéros des 6 sources} 
 \end{figure}
 
 \subsubsection{Correction d'exposition}
@@ -225,11 +232,14 @@ et glissé jusqu'à déplacer l'équirectangulaire dans la position voulue. Un b
 est obtenu quand l'horizon est redressé.
 \begin{figure}
   \centering
-  \begin{minipage}{0.5\textwidth}
+  \begin{minipage}{0.45\textwidth}
     \centering
+    \includegraphics[width=8.0cm]{images/studio-output-exposure-grid.jpg}
   \end{minipage}%
-  \begin{minipage}{0.5\textwidth}
+  \hspace{0.08\textwidth}
+  \begin{minipage}{0.45\textwidth}
     \centering
+    \includegraphics[width=8.0cm]{images/studio-output-exposure-grid-oriented.jpg}
   \end{minipage}
   \caption{Correction de l'orientation : l'horizon est redressé}
 \end{figure}
@@ -241,6 +251,7 @@ possibilité d'intégrer le son d'unes des caméras.
 
 \begin{figure}
   \centering
+  \includegraphics[width=11cm]{images/studio-equirectangular.jpg}
   \caption{Équirectangulaire final} 
 \end{figure}
 
