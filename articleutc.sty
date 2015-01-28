@@ -136,14 +136,7 @@
 %%%%%%% Mes commandes %%%%%%%%
 \newcommand\urlcolor[1]{\textcolor{thalessubtitle}{\url{#1}}}
 \newcommand{\Num}[1]{\oldstylenums{#1}}
-\newcommand{\cf}[1]{(\emph{cf.} section \ref{#1}, \og\nameref{#1}\fg, %
-  p. \pageref{#1})}
-\newcommand{\cfnop}[1]{\emph{cf.} section \ref{#1}, \og\nameref{#1}\fg, %
-  p. \pageref{#1}}
-\newcommand{\cfnocf}[1]{(section \ref{#1}, \og\nameref{#1}\fg, %
-  p. \pageref{#1})}
-\newcommand{\cfnopnocf}[1]{section \ref{#1}, \og\nameref{#1}\fg, %
-  p. \pageref{#1}}
+\newcommand{\cf}[1]{nameref{#1} (section \ref{#1} p.\pageref{#1})}
 \newcommand{\aster}{\ding{93}}
 \newcommand\asterism{
   \begin{center}

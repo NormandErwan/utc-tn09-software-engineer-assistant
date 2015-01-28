@@ -17,6 +17,26 @@ d'une dizaine de personnes actuellement. La plupart ayant été embauchés il y 
 quelques mois, c'est une société en forte croissance salariale. 
 Nicolas Burtey en est le président.
 
+\subsection{L'équipe}
+L'équipe est actuellement composée de 8 personnes et d'un nombre variable de 2 à 5 stagiaires.\\
+Nicolas Burtey travaille essentiellement avec Aksel Piran, ils sont en charge de
+la partie commerciale, business et marketing de l'entreprise. Ils consacrent également
+du temps dans la recherche d'investisseurs et la présentation de l'entreprise dans
+des salons ou des conférences. M. Burtey suit également l'avancement des produits
+en passant un jour ou deux dans la semaine avec l'équipe des développeurs.\\
+Nicolas Lopez, Wieland Morgenstern et Henri Rebecq travaillent sur le c\oe ur du
+projet, \cf{videostitch-sdk}, mettant au point algorithmes et nouvelles fonctionnalités.\\
+Andrés Peralta, Julien Fond et Raphaël Lemoine travaillent quand à eux à la conception 
+des trois autres produits de VideoStitch basés sur \nameref{videostitch-sdk}~: 
+\cf{videostitch-studio}, \cf{vahana-vr}, \vf{videostitch-player}.\\
+Liesbeth De Mey, stagiaire, est en charge de réaliser des \textit{screencast} et 
+des tutoriels vidéos des produits de l'entreprise. Enfin, Jean Duthon et Marie
+Chatelin, stagiaire UTCéens en TN09 également, sont en charge, respectivement,
+de la \textit{QA}\footnote{\textit{Quality Assurance}} et de l'intégration continue
+des quatre produits pour Jean, et d'assister l'équipe au développement des logiciels
+pour Marie. Leurs rapports contiennent de plus amples détails sur le déroulé de 
+leurs stages.
+
 \subsection{Historique}
 VideoStitch a été fondée par ce même Nicolas Burtey en janvier 2012.\\
 Photographe diplômé de l'Ecole Lumière, s'étant fait connaître par la photo panoramique 
@@ -155,8 +175,8 @@ d'origine, six sont nécessaires pour filmer toute la sphère du panorama.
   \end{minipage}%
   \begin{minipage}{0.6\textwidth}
     \centering
-    \caption{Équirectangulaire avec angle de capture des 6 caméras} 
-    \label{equirectangulaire-inputs}
+    \caption{Les 6 fichiers vidéos source importés}
+    \label{importation}
   \end{minipage}
 \end{figure}
 
@@ -179,7 +199,7 @@ Une fois les points trouvés, les vidéos peuvent être superposées et être as
 \footnote{C'est ce qu'on appelle le \textit{stitch}}.
 \begin{figure}
   \centering
-  \caption{Les 6 entrées vidéos ainsi que les points de contrôles trouvés} 
+  \caption{Équirectangulaire avec angle de capture et numéros des 6 sources} 
 \end{figure}
 
 \subsubsection{Correction d'exposition}
@@ -217,6 +237,11 @@ est obtenu quand l'horizon est redressé.
 \subsubsection{Exportation}
 Enfin, la vidéo 360 peut être exportée sous la forme d'un équirectangulaire, avec
 possibilité d'intégrer le son d'unes des caméras.
+
+\begin{figure}
+  \centering
+  \caption{Équirectangulaire final} 
+\end{figure}
 
 \subsection{Vahana VR}
 %\begin{wrapfigure}[7]{r}{4cm}
