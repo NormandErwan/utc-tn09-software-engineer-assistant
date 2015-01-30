@@ -1,4 +1,79 @@
-\chapter{Player}
+\chapter{Amélioration du flux de développement}
 \epigraph{Il semble que la perfection soit atteinte, non quand il n'y a plus 
 rien à ajouter mais quand il n'y a plus rien à retrancher}{--- \small{\textup{Saint-Exupéry,
 Terre des hommes}}}
+
+\section{Définition de la mission}
+\subsection{Contexte}
+Au début de ce stage, mi-juillet, la première tâche fut la prise de contact avec 
+les méthodes de travail, les outils utilisés, les logiciels développés, et leurs
+fluxs de développement. En effet, si jusqu'ici seul Studio était développé, Alexis
+Pontin venait de terminer le projet du Player, et le développement de Vahana
+VR commençait. Studio utilisait alors une architecture de développement particulière
+et le Player tout comme Vahana VR commençaient leur développement selon leurs propres
+\textit{workflows}.\\
+\newline
+Ce qui est appellé \textit{workflow} ou flux de développement est un terme pour désigner le 
+\enquote{flux de travaux, [c'est-à-dire] une suite de tâches et
+d'opérations effectuées par [...] un groupe de personnes}\cite{workflow}, ici l'équipe de développement
+de VideoStitch~: c'est une représentation des différentes tâches à accomplir pour installer
+son poste et pouvoir développer un des produits de l'entreprise, le compiler et le distribuer.
+Ce n'est pas l'architecture des logiciels en eux même, ni leur développement,
+mais comment, à partir des sources et des dépendances, il possible d'arriver au produit
+compilé et distribuable au client.\\
+Ce processus met en \oe uvre plusieurs concepts qui s'articulent autour du développement
+logiciel proprement dit~:\cite{software-build}\cite{build-automation}
+\begin{itemize}
+  \item La gestion de versions, assurée ici avec Git\cite{gestion-versions}
+  \item La chaîne de compilation, dépendante de l'OS cible et automatisée avec Buildbot \cite{chaine-compilation}
+  \item Les tests d'intégration\cite{integration-continue}
+  \item La création des installateurs et leur mise à disposition interne\\
+\end{itemize}
+%\newline
+La mission porte essentiellement sur l'amélioration de la chaîne de compilation
+pour les applications de VideoStitch, VideoStitch Studio, Vahana VR et VideoStitch
+Player, et la création des installateurs. Ce travail a été très complémentaire avec
+celui de Jean Duthon, qui a amélioré le flux de développement de VideoStitch SDK,
+la gestion des versions et les tests d'intégration.
+
+\subsection{Le flux de développement de VideoStitch Studio} 
+Le modèle 
+
+\subsection{Problématique}
+Représenter ce flux présente l'intérêt de pouvoir ensuite le simplifier et d'automatiser
+un maximum des processus requis. Et cela était devenu nécessaire, pour deux raisons~:
+\begin{enumerate}
+  \item L'entreprise commençait sa croissance, impliquant de former les nouveaux arrivants
+  à un flux de développement devenue complexe à mesure du temps. Il fallait en
+  simplifier le fonctionnement maintenant que Studio et son développement était
+  devenus matures\footnote{La première version était sortie, et la beta de la seconde
+  version était en cours}, ce qui permettrait de gagner en efficacité sur le développement
+  proprement dit.
+  \item Vahana VR et le Player avaient débuté leurs développements; pourtant ces trois
+  produits, avec Studio, ont en commun l'utilisation de VideoStitch SDK~: les logiciels
+  étant très proches, il était nécessaire d'unifier leurs fluxs de développement.
+\end{enumerate}
+
+\subsection{Objectifs}
+Les objectifs retenus ont été~:
+\begin{itemize}
+  \item Faire évoluer le flux de développpement vers une gestion multi-logicielle et 
+  et en simplifier le fonctionnement.
+  \item Intégrer VideoStitch Player et Vahana VR au flux de développement.
+  \item A cela s'est ajouté, avec le départ d'Alexis, un suivi du Player pour en assurer
+  sa maintenance.
+\end{itemize}
+
+
+\section{Réalisation}
+\subsection{Intégration des dépendances du VideoStitch Player}
+
+\subsection{Evolution de l'architecture du dépôt VideoStitch-apps}
+
+\subsection{Intégration du VideoStitch Player et de Vahana VR au dépôt VideoStitch-apps}
+
+\subsection{Automatisation de la chaîne de compilation}
+
+\subsection{Génération des installateurs}
+
+\subsection{Maintenance du VideoStitch Player}
