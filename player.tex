@@ -13,51 +13,85 @@ VR commençait. Studio utilisait alors une architecture de développement partic
 et le Player tout comme Vahana VR commençaient leur développement selon leurs propres
 \textit{workflows}.\\
 \newline
-Ce qui est appellé \textit{workflow} ou flux de développement est un terme pour désigner le 
+Ce qui est appelé \textit{workflow} ou flux de développement dans ce rapport est un terme pour désigner le 
 \enquote{flux de travaux, [c'est-à-dire] une suite de tâches et
 d'opérations effectuées par [...] un groupe de personnes}\cite{workflow}, ici l'équipe de développement
-de VideoStitch~: c'est une représentation des différentes tâches à accomplir pour installer
-son poste et pouvoir développer un des produits de l'entreprise, le compiler et le distribuer.
+de VideoStitch~: c'est une représentation des différentes tâches à accomplir pour, depuis un poste de travail vierge, 
+l'installer et pouvoir travailler un des produits de l'entreprise, le compiler et le distribuer.
 Ce n'est pas l'architecture des logiciels en eux même, ni leur développement,
 mais comment, à partir des sources et des dépendances, il possible d'arriver au produit
 compilé et distribuable au client.\\
 Ce processus met en \oe uvre plusieurs concepts qui s'articulent autour du développement
 logiciel proprement dit~:\cite{software-build}\cite{build-automation}
 \begin{itemize}
-  \item La gestion de versions, assurée ici avec Git\cite{gestion-versions}
-  \item La chaîne de compilation, dépendante de l'OS cible et automatisée avec Buildbot \cite{chaine-compilation}\cite{integration-continue}
-  \item Les tests d'intégration\cite{integration-continue}
-  \item La création des installateurs et leur mise à disposition interne\\
+  \item La gestion de versions, assurée ici avec Git\cite{gestion-versions}, qui permet
+  de récupérer les codes sources
+  \item La chaîne de compilation, dépendante de l'OS cible et automatisée avec Buildbot 
+  \cite{chaine-compilation}\cite{integration-continue}
+  \item Les tests d'intégration\cite{integration-continue} réalisés par Buildbot
+  \item La création des installateurs et leur mise à disposition sur une page de téléchargement interne
 \end{itemize}
-%\newline
-La mission porte essentiellement sur l'amélioration de la chaîne de compilation
+\ \newline
+Cette mission porte essentiellement sur l'amélioration de la chaîne de compilation
 pour les applications de VideoStitch, VideoStitch Studio, Vahana VR et VideoStitch
 Player, et la création des installateurs. Ce travail a été très complémentaire avec
 celui de Jean Duthon, qui a amélioré le flux de développement de VideoStitch SDK,
 la gestion des versions et les tests d'intégration.
 
 \subsection{Le flux de développement de VideoStitch Studio} 
-Le modèle 
+Avant tout, il faut comprendre que les codes sources et les dépendances ont été réparties 
+en quatre dépôts Git~: 
+\begin{itemize}
+  \item VideoStitch-lib, contenant le VideoStitch SDK
+  \item VideoStitch-base, contenant des code sources partagés avec le dépôt du VideoStitch Player
+  \item VideoStitch-apps, contenant VideoStitch Studio
+  \item VideoStitch-deps, contenant les dépendances Windows de VideoStitch Studio 
+  nécessaires à sa compilation\footnote{Présentées plus en détails dans \cf{integration-dependances-player}}
+\end{itemize}
+En effet, sous les systèmes Linux et OS X, il a été décidé d'utiliser les gestionnaires
+de paquets apt et Macport pour installer les dépendances logicielles de Studio. Pour
+Windows, un dépôt tenais les dépendances sous des versions stables et testées.\\
+\newline
+Compiler et créer l'installateur de Studio depuis un poste de travail vierge requérait alors
+certaines étapes, représentées sous forme d'un diagramme de séquence sur la figure~\ref{workflow-studio}.
+Ces étapes étaient essentiellement des appels à des commandes et à des scripts internes
+(écrits en bash pour Linux / Mac et en batch pour Windows) pour faire le lien entre les trois dépôts~:
+\begin{itemize}
+  \item Cloner les dépôts VideoStitch-deps, VideoStitch-base et VideoStitch-apps
+  \item Générer une version du logiciel via un script présent sur VideoStitch-apps
+  \item Récupérer la dernière version du VideoStitch SDK compilée par Buildbot, 
+  via un script présent sur VideoStitch-apps
+  \item Copier, via un script présent sur VideoStitch-base, les codes sources partagés
+  \item Copier, via un script batch présent sur VideoStitch-deps, les dépendances pour Windows
+  \item Générer le Makefile avec le logiciel qmake fournis avec Qt
+  \item Compiler avec le logiciel jom fournis avec Qt
+  \item Générer l'installateur avec un script présent sur VideoStitch-apps
+\end{itemize}
+\begin{figure}
+  \centering
+  \caption{Diagramme de séquence du \textit{workflow} de Studio (07/2014)}
+	\label{workflow-studio}
+\end{figure}
 
 \subsection{Problématique}
 Représenter ce flux présente l'intérêt de pouvoir ensuite le simplifier et d'automatiser
 un maximum des processus requis. Et cela était devenu nécessaire, pour deux raisons~:
-\begin{enumerate}
+\begin{itemize}
   \item L'entreprise commençait sa croissance, impliquant de former les nouveaux arrivants
   à un flux de développement devenue complexe à mesure du temps. Il fallait en
   simplifier le fonctionnement maintenant que Studio et son développement était
-  devenus matures\footnote{La première version était sortie, et la beta de la seconde
+  devenus matures\footnote{La première version était sortie, et la bêta de la seconde
   version était en cours}, ce qui permettrait de gagner en efficacité sur le développement
   proprement dit.
   \item Vahana VR et le Player avaient débuté leurs développements; pourtant ces trois
   produits, avec Studio, ont en commun l'utilisation de VideoStitch SDK~: les logiciels
   étant très proches, il était nécessaire d'unifier leurs fluxs de développement.
-\end{enumerate}
+\end{itemize}
 
 \subsection{Objectifs}
 Les objectifs retenus ont été~:
 \begin{itemize}
-  \item Faire évoluer le flux de développpement vers une gestion multi-logicielle et 
+  \item Faire évoluer le flux de développement vers une gestion multi-logicielle sur le dépôt VideoStitch-apps 
   et en simplifier le fonctionnement.
   \item Intégrer VideoStitch Player et Vahana VR au flux de développement.
   \item A cela s'est ajouté, avec le départ d'Alexis, un suivi du Player pour en assurer
@@ -65,10 +99,39 @@ Les objectifs retenus ont été~:
 \end{itemize}
 
 
-\section{Réalisation}
-\subsection{Intégration des dépendances du VideoStitch Player}
+\section[Réalisation]{Réalisation
+\protect\footnote{Nicolas Lopez, Julien Fond et Jean Duthon m'ont beaucoup aidé et, par 
+leurs corrections, ont largement contribué aux résultats présentés ici.}}
 
-\subsection{Evolution de l'architecture du dépôt VideoStitch-apps}
+\subsection{Intégration des dépendances du VideoStitch Player}
+\label{integration-dependances-player}
+Un programme dépend, pour sa compilation et son exécution, d'autres \emph{paquets} logiciels
+\cite{dependance-logicielle}. Ce sont des archives contenant des \emph{bibliothèques logicielles},
+c'est-à-dire des ensembles de fonctions déjà compilés et utilisable par le programme.\\
+Une bibliothèque logicielle sous Windows se constitue de trois types de fichier\cite{bibliotheque-logicielle}~:
+\begin{itemize}
+  \item Les \textit{headers} (fichiers .h), qui déclarent les prototypes des fonctions utilisables
+  et accessibles de la bibliothèque.
+  \item Les bibliothèques (fichiers .lib et .dll), qui contiennent le code des fonctions.
+  Les fichiers .lib seront copiés dans le programme, alors que les fichiers .dll seront
+  chargés lors du démarrage du programme\cite{bibliotheque-logicielle}.
+\end{itemize}
+\ \\
+\newline
+Le dépôt VideoStitch-deps était déjà logiquement organisé sous la même forme~:
+
+\ \\
+\newline
+Ainsi, dans le cadre du Player, deux dépendances ont été ajoutées~:
+\begin{itemize}
+  \item libVLC~:
+  \item Oculus SDK~:
+\end{itemize}
+Les dépendances Qt et crashrpt\footnote{Envoi de rapports automatiques lors d'un
+\textit{crash} du logiciel \url{https://code.google.com/p/crashrpt/}} étaient déjà 
+présentes et utilisées par Studio.
+
+\subsection{Évolution de l'architecture du dépôt VideoStitch-apps}
 
 \subsection{Intégration du VideoStitch Player et de Vahana VR au dépôt VideoStitch-apps}
 
@@ -77,3 +140,10 @@ Les objectifs retenus ont été~:
 \subsection{Génération des installateurs}
 
 \subsection{Maintenance du VideoStitch Player}
+Enfin, quelques apports mineurs et rapides ont été apportés, pour améliorer l'usage
+du Player lors des présentations dans les salons et conférences.
+\subsubsection{Support de l'Oculus Rift DK2}
+
+\subsubsection{Passer le \textit{Health and Safety Warning} de l'Oculus}
+
+\subsubsection{Ajout d'options en ligne de commande}
