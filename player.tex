@@ -7,13 +7,13 @@ Terre des hommes}}}
 \subsection{Contexte}
 Au début de ce stage, mi-juillet, la première tâche fut la prise de contact avec 
 les méthodes de travail, les outils utilisés, les logiciels développés, et leurs
-fluxs de développement. En effet, si jusqu'ici seul Studio était développé, Alexis
+\textit{workflows} de développement. En effet, si jusqu'ici seul Studio était développé, Alexis
 Pontin venait de terminer le projet du Player, et le développement de Vahana
 VR commençait. Studio utilisait alors une architecture de développement particulière
 et le Player tout comme Vahana VR commençaient leur développement selon leurs propres
 \textit{workflows}.\\
 \newline
-Ce qui est appelé \textit{workflow} ou flux de développement dans ce rapport est un terme pour désigner le 
+Ce qui est appelé \textit{workflow} dans ce rapport est un terme pour désigner le 
 \enquote{flux de travaux, [c'est-à-dire] une suite de tâches et
 d'opérations effectuées par [...] un groupe de personnes}\cite{workflow}, ici l'équipe de développement
 de VideoStitch~: c'est une représentation des différentes tâches à accomplir pour, depuis un poste de travail vierge, 
@@ -25,22 +25,21 @@ Ce processus met en \oe uvre plusieurs concepts qui s'articulent autour du déve
 logiciel proprement dit~:\cite{software-build}\cite{build-automation}
 \begin{itemize}
   \item La gestion de versions, assurée ici avec Git\cite{gestion-versions}, qui permet
-  de récupérer les codes sources
+  de récupérer les codes sources.
   \item La chaîne de compilation, dépendante de l'OS cible et automatisée avec Buildbot 
-  \cite{chaine-compilation}\cite{integration-continue}
-  \item Les tests d'intégration\cite{integration-continue} réalisés par Buildbot
-  \item La création des installateurs et leur mise à disposition sur une page de téléchargement interne
+  \cite{chaine-compilation}\cite{integration-continue}.
+  \item Les tests d'intégration\cite{integration-continue} réalisés par Buildbot.
+  \item La création des installateurs et leur mise à disposition sur une page de téléchargement interne.
 \end{itemize}
 \ \newline
 Cette mission porte essentiellement sur l'amélioration de la chaîne de compilation
 pour les applications de VideoStitch, VideoStitch Studio, Vahana VR et VideoStitch
 Player, et la création des installateurs. Ce travail a été très complémentaire avec
-celui de Jean Duthon, qui a amélioré le flux de développement de VideoStitch SDK,
+celui de Jean Duthon, qui a amélioré le \textit{workflow} de développement de VideoStitch SDK,
 la gestion des versions et les tests d'intégration.
 
-\subsection{Le flux de développement de VideoStitch Studio} 
-Avant tout, il faut comprendre que les codes sources et les dépendances ont été réparties 
-en quatre dépôts Git~: 
+\subsection{Le \textit{workflow} de développement de VideoStitch Studio} 
+Les codes sources et les dépendances avaient été réparties en quatre dépôts Git~: 
 \begin{itemize}
   \item VideoStitch-lib, contenant le VideoStitch SDK
   \item VideoStitch-base, contenant des code sources partagés avec le dépôt du VideoStitch Player
@@ -48,9 +47,9 @@ en quatre dépôts Git~:
   \item VideoStitch-deps, contenant les dépendances Windows de VideoStitch Studio 
   nécessaires à sa compilation\footnote{Présentées plus en détails dans \cf{integration-dependances-player}}
 \end{itemize}
-En effet, sous les systèmes Linux et OS X, il a été décidé d'utiliser les gestionnaires
+Sous les systèmes Linux et OS X, il a été décidé d'utiliser les gestionnaires
 de paquets apt et Macport pour installer les dépendances logicielles de Studio. Pour
-Windows, un dépôt tenais les dépendances sous des versions stables et testées.\\
+Windows, le dépôt VideoStitch-deps tenait les dépendances sous des versions stables et testées.\\
 \newline
 Compiler et créer l'installateur de Studio depuis un poste de travail vierge requérait alors
 certaines étapes, représentées sous forme d'un diagramme de séquence sur la figure~\ref{workflow-studio}.
@@ -78,22 +77,22 @@ Représenter ce flux présente l'intérêt de pouvoir ensuite le simplifier et d
 un maximum des processus requis. Et cela était devenu nécessaire, pour deux raisons~:
 \begin{itemize}
   \item L'entreprise commençait sa croissance, impliquant de former les nouveaux arrivants
-  à un flux de développement devenue complexe à mesure du temps. Il fallait en
+  à un \textit{workflow} de développement devenue complexe à mesure du temps. Il fallait en
   simplifier le fonctionnement maintenant que Studio et son développement était
   devenus matures\footnote{La première version était sortie, et la bêta de la seconde
   version était en cours}, ce qui permettrait de gagner en efficacité sur le développement
   proprement dit.
   \item Vahana VR et le Player avaient débuté leurs développements; pourtant ces trois
   produits, avec Studio, ont en commun l'utilisation de VideoStitch SDK~: les logiciels
-  étant très proches, il était nécessaire d'unifier leurs fluxs de développement.
+  étant très proches, il était nécessaire d'unifier leurs \textit{worklows} de développement.
 \end{itemize}
 
 \subsection{Objectifs}
 Les objectifs retenus ont été~:
 \begin{itemize}
-  \item Faire évoluer le flux de développement vers une gestion multi-logicielle sur le dépôt VideoStitch-apps 
+  \item Faire évoluer le \textit{workflow} de développement vers une gestion multi-logicielle sur le dépôt VideoStitch-apps 
   et en simplifier le fonctionnement.
-  \item Intégrer VideoStitch Player et Vahana VR au flux de développement.
+  \item Intégrer VideoStitch Player et Vahana VR à ce \textit{workflow} de développement.
   \item A cela s'est ajouté, avec le départ d'Alexis, un suivi du Player pour en assurer
   sa maintenance.
 \end{itemize}
@@ -121,6 +120,10 @@ Une bibliothèque logicielle sous Windows se constitue de trois types de fichier
 Le dépôt VideoStitch-deps était déjà logiquement organisé sous la même forme~:
 
 \ \\
+Cette organisation convenait aux nouveaux besoins et a été gardée ainsi. Une séparation
+des dépendances par logiciel aurait été possible, mais complexifiant inutilement 
+la structure. De plus, les dépendances en commun par les trois logiciels
+sont utilisées dans les même versions. 
 \newline
 Ainsi, dans le cadre du Player, deux dépendances ont été ajoutées~:
 \begin{itemize}
