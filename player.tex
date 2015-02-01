@@ -116,19 +116,43 @@ Une bibliothèque logicielle sous Windows se constitue de trois types de fichier
   chargés lors du démarrage du programme\cite{bibliotheque-logicielle}.
 \end{itemize}
 \ \\
+En plus d'être spéficique à un système d'exploitation, un programme, et donc
+ses dépendances, est spécifique à la plateforme visée (32 bits ou 64 bits)\cite{64-bit-computing}
+mais aussi à la configuration compilée (\textit{debug} ou \textit{release})\cite{msdn-debug-release}.\\
+La configuration \textit{debug} permet aux développeur de générer une version pour le débogage,
+quand la configuration \textit{release} permet de générer une version finale et optimisée destinée
+à l'usage du programme. \\
+Enfin, le choix de la plateforme dépend du processeur et du
+système d'exploitation du client; si le 64 bits tend à prendre le pas sur le 32 bits,
+plus ancien, les deux sont cependant encore distribués.\\
 \newline
 Le dépôt VideoStitch-deps était déjà logiquement organisé sous la même forme~:
-
+\dirtree{%
+ .1 /.
+ .2 win32.\DTcomment{la plateforme 32 bits Windows}.
+ .3 bin\DTcomment{les bibliothèques .dll}.
+ .4 debug.\DTcomment{les .dll spécifiques \textit{debug}}.
+ .4 release.
+ .3 include.\DTcomment{les fichiers \textit{headers} .h}.
+ .3 lib.\DTcomment{les bibliothèques .lib}.
+ .2 x64.\DTcomment{la plateforme 64 bits Windows}.
+ .3 bin.
+ .4 debug.
+ .4 release.
+ .3 include.
+ .3 lib.
+}
 \ \\
 Cette organisation convenait aux nouveaux besoins et a été gardée ainsi. Une séparation
 des dépendances par logiciel aurait été possible, mais complexifiant inutilement 
-la structure. De plus, les dépendances en commun par les trois logiciels
+la structure. De plus, les dépendances en commun entre les trois logiciels
 sont utilisées dans les même versions. 
 \newline
 Ainsi, dans le cadre du Player, deux dépendances ont été ajoutées~:
 \begin{itemize}
-  \item libVLC~:
-  \item Oculus SDK~:
+  \item \textbf{libVLC}~: SDK de VLC, cette bibliothèque fournit des capacités multimédias.\cite{libvlc}
+  \item \textbf{Oculus SDK}~: cette bibliothèque permet à une application d'exploiter le 
+  casque de réalité virtuelle Oculus Rift.\cite{oculus-developer-guide}
 \end{itemize}
 Les dépendances Qt et crashrpt\footnote{Envoi de rapports automatiques lors d'un
 \textit{crash} du logiciel \url{https://code.google.com/p/crashrpt/}} étaient déjà 
