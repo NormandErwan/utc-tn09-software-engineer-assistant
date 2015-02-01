@@ -31,27 +31,59 @@ d'entrées-sorties supportés~: chaque installation du logiciel aurait requis au
 une installation de l'ensemble des pilotes.\\
 De plus, un client pourrait souhaiter utiliser du matériel entrée/sortie encore
 non supporté. Il serait intéressant qu'il puisse réaliser son propre développement
-dans l'ecosystème de Vahana VR.\\
-Il fallait donc développer un système intégrant ces contraintes.\\
+dans l'ecosystème de Vahana VR; ainsi le logiciel pourrait devenir virtuellement
+compatible avec n'importe quel standard, caméra ou carte d'acquisition.\\
+Il fallait donc développer un système assurant la compatibilité
+entre Vahana VR et ces matériels, et intégrant les contraintes exposées.\\
 
 \subsection{Objectifs}
 Au début de ce stage, une solution avait déjà été esquissée et était déjà en partie
 mise à l'\oe uvre. Cependant un certain travail était encore nécessaire.\\
 L'approche retenue fut celle de la \emph{Programmation Orientée Composant} (POC),
-qui permet une certaine modularité dans l'architecture du projet. Chaque nouvelle
+qui permet une certaine modularité dans l'architecture du projet\cite{poc}. Chaque nouvelle
 carte d'acquisition donnera lieu à un nouveau composant, sous forme d'un \textit{plugin},
 qui pourra être distribué, chargé et utilisé si nécessaire\cite{plugin}.\\
 \newline
 Les objectifs retenus ont donc été~:
 \begin{itemize}
-  \item Développer les entrées HDMI\footnote{} et SDI\footnote{}.
+  \item Développer les entrées HDMI\footnote{\textit{High Definition Multimedia Interface}, 
+  norme de diffusion audio/vidéo numériquei\cite{hdmi}.} et SDI\footnote{\textit{Serial Digital Interface}, 
+  protocole de diffusion vidéo numérique\cite{sdi}.}.
   \item Développer les sorties HDMI et SDI.
-  \item Développer des entrées-sorties Ethernet\footnote{} et PCIe\footnote{} 
+  \item Développer des entrées-sorties Ethernet et PCIe\footnote{\textit{PCI Express}, standard
+  de connexion de cartes d'extension sur la carte mère d'un ordinateur\cite{pci-express}.}
   spécifiques à la demande d'un client.
   \item Déployer l'ensemble des \textit{plugins} sur un dépôt séparé.
   \item Documenter et vérifier la bonne intégration des plugins dans Vahana VR.
 \end{itemize}
 
+\begin{figure}
+  \centering
+  \begin{minipage}[t]{0.2\textwidth}
+    \centering
+    %\includegraphics[width=3cm]{images/}
+    \caption{HDMI}
+  \end{minipage}%
+  \hspace{0.03\textwidth}
+  \begin{minipage}[t]{0.2\textwidth}
+    \centering
+    %\includegraphics[width=3cm]{images/}
+    \caption{SDI}
+  \end{minipage}%
+  \hspace{0.03\textwidth}
+  \begin{minipage}[t]{0.2\textwidth}
+    \centering
+    %\includegraphics[width=3cm]{images/}
+    \caption{Ethernet}
+  \end{minipage}%
+  \hspace{0.03\textwidth}
+  \begin{minipage}[t]{0.2\textwidth}
+    \centering
+    %\includegraphics[width=3cm]{images/}
+    \caption{PCIe}
+  \end{minipage}
+  \caption{Illustration des différents connecteurs utilisées par Vahana VR}
+\end{figure}
 
 \section{Réalisation}
 \subsection{Architecture de la solution}
