@@ -146,7 +146,7 @@ Le dépôt VideoStitch-deps était déjà logiquement organisé sous la même fo
 Cette organisation convenait aux nouveaux besoins et a été gardée ainsi. Une séparation
 des dépendances par logiciel aurait été possible, mais complexifiant inutilement 
 la structure. De plus, les dépendances en commun entre les trois logiciels
-sont utilisées dans les même versions. 
+sont utilisées dans les même versions. \\
 \newline
 Ainsi, dans le cadre du Player, deux dépendances ont été ajoutées~:
 \begin{itemize}
@@ -156,15 +156,32 @@ Ainsi, dans le cadre du Player, deux dépendances ont été ajoutées~:
 \end{itemize}
 Les dépendances Qt et crashrpt\footnote{Envoi de rapports automatiques lors d'un
 \textit{crash} du logiciel \url{https://code.google.com/p/crashrpt/}} étaient déjà 
-présentes et utilisées par Studio.
-
-\subsection{Évolution de l'architecture du dépôt VideoStitch-apps}
+présentes et utilisées par Studio.\\
+Enfin, les dépendances utilisées par Vahana VR étaient les même que celles Studio,
+donc déjà présentes.
 
 \subsection{Intégration du VideoStitch Player et de Vahana VR au dépôt VideoStitch-apps}
+La première étape a été de rappatrier le dépôt VideoStitch-base et de l'inclure
+avec son historique dans le dépôt VideoStitch-apps. L'annexe \ref{deplacer-historique-depots}
+présente plus en détail l'opération, permettant, grâce à Git, de déplacer fichiers
+et historique des modifications d'un dépôt à un autre.\\
+\newline
+L'opération fut relativement aisée, car le dépôt VideoStitch-apps présentait déjà
+une organisation regroupant plusieurs programmes; mais centrés sur le seul logiciel
+VideoStitch Studio.
 
-\subsection{Automatisation de la chaîne de compilation}
+scripts
+
+qt meta prog en commun
 
 \subsection{Génération des installateurs}
+win tout inclure inno setup cherry pick parmis le mess de bin/
+
+linux / mac juste le nécessaire et deps à version spécifiques, l'utilisateur
+installe les autres dépendances.
+
+\subsection{Automatisation de la chaîne de compilation}
+iste les étapes et les écrits sur le buildbot en python 
 
 \subsection{Maintenance du VideoStitch Player}
 Enfin, quelques apports mineurs et rapides ont été apportés, pour améliorer l'usage
