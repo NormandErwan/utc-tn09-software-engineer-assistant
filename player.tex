@@ -68,7 +68,7 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
 \end{itemize}
 \begin{figure}
   \centering
-  \caption{Diagramme de séquence du \textit{workflow} de Studio (07/2014)}
+  \caption{Diagramme de séquence du \textit{workflow} de Studio (juillet 2014)}
 	\label{workflow-studio}
 \end{figure}
 
@@ -162,8 +162,8 @@ donc déjà présentes.
 \subsection{Intégration au \textit{workflow} du VideoStitch Player et de Vahana VR}
 La première étape a été de rappatrier le dépôt VideoStitch-base et de l'inclure
 avec son historique dans le dépôt VideoStitch-apps. L'annexe \ref{deplacer-historique-depots}
-présente plus en détail l'opération, permettant, grâce à Git, de déplacer fichiers
-et historique des modifications d'un dépôt à un autre.\\
+présente plus en détail l'opération permettant, grâce à Git, de déplacer un ensemble 
+de fichiers d'un dépôt à un autre tout en préservant l'historique des modifications.\\
 \newline
 L'opération fut relativement aisée, car le dépôt VideoStitch-apps présentait déjà
 une organisation regroupant plusieurs programmes; mais centrés sur le seul logiciel
@@ -174,12 +174,23 @@ scripts
 qt meta prog en commun
 
 \subsection{Génération des installateurs}
+Si la compilation des trois produits est désormais possible, il s'agit désormais
+de pouvoir distribuer au client une version finale et utilisable.
 win tout inclure inno setup cherry pick parmis le mess de bin/
 
 linux / mac juste le nécessaire et deps à version spécifiques, l'utilisateur
 installe les autres dépendances.
 
 \subsection{Automatisation de la chaîne de compilation}
+La génération des installateurs Windows et des packages Linux / Mac est cependant
+toujours fastidieuse et gagnerais à être automatisée. L'équipe se concentre avant
+tout au développement, et l'intégration continue est réalisée par Buildbot. Un
+serveur va donc, à chaque poussé de code sur les dépôts Git, générer le VideoStitch
+SDK et les trois produits, ainsi que leurs installateurs. Ces derniers sont destinés
+à un usage interne de test, et, lors des \textit{release} des produits, destinés
+aux clients.
+
+
 iste les étapes et les écrits sur le buildbot en python 
 
 \subsection{Maintenance du VideoStitch Player}
