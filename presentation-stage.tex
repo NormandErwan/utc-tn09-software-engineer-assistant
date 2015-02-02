@@ -96,26 +96,72 @@ en fonction des besoins des applications de l'entreprise. Ils participent toutef
 aux \textit{stand-up} et au \textit{retrospectives}.\\
 Le présent stage a suivi l'équipe dans ses sprints, en l'assistant parfois sur quelques
 tickets, tout en maintenant en priorité les deux missions de fond présentées plus haut, dans 
-la section présentant le sujet (section \ref{le-sujet} p.\pageref{le-sujet}).\\
+la section \cf{le-sujet}.\\
 \newline
 Enfin, toutes les communications écrites et orales se font en anglais, du fait
 de la présence dans l'équipe de personnes de langue natale espagnole, allemande ou flamande.
 
 \section{Les outils utilisés}
-Les quatre produits de VideoStitch sont codés en C++, avec utilisation des dernières possibilités
-de C++11; VideoStitch SDK utilise également la bibliothèque CUDA pour les calculs intensifs et parallélisables.
+\label{outils-utilisés}
+\paragraph{}
+Les quatre produits de VideoStitch sont codés en \emph{C++}, avec utilisation des dernières possibilités
+de C++11; VideoStitch SDK utilise également la bibliothèque \emph{CUDA} pour les calculs intensifs et parallélisables.
 Le compilateur de chaque OS est utilisé~: g++ pour Linux, clang pour Max OS X et 
-cl du Windows SDK, également utilisé par Visual Studio.\\
-\newline
-Les applications (VideoStitch Studio, Vahana VR, VideoStitch Player) sont de plus
-développés avec le framework C++ Qt, qui permet d'assurer la portabilité sur les 
-plateformes Windows, Linux et Mac OS X avec le même code source. En outre, Qt
-propose un certain nombre de classes en addition de la STL de C++, facilitant le
-développement d'application de haut niveau. Enfin ce framework est connu pour son
-système de signals/slots ouvrant la voie à la programmation evénementielle.\\
-\newline
+cl du Windows SDK, également utilisé par Visual Studio.
+\paragraph{}
+\begin{wrapfigure}[6]{l}{2.5cm}
+  \centering
+  \includegraphics[width=2cm]{images/qt-logo.png}
+  \caption{Logo de Qt}
+\end{wrapfigure}
+Les trois applications sont  
+développées avec le framework C++ \emph{Qt}, qui permet d'assurer la portabilité sur les 
+plateformes Windows, Linux et Mac OS X du même code source. En outre, Qt
+propose un certain nombre de classes, en addition de la STL de C++, facilitant le
+développement d'applications de haut niveau. Enfin ce framework est connu pour son
+système de signals/slots ouvrant la voie à la programmation evénementielle.\cite{qt}
+\paragraph{}
+\begin{wrapfigure}[5]{r}{3.5cm}
+  \centering
+  \includegraphics[width=3cm]{images/git-logo.png}
+  \caption{Logo de Git}
+\end{wrapfigure}
 Tous les codes sources sont partagés et versionnés grâce au système de gestion de version 
-distribué \emph{Git}. C'est un logiciel, développé depuis 2005, qui permet de \\
-Les dépôts utilisés sont détaillé dans \cf{workflow-studio}.
-\newline
-buildbot
+distribué \emph{Git}\cite{gestion-versions}. Ce logiciel permet à l'équipe de travailler
+avec des \emph{dépôts}~: un dépôt Git est simplement un dossier associé à une base
+de donnée archivant l'historique des modifications effectuées sur ce dossier. Chaque développeur
+possède une copie de ce dépôt et de l'historique associé sur son ordinateur. Les développeurs
+transmettent régulièrement les modifications qu'ils ont apportées aux autres copies pour synchroniser
+les historiques~: ainsi, chaque membre de l'équipe sait qui a modifié quoi et quand.\\
+En pratique un serveur est utilisé pour sauvegarder les modifications faites en
+servant de pont entre les développeurs~: chacun y propose ses modifications et l'interroge
+sur les modifications des autres.
+\paragraph{}
+\begin{wrapfigure}[7]{l}{2.5cm}
+  \centering
+  \includegraphics[width=1.5cm]{images/buildbot-logo.png}
+  \caption{Logo de Buildbot}
+\end{wrapfigure}
+A chaque modification apportée sur un dépôt Git, un serveur Buildbot va éxecuter
+une routine~: le produit concerné par la modification sera
+compilé, subira un ensemble de tests de qualité et son installateur sera généré 
+et mis à disposition sur une page de téléchargement à usage interne.\\
+Ces installateurs pourront être utilisés par n'importe quelle personne de l'entreprise
+pour test. Quand aux tests de qualité, ils sont une pratique d'\emph{intégration continue} 
+permettant de vérifier à chaque modification qu'aucun bug, ni régression n'a été 
+introduit\cite{integration-continue}.
+\begin{figure}
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \centering
+    \includegraphics[width=7cm]{images/git-diagram.png}
+    \caption{Schéma de gestion de version distribué\cite{pro-git}}
+  \end{minipage}%
+  \hspace{0.09\textwidth}
+  \begin{minipage}[b]{0.4\textwidth}
+    \centering
+    \includegraphics[width=7cm]{images/buildbot-diagram.png}
+    \caption{Schéma de fonctionnement de Buildbot\cite{buildbot}}
+  \end{minipage}
+\end{figure}
+

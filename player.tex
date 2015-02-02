@@ -21,7 +21,8 @@ l'installer et pouvoir travailler un des produits de l'entreprise, le compiler e
 Ce n'est pas l'architecture des logiciels en eux même, ni leur développement,
 mais comment, à partir des sources et des dépendances, il possible d'arriver au produit
 compilé et distribuable au client.\\
-Ce processus met en \oe uvre plusieurs concepts qui s'articulent autour du développement
+Ce processus met en \oe uvre les concepts présentés à la section 
+\cf{outils-utilisés}. Ils s'articulent ainsi autour du développement
 logiciel proprement dit~:\cite{software-build}\cite{build-automation}
 \begin{itemize}
   \item La gestion de versions, assurée ici avec Git\cite{gestion-versions}, qui permet
@@ -42,9 +43,9 @@ la gestion des versions et les tests d'intégration.
 \label{workflow-studio}
 Les codes sources et les dépendances avaient été réparties en quatre dépôts Git~: 
 \begin{itemize}
-  \item VideoStitch-lib, contenant le VideoStitch SDK
+  \item VideoStitch-lib, contenant les codes sources de VideoStitch SDK
   \item VideoStitch-base, contenant des code sources partagés avec le dépôt du VideoStitch Player
-  \item VideoStitch-apps, contenant VideoStitch Studio
+  \item VideoStitch-apps, contenant les codes sources de VideoStitch Studio
   \item VideoStitch-deps, contenant les dépendances Windows de VideoStitch Studio 
   nécessaires à sa compilation\footnote{Présentées plus en détails dans \cf{integration-dependances-player}}
 \end{itemize}
@@ -55,7 +56,7 @@ Windows, le dépôt VideoStitch-deps tenait les dépendances sous des versions s
 Compiler et créer l'installateur de Studio depuis un poste de travail vierge requérait alors
 certaines étapes, représentées sous forme d'un diagramme de séquence sur la figure~\ref{workflow-studio}.
 Ces étapes étaient essentiellement des appels à des commandes et à des scripts internes
-(écrits en bash pour Linux / Mac et en batch pour Windows) pour faire le lien entre les trois dépôts~:
+(écrits en bash pour Linux / Mac et en batch pour Windows) pour faire le lien entre les dépôts~:
 \begin{enumerate}
   \item Cloner les dépôts VideoStitch-deps, VideoStitch-base et VideoStitch-apps.
   \item Générer une version du logiciel via un script présent sur VideoStitch-apps.
@@ -129,7 +130,7 @@ seulement en 64 bits~: les machines pour les faire fonctionner demandent du mat�
 récent donc en 64 bits, et cela réduit la maintenante à une seule plateforme.\\
 \newline
 Le dépôt VideoStitch-deps était déjà logiquement organisé sous la forme présentée figure~\ref{videostitch-deps}.
-\begin{figure}
+\begin{figure}[H]
   \dirtree{%
    .1 /.
    .2 src\DTcomment{Archives des versions des dépendances utilisées}.
@@ -177,7 +178,9 @@ une organisation regroupant plusieurs programmes, mais centrés sur le seul logi
 VideoStitch Studio\footnote{On distingue logiciel et programme, dans le sens où un logiciel
 est composé de un ou plusieurs programmes, c'est-à-dire des fichiers binaires, ainsi que des
 fichiers de configurations, images, etc.\cite{logiciel}}. L'architecture ne nécessitait alors que quelques modifications, et
-avait été fixée à la hiérarchie présentée figure~\ref{videostitch-apps}.
+avait été fixée à la hiérarchie présentée figure~\ref{videostitch-apps}.\\
+Le dossier de compilation est fixé à bin/x64 pour tous les systèmes~: Windows, Linux 
+et Mac OS X.
 \begin{figure}
   \dirtree{%
     .1 /.
@@ -202,8 +205,6 @@ avait été fixée à la hiérarchie présentée figure~\ref{videostitch-apps}.
   \caption{Dépôt VideoStitch-apps}
   \label{videostitch-apps}
 \end{figure}
-Le dossier de compilation est fixé à bin/x64 pour tous les systèmes~: Windows, Linux 
-et Mac OS X.
 \ \\
 L'architecture convenant, les fichiers projets Qt nécessitaient d'être refactorisés,
 c'est-à-dire les réécrires pour les adapter aux nouveaux besoins voulu. Ici, les
@@ -214,8 +215,9 @@ Les applications son
 
 \ \\
 Enfin, quelques scripts ont été réécrits. Comme vu avec \cf{workflow-studio}, le
-développeur doit récuperer la bibliothèque du VideoStitch SDK, et les dépendances,
-pour Windows. Ces ressources se trouvent sur
+développeur doit récuperer la bibliothèque du VideoStitch SDK, et, sur Windows,
+les dépendances. Ces ressources se trouvent sur des dépôts séparés, c'est pourquoi
+un script a été écrit pour ajouter quelques 
 
 
 \subsection{Génération des installateurs}
