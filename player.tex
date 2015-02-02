@@ -64,8 +64,10 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
   via un script présent sur VideoStitch-apps.
   \item Copier, via un script présent sur VideoStitch-base, les codes sources partagés.
   \item Copier, via un script batch présent sur VideoStitch-deps, les dépendances pour Windows.
-  \item Générer le Makefile avec le logiciel qmake, fournis avec Qt.
-  \item Compiler avec le logiciel jom, fournis avec Qt.
+  \item Générer le Makefile\footnote{Fichier contenant un ensemble de règles destinées
+  au compilateur et à l'éditeur de liens.} avec le logiciel qmake, fournis avec Qt.
+  \item Compiler avec le logiciel jom\footnote{Ce logiciel fait appel au compilateur 
+  du système ainsi qu'à l'éditeur de lien pour générer le logiciel.}, fournis avec Qt.
   \item Générer l'installateur avec un script présent sur VideoStitch-apps.
 \end{enumerate}
 \begin{figure}
@@ -161,10 +163,6 @@ présentes et utilisées par Studio.\\
 En parallèle, les dépendances libVLC et Oculus SDK ont été installées sur les Buidlbots Mac et Linux.\\
 Quand aux dépendances utilisées par Vahana VR, elles étaient les même que celles 
 utilisées Studio, donc déjà présentes dans le dépôt.\\
-\newline
-Enfin, le script utilisé pour copier ces dépendances vers VideoStitch-apps a été
-revu et amélioré, à une version très simple~:
-code
 
 \subsection{Intégration au \textit{workflow} du VideoStitch Player et de Vahana VR}
 La première étape a été de rapatrier le dépôt VideoStitch-base et de l'inclure
@@ -179,12 +177,12 @@ VideoStitch Studio\footnote{On distingue logiciel et programme, dans le sens où
 est composé de un ou plusieurs programmes, c'est-à-dire des fichiers binaires, ainsi que des
 fichiers de configurations, images, etc.\cite{logiciel}}. L'architecture ne nécessitait alors que quelques modifications, et
 avait été fixée à la hiérarchie présentée figure~\ref{videostitch-apps}.\\
-Le dossier de compilation est fixé à bin/x64 pour tous les systèmes~: Windows, Linux 
+Le dossier de compilation est fixé à bin/x64/<configuration> pour tous les systèmes~: Windows, Linux 
 et Mac OS X.
 \begin{figure}
   \dirtree{%
     .1 /.
-    .2 bin\DTcomment{Dossier de compilation et dll copiées de VideoStitch(deps)}.
+    .2 bin\DTcomment{Dossier de compilation et dll copiées de VideoStitch-deps}.
     .3 x64.
     .4 debug.
     .4 release.
@@ -211,14 +209,41 @@ c'est-à-dire les réécrires pour les adapter aux nouveaux besoins voulu. Ici, 
 trois applications étant proches, il est intéressant de partager un maximum de leurs
 codes sources sous des programmes communs d'une part et d'autre part de partager
 la configuration des différents projets.\\
-Les applications son
-
+En effet, les applications définissent des projets Qt (extension .pro) décrivant
+les fichiers sources, les ressources et les dépendances utilisées, ainsi que les
+paramètres pour le compilateur et l'éditeur de liens (\textit{linker}). Ce sont à 
+partir de ces fichiers que le programme qmake construit les instructions de la chaîne
+de compilation qui seront éxecutés par jom\cite{qt}. C'est ce qui permet la portabilité
+des projets Qt~: un seul projet est écrit, tout en couvrant plusieurs systèmes.
 \ \\
+\newline
 Enfin, quelques scripts ont été réécrits. Comme vu avec \cf{workflow-studio}, le
 développeur doit récuperer la bibliothèque du VideoStitch SDK, et, sur Windows,
 les dépendances. Ces ressources se trouvent sur des dépôts séparés, c'est pourquoi
-un script a été écrit pour ajouter quelques 
+il était nécessaire de pouvoir les récupérer facilement. Git étant l'outil le plus
+utilisé pour gérer son code et ses modifications, et utilisé en ligne de commande,
+des scripts ont été écrits pour être utilisables comme des commandes en console.\\
+De plus tous les scripts batch (pour Windows) ont été supprimés et fusionnés avec
+les scripts bash. Si le support de bash est supporté sur tous les Linux et les Mac OS X,
+l'utilisation systèmatique de Cygwin sur Windows par l'équipe a assuré ce support
+sur toutes les plateformes.\\
+Son utilisation est très simple, voici une copie de l'aide qu'il affiche~:
+\begin{minted}[linenos=false]{shell-session}
+  Usage: ./updatelib.sh <repository> [configuration]
+  Update the actual folder with the required <repository>.
 
+  <repository> is mandatory and other parameters are optionals.
+  Parameters can takes the following values:
+  <repository>      'deps', 'lib' or 'all' (default)
+  [configuration]   'release' (default) or 'debug'
+\end{minted}
+Dans le cas de lib, le script va détecter le système de l'utilisateur, puis télécharger avec le programme curl
+la dernière version compilée du VideoStitch SDK pour le système et la configuration voulue, pour copier
+les headers et les bibliothèques dans les dossiers attendus sur le dépôt VideoStitch-apps.
+Le script automatise simplement une action de recherche d'une version compilée par Buildbot
+pour en extraire et copier les fichiers.\\
+Dans le cas de deps, le script va créer une copie locale de VideoStitch-deps, puis
+en copier les headers et les bibliothèques dans les dossiers de VideoStitch-apps.
 
 \subsection{Génération des installateurs}
 Si la compilation des trois produits est désormais possible, il s'agit désormais
@@ -230,7 +255,7 @@ de construire un paquet contenant seulement les fichiers nécessaires, le logici
 et ses dépendances.
 
 \subsubsection{Windows}
-Sudio et Player utilisaient tout deux le logiciel InnoSetup, qui permet de créer des
+Studio et Player utilisaient tout deux le logiciel InnoSetup, qui permet de créer des
 installateurs, les paquets Windows. 
 win tout inclure inno setup cherry pick parmis le mess de bin/
 
