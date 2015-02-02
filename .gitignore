@@ -1,4 +1,10 @@
+## Folders:
+images/ressources/
+references/
+
+## Temporary files:
 *~
+*.swp
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
