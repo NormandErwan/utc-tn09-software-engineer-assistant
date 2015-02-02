@@ -128,20 +128,20 @@ système d'exploitation du client. Les produits de VideoStitch sont distribués
 seulement en 64 bits~: les machines pour les faire fonctionner demandent du matériel
 récent donc en 64 bits, et cela réduit la maintenante à une seule plateforme.\\
 \newline
-Le dépôt VideoStitch-deps était déjà logiquement organisé sous la forme présentée figure~\ref{dirtrees-deps}.
+Le dépôt VideoStitch-deps était déjà logiquement organisé sous la forme présentée figure~\ref{videostitch-deps}.
 \begin{figure}
-\dirtree{%
- .1 /.
- .2 src\DTcomment{Archives des versions des dépendances utilisées}.
- .2 x64\DTcomment{La plateforme 64 bits Windows}.
- .3 bin\DTcomment{Les bibliothèques .dll}.
- .4 debug\DTcomment{Les .dll spécifiques \textit{debug}}.
- .4 release.
- .3 include\DTcomment{Les fichiers \textit{headers} .h}.
- .3 lib\DTcomment{Les bibliothèques .lib}.
- }
-\caption{Dépôt VideoStitch-deps}
-\label{dirtree-deps}
+  \dirtree{%
+   .1 /.
+   .2 src\DTcomment{Archives des versions des dépendances utilisées}.
+   .2 x64\DTcomment{La plateforme 64 bits Windows}.
+   .3 bin\DTcomment{Les bibliothèques .dll}.
+   .4 debug\DTcomment{Les .dll spécifiques \textit{debug}}.
+   .4 release.
+   .3 include\DTcomment{Les fichiers \textit{headers} .h}.
+   .3 lib\DTcomment{Les bibliothèques .lib}.
+   }
+  \caption{Dépôt VideoStitch-deps}
+  \label{videostitch-deps}
 \end{figure}
 Cette organisation convenait aux nouveaux besoins et a été gardée ainsi. Une séparation
 des dépendances par logiciel aurait été possible, mais complexifiant inutilement 
@@ -175,32 +175,32 @@ leurs dépôts respectifs.\\
 L'opération fut relativement aisée, car le dépôt VideoStitch-apps présentait déjà
 une organisation regroupant plusieurs programmes, mais centrés sur le seul logiciel
 VideoStitch Studio\footnote{On distingue logiciel et programme, dans le sens où un logiciel
-est composé de un ou plusieurs programmes, c'est-à-dire des fichiers binaires, et de
-fichiers de configurations, images, etc.}. L'architecture ne nécessitait alors que quelques modifications, et
-avait été fixée à la hiérarchie présentée figure~\ref{dirtree-apps}.
+est composé de un ou plusieurs programmes, c'est-à-dire des fichiers binaires, ainsi que des
+fichiers de configurations, images, etc.\cite{logiciel}}. L'architecture ne nécessitait alors que quelques modifications, et
+avait été fixée à la hiérarchie présentée figure~\ref{videostitch-apps}.
 \begin{figure}
-\dirtree{%
-  .1 /.
-  .2 bin\DTcomment{Dossier de compilation et dll copiées de VideoStitch(deps)}.
-  .3 x64.
-  .4 debug.
-  .4 release.
-  .2 installer\DTcomment{Scripts de conception des installateurs}.
-  .2 external\_deps\DTcomment{Headers et lib copiés de VideoStitch-deps (Windows)}.
-  .3 include.
-  .3 lib.
-  .2 packager\DTcomment{Scripts de conception des installateurs}.
-  .2 src\DTcomment{Codes sources des applications}.
-  .3 libvideostitch\DTcomment{Contient les headers copiés du VideoStitch SDK}.
-  .3 libvideostitch-base\DTcomment{Programme commun au Player, Studio et Vahana VR}.
-  .3 videostitch-player-gui\DTcomment{VideoStitch Player}.
-  .3 libvideostitch-gui\DTcomment{Programme commun à Studio et Vahana VR seulement}.
-  .3 videostitch-studio-gui\DTcomment{VideoStitch Studio}.
-  .3 videostitch-cmd.\DTcomment{Programme inclus avec Studio}.
-  .3 vahana-vr\DTcomment{Vahana VR}.
-}
-\caption{Dépôt VideoStitch-apps}
-\label{dirtree-apps}
+  \dirtree{%
+    .1 /.
+    .2 bin\DTcomment{Dossier de compilation et dll copiées de VideoStitch(deps)}.
+    .3 x64.
+    .4 debug.
+    .4 release.
+    .2 installer\DTcomment{Scripts de conception des installateurs}.
+    .2 external\_deps\DTcomment{Headers et lib copiés de VideoStitch-deps (Windows)}.
+    .3 include.
+    .3 lib.
+    .2 packager\DTcomment{Scripts de conception des installateurs}.
+    .2 src\DTcomment{Codes sources des applications}.
+    .3 libvideostitch\DTcomment{Contient les headers copiés du VideoStitch SDK}.
+    .3 libvideostitch-base\DTcomment{Programme commun au Player, Studio et Vahana VR}.
+    .3 videostitch-player-gui\DTcomment{VideoStitch Player}.
+    .3 libvideostitch-gui\DTcomment{Programme commun à Studio et Vahana VR seulement}.
+    .3 videostitch-studio-gui\DTcomment{VideoStitch Studio}.
+    .3 videostitch-cmd.\DTcomment{Programme inclus avec Studio}.
+    .3 vahana-vr\DTcomment{Vahana VR}.
+  }
+  \caption{Dépôt VideoStitch-apps}
+  \label{videostitch-apps}
 \end{figure}
 Le dossier de compilation est fixé à bin/x64 pour tous les systèmes~: Windows, Linux 
 et Mac OS X.
