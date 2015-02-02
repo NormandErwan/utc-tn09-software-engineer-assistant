@@ -102,3 +102,20 @@ Enfin, toutes les communications écrites et orales se font en anglais, du fait
 de la présence dans l'équipe de personnes de langue natale espagnole, allemande ou flamande.
 
 \section{Les outils utilisés}
+Les quatre produits de VideoStitch sont codés en C++, avec utilisation des dernières possibilités
+de C++11; VideoStitch SDK utilise également la bibliothèque CUDA pour les calculs intensifs et parallélisables.
+Le compilateur de chaque OS est utilisé~: g++ pour Linux, clang pour Max OS X et 
+cl du Windows SDK, également utilisé par Visual Studio.\\
+\newline
+Les applications (VideoStitch Studio, Vahana VR, VideoStitch Player) sont de plus
+développés avec le framework C++ Qt, qui permet d'assurer la portabilité sur les 
+plateformes Windows, Linux et Mac OS X avec le même code source. En outre, Qt
+propose un certain nombre de classes en addition de la STL de C++, facilitant le
+développement d'application de haut niveau. Enfin ce framework est connu pour son
+système de signals/slots ouvrant la voie à la programmation evénementielle.\\
+\newline
+Tous les codes sources sont partagés et versionnés grâce au système de gestion de version 
+distribué \emph{Git}. C'est un logiciel, développé depuis 2005, qui permet de \\
+Les dépôts utilisés sont détaillé dans \cf{workflow-studio}.
+\newline
+buildbot

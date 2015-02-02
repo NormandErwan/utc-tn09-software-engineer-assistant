@@ -38,7 +38,8 @@ Player, et la création des installateurs. Ce travail a été très complémenta
 celui de Jean Duthon, qui a amélioré le \textit{workflow} de développement de VideoStitch SDK,
 la gestion des versions et les tests d'intégration.
 
-\subsection{Le \textit{workflow} de développement de VideoStitch Studio} 
+\subsection{Le \textit{workflow} de développement de VideoStitch Studio}
+\label{workflow-studio}
 Les codes sources et les dépendances avaient été réparties en quatre dépôts Git~: 
 \begin{itemize}
   \item VideoStitch-lib, contenant le VideoStitch SDK
@@ -55,17 +56,17 @@ Compiler et créer l'installateur de Studio depuis un poste de travail vierge re
 certaines étapes, représentées sous forme d'un diagramme de séquence sur la figure~\ref{workflow-studio}.
 Ces étapes étaient essentiellement des appels à des commandes et à des scripts internes
 (écrits en bash pour Linux / Mac et en batch pour Windows) pour faire le lien entre les trois dépôts~:
-\begin{itemize}
-  \item Cloner les dépôts VideoStitch-deps, VideoStitch-base et VideoStitch-apps
-  \item Générer une version du logiciel via un script présent sur VideoStitch-apps
+\begin{enumerate}
+  \item Cloner les dépôts VideoStitch-deps, VideoStitch-base et VideoStitch-apps.
+  \item Générer une version du logiciel via un script présent sur VideoStitch-apps.
   \item Récupérer la dernière version du VideoStitch SDK compilée par Buildbot, 
-  via un script présent sur VideoStitch-apps
-  \item Copier, via un script présent sur VideoStitch-base, les codes sources partagés
-  \item Copier, via un script batch présent sur VideoStitch-deps, les dépendances pour Windows
-  \item Générer le Makefile avec le logiciel qmake fournis avec Qt
-  \item Compiler avec le logiciel jom fournis avec Qt
-  \item Générer l'installateur avec un script présent sur VideoStitch-apps
-\end{itemize}
+  via un script présent sur VideoStitch-apps.
+  \item Copier, via un script présent sur VideoStitch-base, les codes sources partagés.
+  \item Copier, via un script batch présent sur VideoStitch-deps, les dépendances pour Windows.
+  \item Générer le Makefile avec le logiciel qmake, fournis avec Qt.
+  \item Compiler avec le logiciel jom, fournis avec Qt.
+  \item Générer l'installateur avec un script présent sur VideoStitch-apps.
+\end{enumerate}
 \begin{figure}
   \centering
   \caption{Diagramme de séquence du \textit{workflow} de Studio (juillet 2014)}
@@ -123,25 +124,25 @@ La configuration \textit{debug} permet aux développeur de générer une version
 quand la configuration \textit{release} permet de générer une version finale et optimisée destinée
 à l'usage du programme. \\
 Enfin, le choix de la plateforme dépend du processeur et du
-système d'exploitation du client; si le 64 bits tend à prendre le pas sur le 32 bits,
-plus ancien, les deux sont cependant encore distribués.\\
+système d'exploitation du client. Les produits de VideoStitch sont distribués
+seulement en 64 bits~: les machines pour les faire fonctionner demandent du matériel
+récent donc en 64 bits, et cela réduit la maintenante à une seule plateforme.\\
 \newline
-Le dépôt VideoStitch-deps était déjà logiquement organisé sous la même forme~:
+Le dépôt VideoStitch-deps était déjà logiquement organisé sous la forme présentée figure~\ref{dirtrees-deps}.
+\begin{figure}
 \dirtree{%
  .1 /.
- .2 win32.\DTcomment{la plateforme 32 bits Windows}.
- .3 bin\DTcomment{les bibliothèques .dll}.
- .4 debug.\DTcomment{les .dll spécifiques \textit{debug}}.
+ .2 src\DTcomment{Archives des versions des dépendances utilisées}.
+ .2 x64\DTcomment{La plateforme 64 bits Windows}.
+ .3 bin\DTcomment{Les bibliothèques .dll}.
+ .4 debug\DTcomment{Les .dll spécifiques \textit{debug}}.
  .4 release.
- .3 include.\DTcomment{les fichiers \textit{headers} .h}.
- .3 lib.\DTcomment{les bibliothèques .lib}.
- .2 x64.\DTcomment{la plateforme 64 bits Windows}.
- .3 bin.
- .4 debug.
- .4 release.
- .3 include.
- .3 lib.
-}
+ .3 include\DTcomment{Les fichiers \textit{headers} .h}.
+ .3 lib\DTcomment{Les bibliothèques .lib}.
+ }
+\caption{Dépôt VideoStitch-deps}
+\label{dirtree-deps}
+\end{figure}
 Cette organisation convenait aux nouveaux besoins et a été gardée ainsi. Une séparation
 des dépendances par logiciel aurait été possible, mais complexifiant inutilement 
 la structure. De plus, les dépendances en commun entre les trois logiciels
@@ -156,36 +157,91 @@ Ainsi, dans le cadre du Player, deux dépendances ont été ajoutées~:
 Les dépendances Qt et crashrpt\footnote{Envoi de rapports automatiques lors d'un
 \textit{crash} du logiciel \url{https://code.google.com/p/crashrpt/}} étaient déjà 
 présentes et utilisées par Studio.\\
-Enfin, les dépendances utilisées par Vahana VR étaient les même que celles Studio,
-donc déjà présentes.
+En parallèle, les dépendances libVLC et Oculus SDK ont été installées sur les Buidlbots Mac et Linux.\\
+Quand aux dépendances utilisées par Vahana VR, elles étaient les même que celles 
+utilisées Studio, donc déjà présentes dans le dépôt.\\
+\newline
+Enfin, le script utilisé pour copier ces dépendances vers VideoStitch-apps a été
+revu et amélioré, à une version très simple~:
+code
 
 \subsection{Intégration au \textit{workflow} du VideoStitch Player et de Vahana VR}
-La première étape a été de rappatrier le dépôt VideoStitch-base et de l'inclure
+La première étape a été de rapatrier le dépôt VideoStitch-base et de l'inclure
 avec son historique dans le dépôt VideoStitch-apps. L'annexe \ref{deplacer-historique-depots}
 présente plus en détail l'opération permettant, grâce à Git, de déplacer un ensemble 
 de fichiers d'un dépôt à un autre tout en préservant l'historique des modifications.\\
-\newline
+De la même manière, furent importés les codes sources de Player et Vahana VR de 
+leurs dépôts respectifs.\\
 L'opération fut relativement aisée, car le dépôt VideoStitch-apps présentait déjà
-une organisation regroupant plusieurs programmes; mais centrés sur le seul logiciel
-VideoStitch Studio.
+une organisation regroupant plusieurs programmes, mais centrés sur le seul logiciel
+VideoStitch Studio\footnote{On distingue logiciel et programme, dans le sens où un logiciel
+est composé de un ou plusieurs programmes, c'est-à-dire des fichiers binaires, et de
+fichiers de configurations, images, etc.}. L'architecture ne nécessitait alors que quelques modifications, et
+avait été fixée à la hiérarchie présentée figure~\ref{dirtree-apps}.
+\begin{figure}
+\dirtree{%
+  .1 /.
+  .2 bin\DTcomment{Dossier de compilation et dll copiées de VideoStitch(deps)}.
+  .3 x64.
+  .4 debug.
+  .4 release.
+  .2 installer\DTcomment{Scripts de conception des installateurs}.
+  .2 external\_deps\DTcomment{Headers et lib copiés de VideoStitch-deps (Windows)}.
+  .3 include.
+  .3 lib.
+  .2 packager\DTcomment{Scripts de conception des installateurs}.
+  .2 src\DTcomment{Codes sources des applications}.
+  .3 libvideostitch\DTcomment{Contient les headers copiés du VideoStitch SDK}.
+  .3 libvideostitch-base\DTcomment{Programme commun au Player, Studio et Vahana VR}.
+  .3 videostitch-player-gui\DTcomment{VideoStitch Player}.
+  .3 libvideostitch-gui\DTcomment{Programme commun à Studio et Vahana VR seulement}.
+  .3 videostitch-studio-gui\DTcomment{VideoStitch Studio}.
+  .3 videostitch-cmd.\DTcomment{Programme inclus avec Studio}.
+  .3 vahana-vr\DTcomment{Vahana VR}.
+}
+\caption{Dépôt VideoStitch-apps}
+\label{dirtree-apps}
+\end{figure}
+Le dossier de compilation est fixé à bin/x64 pour tous les systèmes~: Windows, Linux 
+et Mac OS X.
+\ \\
+L'architecture convenant, les fichiers projets Qt nécessitaient d'être refactorisés,
+c'est-à-dire les réécrires pour les adapter aux nouveaux besoins voulu. Ici, les
+trois applications étant proches, il est intéressant de partager un maximum de leurs
+codes sources sous des programmes communs d'une part et d'autre part de partager
+la configuration des différents projets.\\
+Les applications son
 
-scripts
+\ \\
+Enfin, quelques scripts ont été réécrits. Comme vu avec \cf{workflow-studio}, le
+développeur doit récuperer la bibliothèque du VideoStitch SDK, et les dépendances,
+pour Windows. Ces ressources se trouvent sur
 
-qt meta prog en commun
 
 \subsection{Génération des installateurs}
 Si la compilation des trois produits est désormais possible, il s'agit désormais
-de pouvoir distribuer au client une version finale et utilisable.
+de pouvoir distribuer au client une version finale et utilisable.\\
+Le logiciel doit être fournis en version \textit{release} et optimisée, ainsi que ses dépendances associées.
+Cependant, comme il a été vu à la section précédente, la compilation produit un
+certain nombre de fichiers supplémentaires au programme compilé. Il s'agit donc
+de construire un paquet contenant seulement les fichiers nécessaires, le logiciel
+et ses dépendances.
+
+\subsubsection{Windows}
+Sudio et Player utilisaient tout deux le logiciel InnoSetup, qui permet de créer des
+installateurs, les paquets Windows. 
 win tout inclure inno setup cherry pick parmis le mess de bin/
 
-linux / mac juste le nécessaire et deps à version spécifiques, l'utilisateur
-installe les autres dépendances.
+\subsubsection{Mac}
+
+\subsubsection{Linux}
+
 
 \subsection{Automatisation de la chaîne de compilation}
-La génération des installateurs Windows et des packages Linux / Mac est cependant
-toujours fastidieuse et gagnerais à être automatisée. L'équipe se concentre avant
-tout au développement, et l'intégration continue est réalisée par Buildbot. Un
-serveur va donc, à chaque poussé de code sur les dépôts Git, générer le VideoStitch
+La génération des installateurs Windows et des paquets Linux / Mac est cependant
+toujours fastidieuse et gagnerait à être automatisée. L'équipe se concentre avant
+tout au développement, quand l'intégration continue est réalisée par Buildbot. Un
+serveur va donc, à chaque poussée de code sur les dépôts Git, générer le VideoStitch
 SDK et les trois produits, ainsi que leurs installateurs. Ces derniers sont destinés
 à un usage interne de test, et, lors des \textit{release} des produits, destinés
 aux clients.
@@ -201,3 +257,41 @@ du Player lors des présentations dans les salons et conférences.
 \subsubsection{Passer le \textit{Health and Safety Warning} de l'Oculus}
 
 \subsubsection{Ajout d'options en ligne de commande}
+
+
+\section{Bilan et suite}
+Cette première mission occupa les deux premiers mois du stage, et permis d'acquérir
+le fonctionnement du \textit{workflow} de développement de l'entreprise, et de l'améliorer.
+Les modifications apportées, même si elles ont été parfois mineures à un système qui 
+fonctionnait déjà correctement pour les usages précédents, ont cependant permis dans leur globalité~:
+\begin{itemize}
+ \item De compiler depuis un même dépôt, quelque que soit l'OS de la machine, les trois applications de VideoStitch.
+ \item D'automatiser la compilations et la génération des paquets de ces trois applications 
+ sur Buidlbot, rendant les dernières versions immédiatement utilisables par n'importe 
+ quelle personne de VideoStitch.
+ \item D'apporter les modifications nécessaires à l'usage du Player.
+ \item De permettre l'installation de nouveau postes de travail ainsi que le workflow 
+ de développement aisé à l'utilisation, comme le montre la figure~\ref{workflow-final}.
+\end{itemize}
+\begin{figure}
+  \centering
+  \caption{Diagramme de séquence du \textit{workflow} de développement des applications de VideoStitch (Player, Studio, Vahana VR) (septembre 2014)}
+	\label{workflow-final}
+\end{figure}
+\ \\
+Ce système pourrait encore être amélioré, ou même à être repris de zéro. Cependant, 
+une telle réécrire demanderait nécessairement beaucoup plus de temps pour
+produire un système certes plus correct au regard des besoins actuels, mais moins mature
+et donc plus sujet à des cas d'utilisations non prévus ou problématiques. De plus,
+il aurait fallu changer les habitudes de l'équipe de développement.\\
+Cependant, les cas d'utilisations non prévus sont apparus lors de cette mission,
+mais sont rapidement corrigés par l'équipe. Bien souvent, cela est dû à des différences
+d'interprétations du bash entre Linux et Mac OS X, ou par une différence de code avec
+le script batch correspondant. Les scripts pourraient être écrits en Python, pour
+éviter ces différences et ces erreurs. Leur écriture et leur maintenance serait 
+en outre facile, Python étant relativement simple dans son approche et ses usages.\\
+Enfin, VideoStitch Player nécessiterait d'être amélioré~: la vidéo
+4K n'est pas correctement lue, libVLC ne semblant pas supporter correctement cette
+haute résolution, et le logiciel gagnerait à être finis autant du points de vue
+du code, de l'optimisation générale que de l'interface. Ce travail nécessiterait 
+d'être consacré par quelques sprints de l'équipe.
