@@ -289,8 +289,9 @@ Par exemple, voici un extrait de l'utilisation du \textit{builder} du dépôt Vi
 pour Windows, qui a été précédemment définis avec l'id \mintinline{shell-session}{windows_apps}~:
 \begin{minted}{python}
 windows_apps = BuildFactory() # Initiate a new build
+windows.addStep(getGitRepo("apps", "git@github-apps.com:VideoStitch/VideoStitch-apps.git"), descriptionDone=["Update from the Git repository VideoStitch-apps"])
 windows_apps.addStep(ShellCommand(command=["bash", "update.sh", "all", "release"], descriptionDone=["Update lib and deps"], workdir="VideoStitch-apps"))
-windows_apps.addStep(ShellCommand(command=["qmake"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Generate Makefile for Vahana"])
+windows_apps.addStep(ShellCommand(command=["qmake", "CONFIG+=release"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Generate Makefile for Vahana"])
 windows_apps.addStep(ShellCommand(command=["make"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Building Vahana VR"]))
 \end{minted}
 
