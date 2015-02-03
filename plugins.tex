@@ -85,19 +85,49 @@ Les objectifs retenus pour cette mission ont donc été~:
   \caption{Illustration des différents connecteurs utilisées par Vahana VR}
 \end{figure}
 
+
 \section{Réalisation}
 \subsection{Architecture de la solution}
+poc
 
+interfaces lib : reader, writer, discovery
+
+implémentation plugin + export.cpp (name mangling)
+
+comment plugin géré par la lib et interragit avec apps
+
+comment vidéo géré
+
+comment audio géré
 
 \subsection{Conception type d'un plugin}
+sdk, driver, programme test
+
+doc, samples
+
+reader
+
+writer
+
+discovery
 
 \subsection{Quelques difficultés et solutions spécifiques}
+yuan et wrapper
+
+decklink et design pattern decorator
+
+loadunpacker teledyne
+
+ximea cuda
 
 
 \section{Déploiement}
 \subsection{Création du dépôt VideoStitch-IO}
+annexe A
+comment fixé builds et update.sh
 
 \subsection{Documentation}
+grandes lignes, comment shippé avec plugin et vahana
 
 \subsection{Tests et \textit{QA} de l'intégration des plugins}
 
