@@ -41,14 +41,19 @@
 %\headheight 20.6pt % en cas de titre long
 % pour les nouvelles commandes (espace à la fin)
 \RequirePackage{xspace}
+
 %Selection de la langue du document
 \RequirePackage[english,frenchb]{babel}
 \RequirePackage[babel,english=american,french=guillemets*]{csquotes}
+\addto\captionsfrench{%
+  \renewcommand{\contentsname}{Sommaire}%
+}
 \MakeOuterQuote{"}
 \linespread{1.2}
 \frenchspacing
 \widowpenalty=300
 \clubpenalty=300
+
 % pour avoir des couleurs
 %\RequirePackage[usenames,dvipsnames]{color}
 \RequirePackage[table,usenames,dvipsnames]{xcolor}
