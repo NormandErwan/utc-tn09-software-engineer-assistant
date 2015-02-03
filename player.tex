@@ -59,10 +59,10 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
 (écrits en bash pour Linux / Mac et en batch pour Windows) pour faire le lien entre les dépôts~:
 \begin{enumerate}
   \item Cloner les dépôts VideoStitch-deps, VideoStitch-base et VideoStitch-apps.
-  \item Récupérer la dernière version du VideoStitch SDK compilée par Buildbot, 
-  via un script présent sur VideoStitch-apps.
   \item Copier, via un script présent sur VideoStitch-base, les codes sources partagés.
   \item Copier, via un script batch présent sur VideoStitch-deps, les dépendances pour Windows.
+  \item Récupérer la dernière version du VideoStitch SDK compilée par Buildbot, 
+  via un script présent sur VideoStitch-apps.
   \item Générer le Makefile\footnote{Fichier contenant un ensemble de règles destinées
   au compilateur et à l'éditeur de liens.} avec le logiciel qmake, fournis avec Qt.
   \item Compiler avec le logiciel jom\footnote{Ce logiciel fait appel au compilateur 
@@ -71,6 +71,36 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
 \end{enumerate}
 \begin{figure}
   \centering
+  \begin{sequencediagram}
+    \footnotesize
+    \newthread{u}{Développeur}
+    \newinst[1]{a}{VideoStitch-apps}
+    \newinst[1]{d}{VideoStitch-deps}
+    \newinst[1]{s}{VideoStitch-base}
+    \newinst[1]{b}{Buildbot}
+
+    \begin{call}{u}{git clone VideoStitch-apps}{a}{}
+    \end{call}
+    \begin{call}{u}{git clone VideoStitch-deps}{d}{}
+    \end{call}
+    \begin{call}{u}{git clone VideoStitch-base}{s}{}
+    \end{call}
+
+    \begin{call}{u}{Copy VideoStitch-deps}{d}{}
+    \end{call}
+    \begin{call}{u}{Copy VideoStitch-base}{b}{}
+    \end{call}
+
+    \begin{call}{u}{updatelib.sh}{a}{}
+      \begin{call}{a}{Retrieve last SDK}{b}{}
+      \end{call}
+    \end{call}
+
+    \begin{call}{u}{qmake}{a}{}
+    \end{call}
+    \begin{call}{u}{make}{a}{return code}
+    \end{call}
+  \end{sequencediagram}
   \caption{Diagramme de séquence du \textit{workflow} de Studio (juillet 2014)}
 	\label{workflow-studio}
 \end{figure}
@@ -244,13 +274,46 @@ Son utilisation est très simple~: le listing~\ref{update.sh} présente une copi
   \caption{Aide affichée par la commande ./update.sh}
   \label{update.sh}
 \end{listing}
+\ \\
 Dans le cas de lib, le script va détecter le système de l'utilisateur, puis télécharger avec le programme curl
 la dernière version compilée du VideoStitch SDK pour le système et la configuration voulue, pour copier
 les headers et les bibliothèques dans les dossiers attendus sur le dépôt VideoStitch-apps.
 Le script automatise simplement une action de recherche d'une version compilée par Buildbot
 pour en extraire et copier les fichiers.\\
 Dans le cas de deps, le script va créer une copie locale de VideoStitch-deps, puis
-en copier les headers et les bibliothèques dans les dossiers de VideoStitch-apps.
+en copier les headers et les bibliothèques dans les dossiers de VideoStitch-apps.\\
+\newline
+La figure~\ref{workflow-final} montre la nouvelle utilisation du workflow désormais disponible.
+\begin{figure}
+  \centering
+  \begin{sequencediagram}
+    \footnotesize
+    \newthread{u}{Développeur}
+    \newinst[2]{a}{VideoStitch-apps}
+    \newinst[2]{d}{VideoStitch-deps}
+    \newinst[2]{b}{Buildbot}
+
+    \begin{call}{u}{git clone VideoStitch-apps}{a}{}
+    \end{call}
+
+    \begin{call}{u}{update.sh all}{a}{}
+      \begin{call}{a}{git clone VideoStitch-deps}{d}{}
+      \end{call}
+      \begin{callself}{a}{Copy VideoStitch-deps}{}
+      \end{callself}
+      \begin{call}{a}{Retrieve last SDK}{b}{}
+      \end{call}
+    \end{call}
+
+    \begin{call}{u}{qmake}{a}{}
+    \end{call}
+    \begin{call}{u}{make}{a}{return code}
+    \end{call}
+  \end{sequencediagram}
+  \caption{Diagramme de séquence du \textit{workflow} de développement des applications 
+  de VideoStitch (Player, Studio, Vahana VR) (septembre 2014)}
+	\label{workflow-final}
+\end{figure}
 
 \subsection{Génération des installateurs}
 Si la compilation des trois produits est désormais possible, il s'agit désormais
@@ -423,11 +486,6 @@ Les modifications apportées, même si elles ont été parfois mineures, ont cep
  \item De permettre une installation d'un nouvel environnement de développement et
  de sont usage relativement aisé, comme le montre la figure~\ref{workflow-final}.
 \end{itemize}
-\begin{figure}
-  \centering
-  \caption{Diagramme de séquence du \textit{workflow} de développement des applications de VideoStitch (Player, Studio, Vahana VR) (septembre 2014)}
-	\label{workflow-final}
-\end{figure}
 \ \\
 Ce système pourrait encore être amélioré, ou même à être repris de zéro. Cependant, 
 une telle réécriture demanderait nécessairement beaucoup plus de temps pour
