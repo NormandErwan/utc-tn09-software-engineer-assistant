@@ -176,9 +176,9 @@ une organisation regroupant plusieurs programmes, mais centrés sur le seul logi
 VideoStitch Studio\footnote{On distingue logiciel et programme, dans le sens où un logiciel
 est composé de un ou plusieurs programmes, c'est-à-dire des fichiers binaires, ainsi que des
 fichiers de configurations, images, etc.\cite{logiciel}}. L'architecture ne nécessitait alors que quelques modifications, et
-avait été fixée à la hiérarchie présentée figure~\ref{videostitch-apps}.\\
-Le dossier de compilation est fixé à bin/x64/<configuration> pour tous les systèmes~: Windows, Linux 
-et Mac OS X.
+a été fixée à la hiérarchie présentée figure~\ref{videostitch-apps}.\\
+Le dossier de compilation est fixé à \mintinline{shell-session}{bin/x64/<configuration>}
+pour tous les systèmes Windows, Linux et Mac OS X.
 \begin{figure}
   \dirtree{%
     .1 /.
@@ -197,7 +197,7 @@ et Mac OS X.
     .3 videostitch-player-gui\DTcomment{VideoStitch Player}.
     .3 libvideostitch-gui\DTcomment{Programme commun à Studio et Vahana VR seulement}.
     .3 videostitch-studio-gui\DTcomment{VideoStitch Studio}.
-    .3 videostitch-cmd.\DTcomment{Programme inclus avec Studio}.
+    .3 batchstitcher.\DTcomment{Programme inclus avec Studio}.
     .3 vahana-vr\DTcomment{Vahana VR}.
   }
   \caption{Dépôt VideoStitch-apps}
@@ -205,27 +205,29 @@ et Mac OS X.
 \end{figure}
 \ \\
 L'architecture convenant, les fichiers projets Qt nécessitaient d'être refactorisés,
-c'est-à-dire les réécrires pour les adapter aux nouveaux besoins voulu. Ici, les
-trois applications étant proches, il est intéressant de partager un maximum de leurs
-codes sources sous des programmes communs d'une part et d'autre part de partager
-la configuration des différents projets.\\
-En effet, les applications définissent des projets Qt (extension .pro) décrivant
+c'est-à-dire les réécrires pour les adapter aux nouveaux besoins. \\
+En effet, les applications Qt définissent des projets (extension .pro) décrivant
 les fichiers sources, les ressources et les dépendances utilisées, ainsi que les
 paramètres pour le compilateur et l'éditeur de liens (\textit{linker}). Ce sont à 
 partir de ces fichiers que le programme qmake construit les instructions de la chaîne
 de compilation qui seront éxecutés par jom\cite{qt}. C'est ce qui permet la portabilité
-des projets Qt~: un seul projet est écrit, tout en couvrant plusieurs systèmes.
+des projets Qt~: un seul projet est écrit, et l'application peut être compilée sur
+plusieurs systèmes.\\
+Dans ce cas ci, les trois applications étant proches, il était intéressant de partager un maximum de leurs
+codes sources sous des programmes communs d'une part et d'autre part de partager
+la configuration des différents projets. Les programmes libvideostitch-base et libvideostitch-gui
+avaient déjà été définis, regroupant les codes sources communs. 
 \ \\
 \newline
 Enfin, quelques scripts ont été réécrits. Comme vu avec \cf{workflow-studio}, le
 développeur doit récuperer la bibliothèque du VideoStitch SDK, et, sur Windows,
 les dépendances. Ces ressources se trouvent sur des dépôts séparés, c'est pourquoi
 il était nécessaire de pouvoir les récupérer facilement. Git étant l'outil le plus
-utilisé pour gérer son code et ses modifications, et utilisé en ligne de commande,
+utilisé pour gérer son code et ses modifications, et son utilisation se réalisant en ligne de commande,
 des scripts ont été écrits pour être utilisables comme des commandes en console.\\
 De plus tous les scripts batch (pour Windows) ont été supprimés et fusionnés avec
-les scripts bash. Si le support de bash est supporté sur tous les Linux et les Mac OS X,
-l'utilisation systèmatique de Cygwin sur Windows par l'équipe a assuré ce support
+les scripts bash. Si bash est supporté sur tous les Linux et les Mac OS X,
+l'utilisation systématique de Cygwin sur Windows par l'équipe a assuré ce support
 sur toutes les plateformes.\\
 Son utilisation est très simple, voici une copie de l'aide qu'il affiche~:
 \begin{minted}[linenos=false]{shell-session}
@@ -267,14 +269,30 @@ win tout inclure inno setup cherry pick parmis le mess de bin/
 \subsection{Automatisation de la chaîne de compilation}
 La génération des installateurs Windows et des paquets Linux / Mac est cependant
 toujours fastidieuse et gagnerait à être automatisée. L'équipe se concentre avant
-tout au développement, quand l'intégration continue est réalisée par Buildbot. Un
-serveur va donc, à chaque poussée de code sur les dépôts Git, générer le VideoStitch
-SDK et les trois produits, ainsi que leurs installateurs. Ces derniers sont destinés
-à un usage interne de test, et, lors des \textit{release} des produits, destinés
-aux clients.
-
-
-iste les étapes et les écrits sur le buildbot en python 
+tout au développement, quand l'intégration continue est réalisée par Buildbot. 
+Il s'agit désormais d'écrire les routines pour permettre à Buildbot de générer
+les quatre produits de VideoStitch ainsi que leurs installateurs.\\
+Deux concepts sont importants dans Buildbot~: les \textit{builders} et les \textit{schedulers}.
+Les premiers sont la suite des étapes à accomplir pour générer les logiciels, quand
+les seconds sont ceux qui vont lancer ces \textit{builders}. Après une modification
+sur un dépôt, ou après la fin d'un \textit{builder}~: par exemple, après la compilation de
+VideoStitch SDK, les applications sont générées pour tester le bon fonctionnement
+du SDK.\\
+Le système de \textit{schedulers} et de \textit{builders} étant déjà créé pour 
+générer Studio sur Windows, Mac et Linux, il suffisait de rajouter les différentes 
+étapes pour générer le Player et Vahana VR. Ces étapes sont écrites en Python dans un projet nommé master.cfg.
+L'usage est intéressant~: chaque modification du projet recquiert ensuite d'utiliser la commande
+\mintinline{shell-session}{buildbot reconfig} qui va prévenir si la configuration
+contient des erreurs ou non.\\
+\newline
+Par exemple, voici un extrait de l'utilisation du \textit{builder} du dépôt VideoStitch-apps
+pour Windows, qui a été précédemment définis avec l'id \mintinline{shell-session}{windows_apps}~:
+\begin{minted}{python}
+windows_apps = BuildFactory() # Initiate a new build
+windows_apps.addStep(ShellCommand(command=["bash", "update.sh", "all", "release"], descriptionDone=["Update lib and deps"], workdir="VideoStitch-apps"))
+windows_apps.addStep(ShellCommand(command=["qmake"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Generate Makefile for Vahana"])
+windows_apps.addStep(ShellCommand(command=["make"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Building Vahana VR"]))
+\end{minted}
 
 \subsection{Maintenance du VideoStitch Player}
 Enfin, quelques apports mineurs et rapides ont été apportés, pour améliorer l'usage
@@ -288,17 +306,16 @@ du Player lors des présentations dans les salons et conférences.
 
 \section{Bilan et suite}
 Cette première mission occupa les deux premiers mois du stage, et permis d'acquérir
-le fonctionnement du \textit{workflow} de développement de l'entreprise, et de l'améliorer.
-Les modifications apportées, même si elles ont été parfois mineures à un système qui 
-fonctionnait déjà correctement pour les usages précédents, ont cependant permis dans leur globalité~:
+le fonctionnement du \textit{workflow} de développement de l'entreprise afin de l'améliorer.
+Les modifications apportées, même si elles ont été parfois mineures, ont cependant permis dans leur globalité~:
 \begin{itemize}
  \item De compiler depuis un même dépôt, quelque que soit l'OS de la machine, les trois applications de VideoStitch.
  \item D'automatiser la compilations et la génération des paquets de ces trois applications 
  sur Buidlbot, rendant les dernières versions immédiatement utilisables par n'importe 
  quelle personne de VideoStitch.
  \item D'apporter les modifications nécessaires à l'usage du Player.
- \item De permettre l'installation de nouveau postes de travail ainsi que le workflow 
- de développement aisé à l'utilisation, comme le montre la figure~\ref{workflow-final}.
+ \item De permettre une installation d'un nouvel environnement de développement et
+ de sont usage relativement aisé, comme le montre la figure~\ref{workflow-final}.
 \end{itemize}
 \begin{figure}
   \centering
@@ -307,18 +324,16 @@ fonctionnait déjà correctement pour les usages précédents, ont cependant per
 \end{figure}
 \ \\
 Ce système pourrait encore être amélioré, ou même à être repris de zéro. Cependant, 
-une telle réécrire demanderait nécessairement beaucoup plus de temps pour
+une telle réécriture demanderait nécessairement beaucoup plus de temps pour
 produire un système certes plus correct au regard des besoins actuels, mais moins mature
 et donc plus sujet à des cas d'utilisations non prévus ou problématiques. De plus,
 il aurait fallu changer les habitudes de l'équipe de développement.\\
-Cependant, les cas d'utilisations non prévus sont apparus lors de cette mission,
+Cependant, des cas d'utilisations non prévus sont également apparus lors de cette mission,
 mais sont rapidement corrigés par l'équipe. Bien souvent, cela est dû à des différences
 d'interprétations du bash entre Linux et Mac OS X, ou par une différence de code avec
-le script batch correspondant. Les scripts pourraient être écrits en Python, pour
+le script batch correspondant. Les scripts pourraient alors être écrits en Python, pour
 éviter ces différences et ces erreurs. Leur écriture et leur maintenance serait 
 en outre facile, Python étant relativement simple dans son approche et ses usages.\\
 Enfin, VideoStitch Player nécessiterait d'être amélioré~: la vidéo
-4K n'est pas correctement lue, libVLC ne semblant pas supporter correctement cette
-haute résolution, et le logiciel gagnerait à être finis autant du points de vue
-du code, de l'optimisation générale que de l'interface. Ce travail nécessiterait 
-d'être consacré par quelques sprints de l'équipe.
+4K n'est pas encore correctement lue, et le logiciel gagnerait à être finis lors
+de quelques sprints de l'équipe.
