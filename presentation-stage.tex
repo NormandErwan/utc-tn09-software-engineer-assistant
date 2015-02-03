@@ -2,15 +2,15 @@
 
 \section{Le sujet}
 \label{le-sujet}
-Le titre du sujet du stage était initialement \enquote{\textit{Developer C++/Qt.
+Le sujet du stage était initialement \enquote{\textit{Developer C++/Qt.
 work on a challenging and immersive 360 video software}}.\\
-Bien que sujet assez général, le domaine de l'entreprise se trouvait être très intéressant
+Bien que le sujet soit assez général, le domaine de l'entreprise se trouvait être très intéressant
 et durant l'entretien qui s'est déroulé à la mi-mai, quelques sujets ont été
-développés~: M. Burtey a proposé de travailler sur le Player d'une part,
-à la suite d'Alexis Pontin et pour terminer son travail, et d'une autre part de
-travailler au développement du nouveau produit VideoStitch Live, renommé par la
-suite en Vahana VR, qui allait débuter dans quelques semaines.\\
-M. Burtey n'était pas encore certain du lancement du développement de Vahana VR, 
+abordés~: Nicolas Burtey a proposé de travailler sur le VideoStitch Player d'une part,
+à la suite d'Alexis Pontin et pour terminer son travail, et d'autre part de
+travailler au développement du nouveau produit,
+Vahana VR, qui allait débuter dans quelques semaines.\\
+M. Burtey n'était pas encore certain de développer Vahana VR, 
 et envisageait également à la conception du \textit{stitch} stéréoscopique 3D\footnote{Qui
 consiste, brièvement, en la conception de deux équirectangulaires pour la même
 scène filmée~: un pour chaque oeil en exploitant l'effet de la parallaxe, recréant 
@@ -19,26 +19,25 @@ un effet de relief\cite{videostitch-stereo}
 la prise en charge de la 360 stéréo dans Videostitch Studio.\\
 Le sujet final serait décidé la première semaine du stage.\\
 \newline
-Le stage fut finalement précédé par un contrat à temps partiel de 7 semaines, les missions retenues
-se sont alors simplement étendues du début du CDD à la fin du stage, c'est-à-dire 
-7 mois.\\
-Le sujet réel a donc été arrêté à deux missions\footnote{La 3D s'est révélée être 
-une tâche trop ardue, après un rapide état de l'art du sujet par les ingénieurs~: 
-même si les articles de recherche et brevets sont nombreux, aucune application 
-industrielle n'a encore aujourd'hui aboutis.}~:
+Le stage fut finalement précédé par un CDD, les missions retenues
+se sont alors simplement étendues du début du CDD à la fin du stage.\\
+Le sujet réel a donc été arrêté à deux missions~:
 \begin{enumerate}
-  \item Simplifier et améliorer le \textit{workflow} de développement d'une
-  gestion mono-logicielle vers une gestion multi-logicielle tout en y intégrant 
+  \item Simplifier et améliorer le \textit{workflow} de développement, d'une
+  gestion mono-logicielle vers une gestion multi-logicielle, en y intégrant 
   le VideoStitch Player et Vahana VR.
-  \item La développement et le déploiement d'un système de \textit{plugins} basés
-  sur des caméras et des cartes d'acquisitions, et permettant l'augemtation des
+  \item Développer et le déployer un système de \textit{plugins} basés
+  sur des caméras et des cartes d'acquisitions, et augmentant les
   capacités entrées/sorties de Vahana VR.
 \end{enumerate}
-Ces deux missions trouvent comme sujet commun \emph{l'amélioration et la conception 
+Ces deux missions\footnote{La 3D s'est révélée être 
+une tâche trop ardue, après un rapide état de l'art du sujet par les ingénieurs~: 
+même si les articles de recherche et brevets sont nombreux, aucune application 
+industrielle n'a encore aujourd'hui aboutis.} trouvent comme sujet commun \emph{l'amélioration et la conception 
 de \textit{workflows} à l'usage de l'équipe de développement}. La première consiste en 
-ce sens à l'amélioration du système de développement et des outils qui y sont associés ainsi que l'intégration des logiciels
-de l'entreprise; et la seconde permet par un système indépendant et modulaire de
-nouvelles capacités à Vahana VR, qui seront utilisées par les ingénieurs pour son développement.
+ce sens à l'amélioration du système de développement et des outils qui y sont associés ainsi qu'à l'intégration des logiciels
+de l'entreprise. La seconde permet, elle, par un système indépendant et modulaire, d'apporter
+nouvelles capacités à Vahana VR, qui seront utilisées par les ingénieurs pour le développement de ce logiciel.
 
 \section{Les méthodes de travail}
 Le travail de l'équipe des développeurs s'appuie en grande partie sur la méthode \emph{Scrum}, et
@@ -46,8 +45,8 @@ sur quelques pratiques de qualité logicielle issues de l'\textit{Extreme Progra
 Ces deux méthodes sont des \emph{méthodologies agiles}\cite{methode-agile}.\\
 \newline
 Scrum présente un certain nombres de pratiques; les éléments utilisés 
-dans le cadre de VideoStitch sont essentiellement les événements et les artefacts 
-décrits dans le \textit{Scrum guide}\cite{scrum-guide}~:
+dans le cadre de VideoStitch sont essentiellement des événements et des artefacts 
+décrits dans le\textit{Scrum guide}\cite{scrum-guide}~:
 \begin{itemize}
   \item \textbf{Sprint}~: le principe de la méthode repose sur le découpage du projet en 
 	périodes de temps, nommées \emph{sprint}, dont la durée à VideoStitch fut de 
@@ -109,7 +108,7 @@ de C++11; VideoStitch SDK utilise également la bibliothèque \emph{CUDA} pour l
 Le compilateur de chaque OS est utilisé~: g++ pour Linux, clang pour Max OS X et 
 cl du Windows SDK, également utilisé par Visual Studio.
 \paragraph{}
-\begin{wrapfigure}[6]{l}{2.5cm}
+\begin{wrapfigure}[7]{l}{2.5cm}
   \centering
   \includegraphics[width=2cm]{images/qt-logo.png}
   \caption{Logo de Qt}
@@ -119,7 +118,10 @@ développées avec le framework C++ \emph{Qt}, qui permet d'assurer la portabili
 plateformes Windows, Linux et Mac OS X du même code source. En outre, Qt
 propose un certain nombre de classes, en addition de la STL de C++, facilitant le
 développement d'applications de haut niveau. Enfin ce framework est connu pour son
-système de signals/slots ouvrant la voie à la programmation evénementielle.\cite{qt}
+système de signals/slots ouvrant la voie à la programmation evénementielle, et
+asynchrone~: en addition à l'appel de fonctions, telle qu'existante depuis le C,
+un objet peut émettre des \textit{signaux}. D'autres objets peuvent recevoir à leur tour
+ces signaux pour éxecuter des fonctions, appellées dans ce cas \textit{slot}.\cite{qt}
 \paragraph{}
 \begin{wrapfigure}[5]{r}{3.5cm}
   \centering
@@ -129,11 +131,11 @@ système de signals/slots ouvrant la voie à la programmation evénementielle.\c
 Tous les codes sources sont partagés et versionnés grâce au système de gestion de version 
 distribué \emph{Git}\cite{gestion-versions}. Ce logiciel permet à l'équipe de travailler
 avec des \emph{dépôts}~: un dépôt Git est simplement un dossier associé à une base
-de donnée archivant l'historique des modifications effectuées sur ce dossier. Chaque développeur
-possède une copie de ce dépôt et de l'historique associé sur son ordinateur. Les développeurs
-transmettent régulièrement les modifications qu'ils ont apportées aux autres copies pour synchroniser
-les historiques~: ainsi, chaque membre de l'équipe sait qui a modifié quoi et quand.\\
-En pratique un serveur est utilisé pour sauvegarder les modifications faites en
+de donnée archivant l'historique de toutes les modifications qui y ont été effectuées. Chaque développeur
+possède une copie de ce dépôt et de l'historique associé sur son ordinateur. Les développeurs se
+transmettent régulièrement les modifications qu'ils ont apportées pour synchroniser
+les historiques de toutes les copies~: ainsi, chaque membre de l'équipe sait qui a modifié quoi et quand.\\
+En pratique, comme le montre la figure~\ref{git-diagram}, un serveur est utilisé pour sauvegarder les modifications faites en
 servant de pont entre les développeurs~: chacun y propose ses modifications et l'interroge
 sur les modifications des autres.
 \paragraph{}
@@ -142,13 +144,13 @@ sur les modifications des autres.
   \includegraphics[width=1.5cm]{images/buildbot-logo.png}
   \caption{Logo de Buildbot}
 \end{wrapfigure}
-A chaque modification apportée sur un dépôt Git, un serveur Buildbot va éxecuter
-une routine~: le produit concerné par la modification sera
+Enfin, à chaque modification apportée sur un dépôt Git, un serveur \emph{Buildbot} va éxecuter
+une routine, comme le montre la figure~\ref{buildbot-diagram}~: le produit concerné par la modification sera
 compilé, subira un ensemble de tests de qualité et son installateur sera généré 
 et mis à disposition sur une page de téléchargement à usage interne.\\
 Ces installateurs pourront être utilisés par n'importe quelle personne de l'entreprise
-pour test. Quand aux tests de qualité, ils sont une pratique d'\emph{intégration continue} 
-permettant de vérifier à chaque modification qu'aucun bug, ni régression n'a été 
+pour des tests, en compléments avec les tests automatiques de qualité, pratique d'\emph{intégration continue},
+qui permettent de vérifier à chaque modification effectuée qu'aucun bug, ni régression n'a été 
 introduit\cite{integration-continue}.
 \begin{figure}
   \centering
@@ -156,12 +158,14 @@ introduit\cite{integration-continue}.
     \centering
     \includegraphics[width=7cm]{images/git-diagram.png}
     \caption{Schéma de gestion de version distribué\cite{pro-git}}
+    \label{git-diagram}
   \end{minipage}%
   \hspace{0.09\textwidth}
   \begin{minipage}[b]{0.4\textwidth}
     \centering
     \includegraphics[width=7cm]{images/buildbot-diagram.png}
     \caption{Schéma de fonctionnement de Buildbot\cite{buildbot}}
+    \label{buildbot-diagram}
   \end{minipage}
 \end{figure}
 
