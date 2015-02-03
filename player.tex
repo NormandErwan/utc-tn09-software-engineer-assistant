@@ -343,6 +343,21 @@ définis avec l'id \mintinline{shell-session}{windows_apps}~:
 Enfin, quelques apports mineurs et rapides ont été apportés, pour améliorer l'usage
 du Player lors des présentations dans les salons et conférences.
 \subsubsection{Support de l'Oculus Rift DK2}
+Le player propose deux modes de vues, comme présenté dans la section \cf{videostitch-player-section}~:
+une vue interactive, avec un déplacement dans la sphère 360 avec la souris et un affichage
+sur un écran standard, et une seconde vue utilisant le casque de réalité virtuelle 
+Oculus Rift pour le déplacement et l'affichage, créant une vue totalement immersive.\\
+En juillet 2014\cite{dk2s-now-shipping}, est sortie la nouvelle version dite DK2 de ce casque encore
+en développement. Le Player se devait de supporter cette nouvelle version.\\
+Dans un premier temps, après réception du casque, les drivers Oculus ont été mis à
+jour et le bon fonctionnement du casque a été testé. Une nouvelle version de l'Oculus
+SDK avait été mise à disposition, VideoStitch-deps a donc été mis à jour avec les nouvelles
+bibliothèques et \textit{headers} tout comme les machines Buildbot Mac et Linux.\\
+\newline
+Une classe \mintinline{c++}{OculusRift} avait déjà été définie pour permettre l'utilisation
+de l'Oculus SDK. Après la lecture de la documentation de ce SDK et celle du code,
+le Player a été mis à jour pour utiliser l'API de cette nouvelle version, assurant
+ainsi le support du DK1 et du DK2.
 
 \subsubsection{Passer le \textit{Health and Safety Warning} de l'Oculus}
 
