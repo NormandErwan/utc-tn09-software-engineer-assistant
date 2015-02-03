@@ -2,19 +2,19 @@
 
 \section{Définition de la mission}
 \subsection{Contexte}
-Avec le début du développement de Vahana VR, la question des entrées et des sorties
+Dès le début du développement de Vahana VR, la question des entrées et des sorties
 du logicel s'était posée. En effet, Studio étant un logiciel de montage de vidéos
-360, ses seules entrées possibles sont les fichiers vidéos issues des caméras de la monture,
-cf. \cf{importation-videos}, et la sortie est l'équirectangulaire représentant
-la vidéo 360 finale, cf. \cf{exportation}.\\
-Ce qui est appellé \emph{entrée} ici sont les données envoyées au programme, et
+360, ses seules entrées sont des fichiers vidéos, issus des caméras de la monture,
+comme présenté dans la section \cf{importation-videos}. De même, la sortie proposée 
+est l'équirectangulaire représentant la vidéo 360 obtenue, comme présenté dans la section \cf{exportation}.\\
+Ce qui est ici appellé \emph{entrées} sont les données envoyées au programme, quand
 les \emph{sorties} sont les données émises par ce programme en retour.\\
-Pour permettre la vidéo 360 en direct, Vahana VR s'affranchit des fichiers
+Et, contrairement à Studio, pour permettre la vidéo 360 en direct, Vahana VR s'affranchit des fichiers
 vidéos importés et propose de capturer directement les images des caméras, via
-des cartes d'acquisitions branchées sur la machine. De même le logiciel peut émettre 
-plusieurs fluxs en sorties permettant par exemple le \textit{streaming}, ou encore la réémissions vers
-une carte d'acquisition, en plus de l'export d'un equirectangulaire sous forme de fichier
-sur le disque dur.\\
+des cartes d'acquisitions branchées sur la machine utilisée. De même, le logiciel peut émettre 
+plusieurs fluxs en sortie permettant, par exemple, le \textit{streaming} ou encore la réémissions vers
+une carte d'acquisition, l'export d'un equirectangulaire sous forme de fichier
+sur le disque dur étant toujours possible.\\
 \begin{figure}
   \centering
   \caption{Schéma des entrées/sorties de Vahana VR}
@@ -24,7 +24,7 @@ sur le disque dur.\\
 Dès lors, Vahana VR étant destiné à des sociétés de production, le logiciel doit
 être compatible avec un maximum de standards, caméras et cartes d'acquisitions vidéos
 pour être facilement adopté. Cependant, tout matériel informatique récquérant des pilotes
-\footnote{Programme permettant au système d'exploitation d'interagir avec ce matériel\cite{pilote-informatique}.}
+\footnote{Programme permettant au système d'exploitation d'interagir avec le matériel couvert par ce pilote\cite{pilote-informatique}.}
 , et, les besoins des clients en entrées-sorties n'étant pas les mêmes, il n'était
 alors pas possible de concevoir un logiciel monolithique contenant tous les programmes 
 d'entrées-sorties supportés~: chaque installation du logiciel aurait requis au client 
@@ -33,26 +33,26 @@ De plus, un client pourrait souhaiter utiliser du matériel entrée/sortie encor
 non supporté. Il serait intéressant qu'il puisse réaliser son propre développement
 dans l'ecosystème de Vahana VR; ainsi le logiciel pourrait devenir virtuellement
 compatible avec n'importe quel standard, caméra ou carte d'acquisition.\\
-Il fallait donc développer un système assurant la compatibilité
+Il fallait donc développer un système assurant à la fois la compatibilité
 entre Vahana VR et ces matériels, et intégrant les contraintes exposées.\\
 
 \subsection{Objectifs}
 Au début de ce stage, une solution avait déjà été esquissée et était déjà en partie
 mise à l'\oe uvre. Cependant un certain travail était encore nécessaire.\\
-L'approche retenue fut celle de la \emph{Programmation Orientée Composant} (POC),
-qui permet une certaine modularité dans l'architecture du projet\cite{poc}. Chaque nouvelle
+L'approche retenue de cette solution est celle de la \emph{Programmation Orientée Composant} (POC),
+qui permet une certaine modularité dans l'architecture du projet\cite{poc}. Ainsi chaque nouvelle
 carte d'acquisition donnera lieu à un nouveau composant, sous forme d'un \textit{plugin},
 qui pourra être distribué, chargé et utilisé si nécessaire\cite{plugin}.\\
 \newline
-Les objectifs retenus ont donc été~:
+Les objectifs retenus pour cette mission ont donc été~:
 \begin{itemize}
   \item Développer les entrées HDMI\footnote{\textit{High Definition Multimedia Interface}, 
-  norme de diffusion audio/vidéo numériquei\cite{hdmi}.} et SDI\footnote{\textit{Serial Digital Interface}, 
+  norme de diffusion audio/vidéo numérique\cite{hdmi}.} et SDI\footnote{\textit{Serial Digital Interface}, 
   protocole de diffusion vidéo numérique\cite{sdi}.}.
   \item Développer les sorties HDMI et SDI.
   \item Développer des entrées-sorties Ethernet et PCIe\footnote{\textit{PCI Express}, standard
   de connexion de cartes d'extension sur la carte mère d'un ordinateur\cite{pci-express}.}
-  spécifiques à la demande d'un client.
+  spécifiques, à la demande d'un client.
   \item Déployer l'ensemble des \textit{plugins} sur un dépôt séparé.
   \item Documenter et vérifier la bonne intégration des plugins dans Vahana VR.
 \end{itemize}
