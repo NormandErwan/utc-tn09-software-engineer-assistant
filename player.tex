@@ -59,7 +59,6 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
 (écrits en bash pour Linux / Mac et en batch pour Windows) pour faire le lien entre les dépôts~:
 \begin{enumerate}
   \item Cloner les dépôts VideoStitch-deps, VideoStitch-base et VideoStitch-apps.
-  \item Générer une version du logiciel via un script présent sur VideoStitch-apps.
   \item Récupérer la dernière version du VideoStitch SDK compilée par Buildbot, 
   via un script présent sur VideoStitch-apps.
   \item Copier, via un script présent sur VideoStitch-base, les codes sources partagés.
@@ -132,7 +131,8 @@ seulement en 64 bits~: les machines pour les faire fonctionner demandent du mat�
 récent donc en 64 bits, et cela réduit la maintenante à une seule plateforme.\\
 \newline
 Le dépôt VideoStitch-deps était déjà logiquement organisé sous la forme présentée par le listing~\ref{videostitch-deps}.
-\begin{listing}[H]
+Cette organisation convenait aux nouveaux besoins et a été gardée ainsi. 
+\begin{listing}
   \dirtree{%
    .1 /.
    .2 src\DTcomment{Archives des versions des dépendances utilisées}.
@@ -146,7 +146,8 @@ Le dépôt VideoStitch-deps était déjà logiquement organisé sous la forme pr
   \caption{Dépôt VideoStitch-deps}
   \label{videostitch-deps}
 \end{listing}
-Cette organisation convenait aux nouveaux besoins et a été gardée ainsi. Une séparation
+\ \\
+Une séparation
 des dépendances par logiciel aurait été possible, mais complexifiant inutilement 
 la structure. De plus, les dépendances en commun entre les trois logiciels
 sont utilisées dans les même versions. \\
@@ -359,19 +360,19 @@ de l'Oculus SDK. Après la lecture de la documentation de ce SDK et celle du cod
 le Player a été mis à jour pour utiliser l'API de cette nouvelle version, assurant
 ainsi le support du DK1 et du DK2.
 
-\begin{figure}
-  \centering
-  \caption{L'écran \textit{Health and Safety Warning} affiché par l'Oculus Rift}
-  \label{hsw-oculus}
-\end{figure}
-
 \subsubsection{Passer le \textit{Health and Safety Warning} de l'Oculus}
 Le nouvel Oculus SDK a vu l'apparition de nouvelles clauses légales et d'un écran
 d'avertissement appellé \textit{Health and Safety Warning}, tel que sur la figure~\ref{hsw-oculus}
 lors du démarrage d'une vidéo dans le casque\cite{oculus-developer-guide}.\\
 Il s'agissait alors d'ajouter une possibilité de passer cet écran, en pressant une
-manuellement une touche du clavier. Cela ne pouvait être fait automatiquement afin de respecter les clauses.\\
-\newline
+manuellement une touche du clavier. Cela ne pouvait être fait automatiquement afin de respecter les clauses.
+\begin{figure}
+  \centering
+  \includegraphics[width=8cm]{images/player-oculus-hsw.jpg}
+  \caption{L'écran \textit{Health and Safety Warning} affiché par l'Oculus Rift}
+  \label{hsw-oculus}
+\end{figure}
+\ \\
 L'implémentation se réalisa avec la création d'une fonction pour désactiver le HSW
 (listing~\ref{player-oculusrift}) et avec une capture d'une touche du clavier pour faire appel à 
 cette fonction (listing~\ref{player-mainwindow}) via le système signal/slot de Qt.\\
