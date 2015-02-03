@@ -359,9 +359,54 @@ de l'Oculus SDK. Après la lecture de la documentation de ce SDK et celle du cod
 le Player a été mis à jour pour utiliser l'API de cette nouvelle version, assurant
 ainsi le support du DK1 et du DK2.
 
-\subsubsection{Passer le \textit{Health and Safety Warning} de l'Oculus}
+\begin{figure}
+  \centering
+  \caption{L'écran \textit{Health and Safety Warning} affiché par l'Oculus Rift}
+  \label{hsw-oculus}
+\end{figure}
 
-\subsubsection{Ajout d'options en ligne de commande}
+\subsubsection{Passer le \textit{Health and Safety Warning} de l'Oculus}
+Le nouvel Oculus SDK a vu l'apparition de nouvelles clauses légales et d'un écran
+d'avertissement appellé \textit{Health and Safety Warning}, tel que sur la figure~\ref{hsw-oculus}
+lors du démarrage d'une vidéo dans le casque\cite{oculus-developer-guide}.\\
+Il s'agissait alors d'ajouter une possibilité de passer cet écran, en pressant une
+manuellement une touche du clavier. Cela ne pouvait être fait automatiquement afin de respecter les clauses.\\
+\newline
+L'implémentation se réalisa avec la création d'une fonction pour désactiver le HSW
+(listing~\ref{player-oculusrift}) et avec une capture d'une touche du clavier pour faire appel à 
+cette fonction (listing~\ref{player-mainwindow}) via le système signal/slot de Qt.\\
+La classe \mintinline{c++}{OculusRift} propose une gestion de l'oculus et une utilisation
+à l'ensemble de l'application du Player, via un certain nombre de fonctions publiques
+et de slots Qt\footnote{Un slot est une fonction pouvant être appellée de manière asynchrone 
+par un signal provenant de la même classe ou d'une autre.}. La fenêtre principale \mintinline{c++}{MainWindow}
+de l'application utilise la fonction prédéfinie \mintinline{c++}{keyPressEvent} fournie
+par Qt qui \enquote{écoute} les touches pressées par l'utilisateur dans le Player.
+Ici, quelque soit la touche, un signal est envoyé pour demander la désactivation du HSW.
+\begin{listing}
+  \begin{minted}[firstnumber=109]{c++}
+    void OculusRift::disableHSW() {
+      ovrHSWDisplayState hsw;
+      ovrHmd_GetHSWDisplayState(hmd, &hsw);
+      if (hsw) {
+        ovrhmd_EnableHSWDisplaySDKRender(hmd, false); // hmd object manages the oculus
+      }
+    }
+  \end{minted}
+  \caption{Extrait du fichier oculusrift.cpp}
+  \label{player-oculusrift}
+\end{listing}
+
+\begin{listing}
+  \begin{minted}[firstnumber=90]{c++}
+  connect(this, SIGNAL(disableOculusHSW()), oculusRift, SLOT(disableHSW()));
+  
+  void MainWindow::keyPressEvent(QKeyEvent *e) { // 
+    emit disableOculusHSW();
+  }
+  \end{minted}
+  \caption{Extrait du fichier mainwindow.cpp}
+  \label{player-mainwindow}
+\end{listing}
 
 
 \section{Bilan et suite}
