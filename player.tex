@@ -131,8 +131,8 @@ système d'exploitation du client. Les produits de VideoStitch sont distribués
 seulement en 64 bits~: les machines pour les faire fonctionner demandent du matériel
 récent donc en 64 bits, et cela réduit la maintenante à une seule plateforme.\\
 \newline
-Le dépôt VideoStitch-deps était déjà logiquement organisé sous la forme présentée figure~\ref{videostitch-deps}.
-\begin{figure}[H]
+Le dépôt VideoStitch-deps était déjà logiquement organisé sous la forme présentée par le listing~\ref{videostitch-deps}.
+\begin{listing}[H]
   \dirtree{%
    .1 /.
    .2 src\DTcomment{Archives des versions des dépendances utilisées}.
@@ -145,7 +145,7 @@ Le dépôt VideoStitch-deps était déjà logiquement organisé sous la forme pr
    }
   \caption{Dépôt VideoStitch-deps}
   \label{videostitch-deps}
-\end{figure}
+\end{listing}
 Cette organisation convenait aux nouveaux besoins et a été gardée ainsi. Une séparation
 des dépendances par logiciel aurait été possible, mais complexifiant inutilement 
 la structure. De plus, les dépendances en commun entre les trois logiciels
@@ -176,10 +176,10 @@ une organisation regroupant plusieurs programmes, mais centrés sur le seul logi
 VideoStitch Studio\footnote{On distingue logiciel et programme, dans le sens où un logiciel
 est composé de un ou plusieurs programmes, c'est-à-dire des fichiers binaires, ainsi que des
 fichiers de configurations, images, etc.\cite{logiciel}}. L'architecture ne nécessitait alors que quelques modifications, et
-a été fixée à la hiérarchie présentée figure~\ref{videostitch-apps}.\\
+a été fixée à la hiérarchie présentée par le listing~\ref{videostitch-apps}.\\
 Le dossier de compilation est fixé à \mintinline{shell-session}{bin/x64/<configuration>}
 pour tous les systèmes Windows, Linux et Mac OS X.
-\begin{figure}
+\begin{listing}
   \dirtree{%
     .1 /.
     .2 bin\DTcomment{Dossier de compilation et dll copiées de VideoStitch-deps}.
@@ -202,7 +202,7 @@ pour tous les systèmes Windows, Linux et Mac OS X.
   }
   \caption{Dépôt VideoStitch-apps}
   \label{videostitch-apps}
-\end{figure}
+\end{listing}
 \ \\
 L'architecture convenant, les fichiers projets Qt nécessitaient d'être refactorisés,
 c'est-à-dire les réécrires pour les adapter aux nouveaux besoins. \\
@@ -229,16 +229,20 @@ De plus tous les scripts batch (pour Windows) ont été supprimés et fusionnés
 les scripts bash. Si bash est supporté sur tous les Linux et les Mac OS X,
 l'utilisation systématique de Cygwin sur Windows par l'équipe a assuré ce support
 sur toutes les plateformes.\\
-Son utilisation est très simple, voici une copie de l'aide qu'il affiche~:
-\begin{minted}[linenos=false]{shell-session}
-  Usage: ./updatelib.sh <repository> [configuration]
-  Update the actual folder with the required <repository>.
+Son utilisation est très simple~: le listing~\ref{update.sh} présente une copie de l'aide affichée.
+\begin{listing}
+  \begin{minted}[linenos=false]{shell-session}
+    Usage: ./updatelib.sh <repository> [configuration]
+    Update the actual folder with the required <repository>.
 
-  <repository> is mandatory and other parameters are optionals.
-  Parameters can takes the following values:
-  <repository>      'deps', 'lib' or 'all' (default)
-  [configuration]   'release' (default) or 'debug'
-\end{minted}
+    <repository> is mandatory and other parameters are optionals.
+    Parameters can takes the following values:
+    <repository>      'deps', 'lib' or 'all' (default)
+    [configuration]   'release' (default) or 'debug'
+  \end{minted}
+  \caption{Aide affichée par la commande ./update.sh}
+  \label{update.sh}
+\end{listing}
 Dans le cas de lib, le script va détecter le système de l'utilisateur, puis télécharger avec le programme curl
 la dernière version compilée du VideoStitch SDK pour le système et la configuration voulue, pour copier
 les headers et les bibliothèques dans les dossiers attendus sur le dépôt VideoStitch-apps.
@@ -250,21 +254,56 @@ en copier les headers et les bibliothèques dans les dossiers de VideoStitch-app
 \subsection{Génération des installateurs}
 Si la compilation des trois produits est désormais possible, il s'agit désormais
 de pouvoir distribuer au client une version finale et utilisable.\\
-Le logiciel doit être fournis en version \textit{release} et optimisée, ainsi que ses dépendances associées.
-Cependant, comme il a été vu à la section précédente, la compilation produit un
-certain nombre de fichiers supplémentaires au programme compilé. Il s'agit donc
-de construire un paquet contenant seulement les fichiers nécessaires, le logiciel
-et ses dépendances.
+Le logiciel doit être fournis en version \textit{release} et optimisée, avec ses dépendances associées.
+Cependant la compilation produit un certain nombre de fichiers supplémentaires au 
+programme compilé, essentiellement pour assister le post-développement du logiciel. 
+L'idée est le même sur les trois OS~: il s'agit donc de construire un paquet contenant 
+seulement les fichiers nécessaires, le logiciel et ses dépendances.\\
+\newline
+Le logiciel InnoSetup a été utilisé sur Windows pour générer les installateurs 
+des trois applications. Comme pour les projets Qt, les codes des installateurs
+on été un maximum mises en commun. Le listing~\ref{inno-setup} présente un exemple
+d'une configuration d'installateur, qu'il suffit de passer en argument en ligne
+de commande au programme Inno Setup pour générer l'installateur.
+\begin{listing}
+  \begin{minted}{python}
+  [Setup]
+  AppName="VideoStitch Player"
+  #include "common-setup.iss"
 
-\subsubsection{Windows}
-Studio et Player utilisaient tout deux le logiciel InnoSetup, qui permet de créer des
-installateurs, les paquets Windows. 
-win tout inclure inno setup cherry pick parmis le mess de bin/
+  [Dirs] # will be created and then deleted at uninstall
+  Name: "{app}"; Flags: uninuninsalwaysuninstall
 
-\subsubsection{Mac}
+  [File] # only necessary files from bin\ will be copied
+  Source: "bin\x64\release\videostitch-player.exe"; Destdir: "{app}";
+  Source: "bin\x64\release\libvideositch-base.exe"; Destdir: "{app}";
+  Source: "bin\x64\release\libvlc.dll"; Destdir: "{app}";
+  Source: "bin\x64\release\Qt5*.dll"; Destdir: "{app}";
 
-\subsubsection{Linux}
-
+  [Run]
+  Filename: "{app}\vcredistx_64_2013.exe"; Parameters: "/q /norestart"; WorkingDir: "{app}";
+  StatusMsg: "Installing Microsoft Visual 2013 (x64) Redistributable Package"
+  \end{minted}
+  \caption{Extrait de la configuration de l'installateur de VideoStitch Player}
+  \label{inno-setup}
+\end{listing}
+\ \\
+De même, les paquet Linux générés sont très simples, comme le présente le listing~\ref{paquet-linux}.
+\begin{listing}
+  \dirtree{%
+    .1 /.
+    .2 bin.
+    .3 videostitch-player\DTcomment{Le programme}.
+    .2 lib.
+    .3 libvideostitch-base.so.
+    .3 libvlc.so.
+    .3 libQt5Core.so.
+    .3 libQt5Gui.so.
+    .2 launcher\DTcomment{Lance le programme après initialisation des librairies}.
+  }
+  \caption{Paquet Linux de VideoStitch Player}
+  \label{paquet-linux}
+\end{listing}
 
 \subsection{Automatisation de la chaîne de compilation}
 La génération des installateurs Windows et des paquets Linux / Mac est cependant
@@ -280,20 +319,25 @@ VideoStitch SDK, les applications sont générées pour tester le bon fonctionne
 du SDK.\\
 Le système de \textit{schedulers} et de \textit{builders} étant déjà créé pour 
 générer Studio sur Windows, Mac et Linux, il suffisait de rajouter les différentes 
-étapes pour générer le Player et Vahana VR. Ces étapes sont écrites en Python dans un projet nommé master.cfg.
-L'usage est intéressant~: chaque modification du projet recquiert ensuite d'utiliser la commande
+étapes pour générer le Player et Vahana VR. Ces étapes sont écrites en Python dans un fichier de configuration.
+L'usage est intéressant~: chaque modification de la configuration recquiert ensuite d'utiliser la commande
 \mintinline{shell-session}{buildbot reconfig} qui va prévenir si la configuration
 contient des erreurs ou non.\\
 \newline
-Par exemple, voici un extrait de l'utilisation du \textit{builder} du dépôt VideoStitch-apps
-pour Windows, qui a été précédemment définis avec l'id \mintinline{shell-session}{windows_apps}~:
-\begin{minted}{python}
-windows_apps = BuildFactory() # Initiate a new build
-windows.addStep(getGitRepo("apps", "git@github-apps.com:VideoStitch/VideoStitch-apps.git"), descriptionDone=["Update from the Git repository VideoStitch-apps"])
-windows_apps.addStep(ShellCommand(command=["bash", "update.sh", "all", "release"], descriptionDone=["Update lib and deps"], workdir="VideoStitch-apps"))
-windows_apps.addStep(ShellCommand(command=["qmake", "CONFIG+=release"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Generate Makefile for Vahana"])
-windows_apps.addStep(ShellCommand(command=["make"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Building Vahana VR"]))
-\end{minted}
+Pour exemple, le listing~\ref{windows-apps} présente un extrait de l'utilisation 
+du \textit{builder} du dépôt VideoStitch-apps pour Windows, qui a été précédemment 
+définis avec l'id \mintinline{shell-session}{windows_apps}~:
+\begin{listing}
+  \begin{minted}{python}
+  windows_apps = BuildFactory() # Initiate a new build
+  windows_apps.addStep(getGitRepo("apps", "git@github-apps.com:VideoStitch/VideoStitch-apps.git"), descriptionDone=["Update from the Git repository VideoStitch-apps"])
+  windows_apps.addStep(ShellCommand(command=["bash", "update.sh", "all", "release"], descriptionDone=["Update lib and deps"], workdir="VideoStitch-apps"))
+  windows_apps.addStep(ShellCommand(command=["qmake", "CONFIG+=release"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Generate Makefile for Vahana"])
+  windows_apps.addStep(ShellCommand(command=["make"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Building Vahana VR"]))
+  \end{minted}
+  \caption{Extrait du \textit{builder} Windows sur le Buildbot}
+  \label{windows-apps}
+\end{listing}
 
 \subsection{Maintenance du VideoStitch Player}
 Enfin, quelques apports mineurs et rapides ont été apportés, pour améliorer l'usage
