@@ -1,29 +1,21 @@
 \chapter{Amélioration du workflow de développement}
-\epigraph{Il semble que la perfection soit atteinte, non quand il n'y a plus 
-rien à ajouter mais quand il n'y a plus rien à retrancher}{--- \small{\textup{Saint-Exupéry,
-Terre des hommes}}}
 
 \section{Définition de la mission}
 \subsection{Contexte}
-Au début de ce stage, mi-juillet, la première tâche fut la prise de contact avec 
+La première tâche de ce stage fut la prise de contact avec 
 les méthodes de travail, les outils utilisés, les logiciels développés, et leurs
-\textit{workflows} de développement. En effet, si jusqu'ici seul Studio était développé, Alexis
-Pontin venait de terminer le projet du Player, et le développement de Vahana
-VR commençait. Studio utilisait alors une architecture de développement particulière
-et le Player tout comme Vahana VR commençaient leur développement selon leurs propres
-\textit{workflows}.\\
-\newline
-Ce qui est appelé \textit{workflow} dans ce rapport est un terme pour désigner le 
+\textit{workflows} de développement.\\
+Ce qui est désigné par \textit{workflow} est un 
 \enquote{flux de travaux, [c'est-à-dire] une suite de tâches et
 d'opérations effectuées par [...] un groupe de personnes}\cite{workflow}, ici l'équipe de développement
-de VideoStitch~: c'est une représentation des différentes tâches à accomplir pour, depuis un poste de travail vierge, 
-l'installer et pouvoir travailler un des produits de l'entreprise, le compiler et le distribuer.
-Ce n'est pas l'architecture des logiciels en eux même, ni leur développement,
+de VideoStitch. Un \textit{workflow} est une représentation des différentes tâches à accomplir pour installer
+un poste de travail vierge, et compiler une des applications.
+Ce n'est pas l'architecture des logiciels, ni leur développement en lui-même,
 mais comment, à partir des sources et des dépendances, il possible d'arriver au produit
 compilé et distribuable au client.\\
 Ce processus met en \oe uvre les concepts présentés à la section 
-\cf{outils-utilisés}. Ils s'articulent ainsi autour du développement
-logiciel proprement dit~:\cite{software-build}\cite{build-automation}
+\cf{outils-utilisés}, s'articulant autour du développement
+logiciel proprement dit\cite{software-build}\cite{build-automation}~:
 \begin{itemize}
   \item La gestion de versions, assurée ici avec Git\cite{gestion-versions}, qui permet
   de récupérer les codes sources.
@@ -34,20 +26,20 @@ logiciel proprement dit~:\cite{software-build}\cite{build-automation}
 \end{itemize}
 \ \newline
 Cette mission porte essentiellement sur l'amélioration de la chaîne de compilation
-pour les applications de VideoStitch, VideoStitch Studio, Vahana VR et VideoStitch
-Player, et la création des installateurs. Ce travail a été très complémentaire avec
-celui de Jean Duthon, qui a amélioré le \textit{workflow} de développement de VideoStitch SDK,
-la gestion des versions et les tests d'intégration.
+des applications, la création des installateurs.
 
 \subsection{Le \textit{workflow} de développement de VideoStitch Studio}
 \label{workflow-studio}
+Il s'agit tout d'abord de comprendre comment était organisé le \textit{workflow} 
+de VideoStitch Studio.
 Les codes sources et les dépendances avaient été réparties en quatre dépôts Git~: 
 \begin{itemize}
   \item VideoStitch-lib, contenant les codes sources de VideoStitch SDK
   \item VideoStitch-base, contenant des code sources partagés avec le dépôt du VideoStitch Player
   \item VideoStitch-apps, contenant les codes sources de VideoStitch Studio
-  \item VideoStitch-deps, contenant les dépendances Windows de VideoStitch Studio 
-  nécessaires à sa compilation\footnote{Présentées plus en détails dans \cf{integration-dependances-player}}
+  \item VideoStitch-deps\footnote{Présentées plus en détails dans \cf{integration-dependances-player}}, 
+  contenant les dépendances Windows de VideoStitch Studio 
+  nécessaires à sa compilation
 \end{itemize}
 Sous les systèmes Linux et OS X, il a été décidé d'utiliser les gestionnaires
 de paquets apt et Macport pour installer les dépendances logicielles de Studio. Pour
@@ -66,14 +58,16 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
   \item Générer le Makefile\footnote{Fichier contenant un ensemble de règles destinées
   au compilateur et à l'éditeur de liens.} avec le logiciel qmake, fournis avec Qt.
   \item Compiler avec le logiciel jom\footnote{Ce logiciel fait appel au compilateur 
-  du système ainsi qu'à l'éditeur de lien pour générer le logiciel.}, fournis avec Qt.
-  \item Générer l'installateur avec un script présent sur VideoStitch-apps.
+  du système ainsi qu'à l'éditeur de lien pour générer le logiciel selon les règles
+  décrites dans le Makefile généré.}, fournis avec Qt.
+  \item Générer l'installateur avec un script présent sur VideoStitch-apps, si
+  l'on désirait distribuer le logiciel compilé.
 \end{enumerate}
 \begin{figure}
   \centering
   \begin{sequencediagram}
     \footnotesize
-    \newthread{u}{Développeur}
+    \newthread{u}{Developer}
     \newinst[1]{a}{VideoStitch-apps}
     \newinst[1]{d}{VideoStitch-deps}
     \newinst[1]{s}{VideoStitch-base}
@@ -92,7 +86,7 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
     \end{call}
 
     \begin{call}{u}{updatelib.sh}{a}{}
-      \begin{call}{a}{Retrieve last SDK}{b}{}
+      \begin{call}{a}{Retrieve and copy the last SDK}{b}{}
       \end{call}
     \end{call}
 
@@ -101,9 +95,10 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
     \begin{call}{u}{make}{a}{return code}
     \end{call}
   \end{sequencediagram}
-  \caption{Diagramme de séquence du \textit{workflow} de Studio (juillet 2014)}
+  \caption[bla]{Diagramme de séquence du \textit{workflow} de développement de Studio (juillet 2014)\footnotemark}
 	\label{workflow-studio}
 \end{figure}
+\footnotetext{Ecrit en anglais pour des raisons de cohérence entre les commandes utilisés.}
   
 \subsection{Problématique}
 Représenter ce flux présente l'intérêt de pouvoir ensuite le simplifier et d'automatiser
@@ -132,14 +127,14 @@ Les objectifs retenus ont été~:
 
 
 \section[Réalisation]{Réalisation
-\protect\footnote{Nicolas Lopez, Julien Fond et Jean Duthon m'ont beaucoup aidé et, par 
+\protect\footnote{Nicolas Lopez, Julien Fond, Wieland Morgenstern et Jean Duthon m'ont beaucoup aidé et, par 
 leurs corrections, ont largement contribué aux résultats présentés ici.}}
 
 \subsection{Intégration des dépendances du VideoStitch Player}
 \label{integration-dependances-player}
 Un programme dépend, pour sa compilation et son exécution, d'autres \emph{paquets} logiciels
 \cite{dependance-logicielle}. Ce sont des archives contenant des \emph{bibliothèques logicielles},
-c'est-à-dire des ensembles de fonctions déjà compilés et utilisable par le programme.\\
+c'est-à-dire des ensembles de fonctions déjà compilées et utilisables par le programme.\\
 Une bibliothèque logicielle sous Windows se constitue de trois types de fichier\cite{bibliotheque-logicielle}~:
 \begin{itemize}
   \item Les \textit{headers} (fichiers .h), qui déclarent les prototypes des fonctions utilisables
@@ -149,18 +144,19 @@ Une bibliothèque logicielle sous Windows se constitue de trois types de fichier
   chargés lors du démarrage du programme\cite{bibliotheque-logicielle}.
 \end{itemize}
 \ \\
-En plus d'être spéficique à un système d'exploitation, un programme, et donc
+À cela s'ajoute des spécificités autre à celle du système d'exploitation~: un programme, et donc
 ses dépendances, est spécifique à la plateforme visée (32 bits ou 64 bits)\cite{64-bit-computing}
 mais aussi à la configuration compilée (\textit{debug} ou \textit{release})\cite{msdn-debug-release}.\\
 La configuration \textit{debug} permet aux développeur de générer une version pour le débogage,
-quand la configuration \textit{release} permet de générer une version finale et optimisée destinée
-à l'usage du programme. \\
+quand la configuration \textit{release} est utilisée comme une version finale et optimisée destinée
+à l'usage du programme.\\
 Enfin, le choix de la plateforme dépend du processeur et du
 système d'exploitation du client. Les produits de VideoStitch sont distribués
 seulement en 64 bits~: les machines pour les faire fonctionner demandent du matériel
-récent donc en 64 bits, et cela réduit la maintenante à une seule plateforme.\\
+récent donc compatible 64 bits. De plus cela réduit la maintenante à une seule plateforme.\\
 \newline
-Le dépôt VideoStitch-deps était déjà logiquement organisé sous la forme présentée par le listing~\ref{videostitch-deps}.
+Le dépôt VideoStitch-deps était déjà logiquement organisé sous cette même forme,
+présentée par le listing~\ref{videostitch-deps}.
 Cette organisation convenait aux nouveaux besoins et a été gardée ainsi. 
 \begin{listing}
   \dirtree{%
@@ -178,8 +174,8 @@ Cette organisation convenait aux nouveaux besoins et a été gardée ainsi.
 \end{listing}
 \ \\
 Une séparation
-des dépendances par logiciel aurait été possible, mais complexifiant inutilement 
-la structure. De plus, les dépendances en commun entre les trois logiciels
+des dépendances par logiciel et par version aurait été possible, mais complexifiant inutilement 
+la structure. De nombreuses dépendances sont communes entre les trois logiciels et
 sont utilisées dans les même versions. \\
 \newline
 Ainsi, dans le cadre du Player, deux dépendances ont été ajoutées~:
@@ -196,20 +192,13 @@ Quand aux dépendances utilisées par Vahana VR, elles étaient les même que ce
 utilisées Studio, donc déjà présentes dans le dépôt.\\
 
 \subsection{Intégration au \textit{workflow} du VideoStitch Player et de Vahana VR}
+Il fallait ensuite intégrer le Player et Vahana VR à VideoStitch-apps.\\
 La première étape a été de rapatrier le dépôt VideoStitch-base et de l'inclure
 avec son historique dans le dépôt VideoStitch-apps. L'annexe \ref{deplacer-historique-depots}
 présente plus en détail l'opération permettant, grâce à Git, de déplacer un ensemble 
-de fichiers d'un dépôt à un autre tout en préservant l'historique des modifications.\\
+de fichiers d'un dépôt à un autre tout en préservant l'historique des modifications du dépôt importé.\\
 De la même manière, furent importés les codes sources de Player et Vahana VR de 
 leurs dépôts respectifs.\\
-L'opération fut relativement aisée, car le dépôt VideoStitch-apps présentait déjà
-une organisation regroupant plusieurs programmes, mais centrés sur le seul logiciel
-VideoStitch Studio\footnote{On distingue logiciel et programme, dans le sens où un logiciel
-est composé de un ou plusieurs programmes, c'est-à-dire des fichiers binaires, ainsi que des
-fichiers de configurations, images, etc.\cite{logiciel}}. L'architecture ne nécessitait alors que quelques modifications, et
-a été fixée à la hiérarchie présentée par le listing~\ref{videostitch-apps}.\\
-Le dossier de compilation est fixé à \mintinline{shell-session}{bin/x64/<configuration>}
-pour tous les systèmes Windows, Linux et Mac OS X.
 \begin{listing}
   \dirtree{%
     .1 /.
@@ -234,32 +223,37 @@ pour tous les systèmes Windows, Linux et Mac OS X.
   \caption{Dépôt VideoStitch-apps}
   \label{videostitch-apps}
 \end{listing}
-\ \\
+L'opération fut relativement aisée, car le dépôt VideoStitch-apps présentait déjà
+une organisation regroupant plusieurs programmes, mais centrés sur le seul logiciel
+VideoStitch Studio\footnote{On distingue logiciel et programme, dans le sens où un logiciel
+est composé de un ou plusieurs programmes, c'est-à-dire des fichiers binaires, ainsi que des
+fichiers de configurations, images, etc.\cite{logiciel}}. L'architecture ne nécessitait alors que quelques modifications, et
+a été fixée à la hiérarchie présentée par le listing~\ref{videostitch-apps}.\\
+\newline
 L'architecture convenant, les fichiers projets Qt nécessitaient d'être refactorisés,
-c'est-à-dire les réécrires pour les adapter aux nouveaux besoins. \\
-En effet, les applications Qt définissent des projets (extension .pro) décrivant
-les fichiers sources, les ressources et les dépendances utilisées, ainsi que les
+c'est-à-dire les réécrires pour les adapter aux nouveaux besoins.\\
+Les applications Qt définissent des projets (extension .pro) décrivant
+les fichiers sources, les ressources et les dépendances utilisées par le logiciel, ainsi que les
 paramètres pour le compilateur et l'éditeur de liens (\textit{linker}). Ce sont à 
 partir de ces fichiers que le programme qmake construit les instructions de la chaîne
 de compilation qui seront éxecutés par jom\cite{qt}. C'est ce qui permet la portabilité
 des projets Qt~: un seul projet est écrit, et l'application peut être compilée sur
 plusieurs systèmes.\\
-Dans ce cas ci, les trois applications étant proches, il était intéressant de partager un maximum de leurs
-codes sources sous des programmes communs d'une part et d'autre part de partager
-la configuration des différents projets. Les programmes libvideostitch-base et libvideostitch-gui
-avaient déjà été définis, regroupant les codes sources communs. 
+Dans ce cas ci, les trois applications étant proches, il était intéressant de partager
+la configuration des différents projets. Les codes sources communs avaient déjà été
+regroupé dans les programmes libvideostitch-base et libvideostitch-gui.
 \ \\
 \newline
-Enfin, quelques scripts ont été réécrits. Comme vu avec \cf{workflow-studio}, le
-développeur doit récuperer la bibliothèque du VideoStitch SDK, et, sur Windows,
+Enfin, quelques scripts ont été réécrits. Comme vu avec la section \cf{workflow-studio}, le
+développeur doit récuperer la bibliothèque du VideoStitch SDK et, sur Windows,
 les dépendances. Ces ressources se trouvent sur des dépôts séparés, c'est pourquoi
 il était nécessaire de pouvoir les récupérer facilement. Git étant l'outil le plus
-utilisé pour gérer son code et ses modifications, et son utilisation se réalisant en ligne de commande,
-des scripts ont été écrits pour être utilisables comme des commandes en console.\\
+utilisé et son utilisation se réalisant en ligne de commande,
+des scripts ont été écrits pour être utilisables comme des commandes additionnelles à l'usage de Git.\\
 De plus tous les scripts batch (pour Windows) ont été supprimés et fusionnés avec
 les scripts bash. Si bash est supporté sur tous les Linux et les Mac OS X,
-l'utilisation systématique de Cygwin sur Windows par l'équipe a assuré ce support
-sur toutes les plateformes.\\
+l'utilisation systématique de Cygwin sur Windows par l'équipe a assuré le support
+sur cette plateforme également.\\
 Son utilisation est très simple~: le listing~\ref{update.sh} présente une copie de l'aide affichée.
 \begin{listing}
   \begin{minted}[linenos=false]{shell-session}
@@ -288,7 +282,7 @@ La figure~\ref{workflow-final} montre la nouvelle utilisation du workflow désor
   \centering
   \begin{sequencediagram}
     \footnotesize
-    \newthread{u}{Développeur}
+    \newthread{u}{Developer}
     \newinst[2]{a}{VideoStitch-apps}
     \newinst[2]{d}{VideoStitch-deps}
     \newinst[2]{b}{Buildbot}
@@ -299,9 +293,9 @@ La figure~\ref{workflow-final} montre la nouvelle utilisation du workflow désor
     \begin{call}{u}{update.sh all}{a}{}
       \begin{call}{a}{git clone VideoStitch-deps}{d}{}
       \end{call}
-      \begin{callself}{a}{Copy VideoStitch-deps}{}
-      \end{callself}
-      \begin{call}{a}{Retrieve last SDK}{b}{}
+      \begin{call}{a}{Copy VideoStitch-deps}{d}{}
+      \end{call}
+      \begin{call}{a}{Retrieve and copy the last SDK}{b}{}
       \end{call}
     \end{call}
 
