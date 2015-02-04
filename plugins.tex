@@ -88,7 +88,14 @@ Les objectifs retenus pour cette mission ont donc été~:
 
 \section{Réalisation}
 \subsection{Architecture de la solution}
-poc
+Il s'agit tout d'abord de saisir le concept de la Programmation Orientée Composant. 
+Cette approche propose d'utiliser différents \emph{composants} qui vont interragir
+entre eux. Vahana VR utilise déjà un premier composant, le VideoStitch SDK.
+Les composants sont donc, sous Windows, des bibliothèques, c'est-à-dire des fichiers binaires,
+accompagnés de \textit{headers} en exposant les prototypes. Car le composant doit
+déclarer au système l'utilisant (ici Vahana VR) l'ensemble des fonctions pouvant être
+appellées. En effet, la bibliothèque présentant du code compilé, le système ne peut 
+pas en connaître le contenu.\cite{poc}\\
 
 interfaces lib : reader, writer, discovery
 
