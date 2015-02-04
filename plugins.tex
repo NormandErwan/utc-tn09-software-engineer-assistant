@@ -88,24 +88,38 @@ Les objectifs retenus pour cette mission ont donc été~:
 
 \section{Réalisation}
 \subsection{Architecture de la solution}
-Il s'agit tout d'abord de saisir le concept de la Programmation Orientée Composant. 
-Cette approche propose d'utiliser différents \emph{composants} qui vont interragir
-entre eux. Vahana VR utilise déjà un premier composant, le VideoStitch SDK.
-Les composants sont donc, sous Windows, des bibliothèques, c'est-à-dire des fichiers binaires,
-accompagnés de \textit{headers} en exposant les prototypes. Car le composant doit
-déclarer au système l'utilisant (ici Vahana VR) l'ensemble des fonctions pouvant être
-appellées. En effet, la bibliothèque présentant du code compilé, le système ne peut 
-pas en connaître le contenu.\cite{poc}\\
-
-interfaces lib : reader, writer, discovery
-
-implémentation plugin + export.cpp (name mangling)
-
-comment plugin géré par la lib et interragit avec apps
-
-comment vidéo géré
-
-comment audio géré
+Il s'agissait tout d'abord de saisir le concept de la Programmation Orientée Composant, et la manière
+dont il est appliqué pour Vahana VR.\\
+Cette approche propose d'utiliser différents \emph{composants}, ou \textit{plugins},
+qui vont interragir entre eux~: ici les plugins entrées/sorties avec Vahana VR. On entend
+par composant, des bibliothèques (fichiers .dll) qui peuvent être chargées et utilisées
+par un programme client, ici Vahana VR. Tout comme les dépendances\footnote{Présentées dans 
+la section \cf{integration-dependances-player}.}, un composant va fournir un ensemble
+de fonctions, déclarées dans les \textit{headers} qui accompagnent les
+fichiers bibliothèques compilés. Ces fonctions sont donc regroupées dans un module externe
+au logiciel qui peut y faire appel si besoin, ou non.\\
+L'intérêt d'une telle approche est qu'elle permet de développer les plugins séparément du logiciel
+logiciel client. Un composant peut également être réutilisé par d'autres programmes~: en ce sens, la POC trouve
+des similitudes avec la POO\footnote{Programmation Orientée Objet}.\\
+Enfin, si l'analogie avec les dépendances pouvait être faite jusqu'ici, contrairement à ces
+dernières dont l'utilisation est réalisée \enquote{en dur} dans le code, un composant
+peut être remplacé ou d'autres ajoutés. En effet, le programme recense les composants
+présents et tente de les charger \emph{dynamiquement} selon une interface attendue, celle du
+\textit{header}~: le code de la bibliothèque est inconnu car compilé, seul sont
+connue les fonctions attendues du composant.\\
+Un exemple de plugins, est typiquement les extensions d'un navigateur web. Ces composants
+ont été écrits pour le navigateur, en répondant à une interface attendue par ce logiciel,
+et peuvent être activés ou désactivés à volonté par l'utilisateur.\\
+\newline
+Concrètement, un plugin pour Vahana VR est composé en trois parties~:
+\begin{itemize}
+  \item Une interface pour créer une entrée.
+  \item Une interface pour créer une sortie.
+  \item Une interface \textit{discovery} dont le rôle est d'indiquer les possibilités
+    de créations entrées/sorties.
+\end{itemize}
+Ainsi, lors de son exécution, Vahana VR va chercher les bibliothèques présentes dans le dossier
+\mintinline{shell-session}{plugins} à sa racine et charge celles présentant ces interfaces.\\
 
 \subsection{Conception type d'un plugin}
 sdk, driver, programme test
