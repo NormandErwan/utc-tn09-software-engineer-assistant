@@ -1,2 +1,47 @@
-\chapter{Déplacer des fichiers entre des dépôts Git en préservant l'historique}
+\chapter[Déplacer des fichiers entre des dépôts Git en préservant l'historique]
+  {Déplacer des fichiers entre des dépôts Git en préservant l'historique\footnotemark}
 \label{deplacer-historique-depots}
+
+\footnotetext{Cette technique est inspirée d'une question sur le site stackoverflow dont voici
+  le lien~: \url{http://stackoverflow.com/q/1365541}.}
+  
+L'objectif est de déplacer un dossier d'un dépôt A vers un dépôt B, tout en conservant
+l'historique de ses modifications. Cependant le dépôt B peut déjà contenir des 
+fichiers et un historique.
+L'opération se déroule en deux étapes.
+
+\paragraph{}
+Premièrement il faut préparer le dossier du dépôt A, comme le montre le listing~
+\ref{preparation-dossier}.
+Après une création d'une nouvelle copie du dépôt A (ligne 1),
+la commande \mintinline{bash}{git filter-branch} va supprimer tous les fichiers et
+toutes les modifications qui ne concerne pas le dossier (ligne 2). Le dépôt contient
+désormais à sa racine le contenu du dossier. Il faut le déplacer vers le nom du
+dossier souhaité (lignes 3) puis enregistrer cette modification avec \mintinline{bash}{git commit} (lignes 4).
+\begin{listing}
+  \begin{minted}{bash}
+    git clone <repository A url> && cd <repository A url>
+    git filter-branch --subdirectory-filter <the directory> -- --all
+    mkdir <the directory> && mv -k * <the directory>
+    git add . && git commit
+  \end{minted}
+  \caption{Préparation du dossier du dépôt A}
+  \label{preparation-dossier}
+\end{listing}
+
+\paragraph{}
+Ensuite, il s'agit de déplacer le dossier tel que le montre le listing~\ref{deplacement-dossier}.
+Après avoir créé une copie du dépôt B (ligne 1), la gestion décentralisée des dépôts
+par Git permet de créer une connexion au dépôt A (ligne 2) et d'en tirer les fichiers
+et historique (ligne 3). C'est tout, la copie du dépôt A peut être supprimée (ligne 4).
+\begin{listing}
+  \begin{minted}{bash}
+    git clone <repository B url> && cd <repository B url>
+    git remote add link-to-repo-A ../<repository A>
+    git pull link-to-repo-A
+    git remove rm link-to-repo-A && rm -r ../<repository A>
+  \end{minted}
+  \caption{Déplacement du dossier du dépôt A au dépôt B}
+  \label{deplacement-dossier}
+\end{listing}
+
