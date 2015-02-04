@@ -111,6 +111,11 @@ Un exemple de plugins, est typiquement les extensions d'un navigateur web. Ces c
 ont été écrits pour le navigateur, en répondant à une interface attendue par ce logiciel,
 et peuvent être activés ou désactivés à volonté par l'utilisateur.\\
 \newline
+Ainsi, lors de son exécution, Vahana VR va chercher les bibliothèques présentes dans le dossier
+\mintinline{shell-session}{plugins} à sa racine et charge celles présentant ces interfaces.\\
+\newline
+
+\subsection{Conception type d'un plugin}
 Concrètement, un plugin pour Vahana VR est composé en trois parties~:
 \begin{itemize}
   \item Une interface pour créer une entrée.
@@ -118,10 +123,6 @@ Concrètement, un plugin pour Vahana VR est composé en trois parties~:
   \item Une interface \textit{discovery} dont le rôle est d'indiquer les possibilités
     de créations entrées/sorties.
 \end{itemize}
-Ainsi, lors de son exécution, Vahana VR va chercher les bibliothèques présentes dans le dossier
-\mintinline{shell-session}{plugins} à sa racine et charge celles présentant ces interfaces.\\
-
-\subsection{Conception type d'un plugin}
 sdk, driver, programme test
 
 doc, samples
@@ -144,8 +145,30 @@ ximea cuda
 
 \section{Déploiement}
 \subsection{Création du dépôt VideoStitch-IO}
-annexe A
-comment fixé builds et update.sh
+Les plugins étaient à l'origine développés dans le dépôt VideoStitch-apps. Il faisait
+cependant plus sens qu'ils soient déplacés dans un dépôt distinct. Cette opération
+nécessitait, comme dans la section \cf{integration-apps}, un déplacement du dossier
+de développement et de l'historique des modifications. La technique présentée en annexe~
+\ref{deplacer-historique-depots} (p.\pageref{deplacer-historique-depots}) fut de
+nouveau utilisée avec succès, déplacant le contenu du dossier \mintinline{shell-session}{src/plugins/}
+vers le dossier \mintinline{shell-session}{src/} sur le dépôt VideoStitch-IO.\\
+\newline
+Ce nouveau dépôt a été organisé de manière sensiblement équivalente à celui de VideoStitch-apps, 
+cependant la chaîne de compilation des plugins fut mise à jour pour prendre en compte
+cette nouvelle organisation.\\
+En outre, ce dépôt nécessitait, tout comme VideoStitch-apps, du VideoStitch-SDK et des dépendances
+pour être compilé. Le script \mintinline{shell-session}{update.sh}\footnote{Voir la section \cf{integration-apps}.}
+fut alors partagé, et les plugins purent être compilés à nouveau.\\
+\newline
+Le Buildbot fut alors mis à jour également d'un nouveau builder prenant en charge ce dépôt.
+Une liste d'étapes similaires au listing~\ref{windows-apps} (p.\pageref{windows-apps}) furent écrites pour
+compiler automatiquement les plugins et les mettre à disposition sur une page de 
+téléchargement interne.\\
+Enfin, le script \mintinline{shell-session}{update.sh} a été augmenté pour télécharger
+la dernière version des plugins et les copier dans la copie du dépôt VideoStitch-apps
+du développeur appellant le script. Les plugins ont été déplacés sur un autre dépôt
+mais reste toujours nécessaire pour générer l'installateur de Vahana VR et pour
+son utilisation.
 
 \subsection{Documentation}
 grandes lignes, comment shippé avec plugin et vahana
