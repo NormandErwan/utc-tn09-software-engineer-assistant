@@ -46,7 +46,7 @@ de paquets apt et Macport pour installer les dépendances logicielles de Studio.
 Windows, le dépôt VideoStitch-deps tenait les dépendances sous des versions stables et testées.\\
 \newline
 Compiler et créer l'installateur de Studio depuis un poste de travail vierge requérait alors
-certaines étapes, représentées sous forme d'un diagramme de séquence sur la figure~\ref{workflow-studio}.
+certaines étapes, représentées sous forme d'un diagramme de séquence sur la figure~\ref{workflow-studio-diagram}.
 Ces étapes étaient essentiellement des appels à des commandes et à des scripts internes
 (écrits en bash pour Linux / Mac et en batch pour Windows) pour faire le lien entre les dépôts~:
 \begin{enumerate}
@@ -96,7 +96,7 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
     \end{call}
   \end{sequencediagram}
   \caption[bla]{Diagramme de séquence du \textit{workflow} de développement de Studio (juillet 2014)\footnotemark}
-	\label{workflow-studio}
+	\label{workflow-studio-diagram}
 \end{figure}
 \footnotetext{Ecrit en anglais pour des raisons de cohérence entre les commandes utilisés.}
   
@@ -320,8 +320,8 @@ seulement les fichiers nécessaires, le logiciel et ses dépendances.\\
 \newline
 Le logiciel InnoSetup a été utilisé sur Windows pour générer les installateurs 
 des trois applications. Comme pour les projets Qt, les codes des installateurs
-on été un maximum mises en commun. Le listing~\ref{inno-setup} présente un exemple
-d'une configuration d'installateur, qu'il suffit de passer en argument en ligne
+ont été un maximum mises en commun. Le listing~\ref{inno-setup} présente un exemple
+d'une configuration d'installateur, fichier qu'il suffit ensuite de passer en argument en ligne
 de commande au programme Inno Setup pour générer l'installateur.
 \begin{listing}
   \begin{minted}{python}
@@ -364,23 +364,18 @@ De même, les paquet Linux générés sont très simples, comme le présente le 
 \end{listing}
 
 \subsection{Automatisation de la chaîne de compilation}
-La génération des installateurs Windows et des paquets Linux / Mac est cependant
-toujours fastidieuse et gagnerait à être automatisée. L'équipe se concentre avant
-tout au développement, quand l'intégration continue est réalisée par Buildbot. 
 Il s'agit désormais d'écrire les routines pour permettre à Buildbot de générer
-les quatre produits de VideoStitch ainsi que leurs installateurs.\\
+les quatre installateur des applications de VideoStitch.\\
 Deux concepts sont importants dans Buildbot~: les \textit{builders} et les \textit{schedulers}.
 Les premiers sont la suite des étapes à accomplir pour générer les logiciels, quand
-les seconds sont ceux qui vont lancer ces \textit{builders}. Après une modification
+les seconds sont ceux qui vont les déclencher après une modification
 sur un dépôt, ou après la fin d'un \textit{builder}~: par exemple, après la compilation de
 VideoStitch SDK, les applications sont générées pour tester le bon fonctionnement
 du SDK.\\
 Le système de \textit{schedulers} et de \textit{builders} étant déjà créé pour 
 générer Studio sur Windows, Mac et Linux, il suffisait de rajouter les différentes 
 étapes pour générer le Player et Vahana VR. Ces étapes sont écrites en Python dans un fichier de configuration.
-L'usage est intéressant~: chaque modification de la configuration recquiert ensuite d'utiliser la commande
-\mintinline{shell-session}{buildbot reconfig} qui va prévenir si la configuration
-contient des erreurs ou non.\\
+\ \\
 \newline
 Pour exemple, le listing~\ref{windows-apps} présente un extrait de l'utilisation 
 du \textit{builder} du dépôt VideoStitch-apps pour Windows, qui a été précédemment 
@@ -388,10 +383,10 @@ définis avec l'id \mintinline{shell-session}{windows_apps}~:
 \begin{listing}
   \begin{minted}{python}
   windows_apps = BuildFactory() # Initiate a new build
-  windows_apps.addStep(getGitRepo("apps", "git@github-apps.com:VideoStitch/VideoStitch-apps.git"), descriptionDone=["Update from the Git repository VideoStitch-apps"])
-  windows_apps.addStep(ShellCommand(command=["bash", "update.sh", "all", "release"], descriptionDone=["Update lib and deps"], workdir="VideoStitch-apps"))
-  windows_apps.addStep(ShellCommand(command=["qmake", "CONFIG+=release"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Generate Makefile for Vahana"])
-  windows_apps.addStep(ShellCommand(command=["make"], workdir="VideoStitch-apps/src/vahana-vr", descriptionDone=["Building Vahana VR"]))
+  windows_apps.addStep(getGitRepo("apps", "git clone VideoStitch-apps"))
+  windows_apps.addStep(ShellCommand(command=["bash", "update.sh", "all", "release"], workdir="VideoStitch-apps"))
+  windows_apps.addStep(ShellCommand(command=["qmake", "CONFIG+=release"], workdir="VideoStitch-apps/src/vahana-vr")
+  windows_apps.addStep(ShellCommand(command=["make"], workdir="VideoStitch-apps/src/vahana-vr"))
   \end{minted}
   \caption{Extrait du \textit{builder} Windows sur le Buildbot}
   \label{windows-apps}
@@ -423,12 +418,12 @@ d'avertissement appellé \textit{Health and Safety Warning}, tel que sur la figu
 lors du démarrage d'une vidéo dans le casque\cite{oculus-developer-guide}.\\
 Il s'agissait alors d'ajouter une possibilité de passer cet écran, en pressant une
 manuellement une touche du clavier. Cela ne pouvait être fait automatiquement afin de respecter les clauses.
-\begin{figure}
-  \centering
-  \includegraphics[width=8cm]{images/player-oculus-hsw.jpg}
-  \caption{L'écran \textit{Health and Safety Warning} affiché par l'Oculus Rift}
-  \label{hsw-oculus}
-\end{figure}
+%\begin{figure}
+%  \centering
+%  \includegraphics[width=8cm]{images/player-oculus-hsw.jpg}
+%  \caption{L'écran \textit{Health and Safety Warning} affiché par l'Oculus Rift}
+%  \label{hsw-oculus}
+%\end{figure}
 \ \\
 L'implémentation se réalisa avec la création d'une fonction pour désactiver le HSW
 (listing~\ref{player-oculusrift}) et avec une capture d'une touche du clavier pour faire appel à 
@@ -458,8 +453,8 @@ Ici, quelque soit la touche, un signal est envoyé pour demander la désactivati
   \begin{minted}[firstnumber=90]{c++}
   connect(this, SIGNAL(disableOculusHSW()), oculusRift, SLOT(disableHSW()));
   
-  void MainWindow::keyPressEvent(QKeyEvent *e) { // 
-    emit disableOculusHSW();
+  void MainWindow::keyPressEvent(QKeyEvent *e) { 
+    emit disableOculusHSW(); // send the signal, will be catch by every connected slot
   }
   \end{minted}
   \caption{Extrait du fichier mainwindow.cpp}
@@ -468,28 +463,25 @@ Ici, quelque soit la touche, un signal est envoyé pour demander la désactivati
 
 
 \section{Bilan et suite}
-Cette première mission occupa les premiers mois du stage, et permis d'acquérir
-le fonctionnement du \textit{workflow} de développement de l'entreprise afin de l'améliorer.
 Les modifications apportées, même si elles ont été parfois mineures, ont cependant permis dans leur globalité~:
 \begin{itemize}
+ \item De permettre une installation d'un nouvel environnement de développement et
+ de sont usage relativement aisé, comme le montre la figure~\ref{workflow-final}.
  \item De compiler depuis un même dépôt, quelque que soit l'OS de la machine, les trois applications de VideoStitch.
  \item D'automatiser la compilations et la génération des paquets de ces trois applications 
  sur Buidlbot, rendant les dernières versions immédiatement utilisables par n'importe 
  quelle personne de VideoStitch.
  \item D'apporter les modifications nécessaires à l'usage du Player.
- \item De permettre une installation d'un nouvel environnement de développement et
- de sont usage relativement aisé, comme le montre la figure~\ref{workflow-final}.
 \end{itemize}
 \ \\
 Ce système pourrait encore être amélioré, ou même à être repris de zéro. Cependant, 
 une telle réécriture demanderait nécessairement beaucoup plus de temps pour
 produire un système certes plus correct au regard des besoins actuels, mais moins mature
 et donc plus sujet à des cas d'utilisations non prévus ou problématiques. De plus,
-il aurait fallu changer les habitudes de l'équipe de développement.\\
+cela demanderait de changer les habitudes de l'équipe de développement.\\
 Cependant, des cas d'utilisations non prévus sont également apparus lors de cette mission,
-mais sont rapidement corrigés par l'équipe. Bien souvent, cela est dû à des différences
-d'interprétations du bash entre Linux et Mac OS X, ou par une différence de code avec
-le script batch correspondant. Les scripts pourraient alors être écrits en Python, pour
+mais ont rapidement été corrigés par l'équipe. Bien souvent, cela était dû à des différences
+d'interprétations du bash entre Linux et Mac OS X. Les scripts pourraient être écrits en Python pour
 éviter ces différences et ces erreurs. Leur écriture et leur maintenance serait 
 en outre facile, Python étant relativement simple dans son approche et ses usages.\\
 Enfin, VideoStitch Player nécessiterait d'être amélioré~: la vidéo
