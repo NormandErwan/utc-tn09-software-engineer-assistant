@@ -102,7 +102,7 @@ Il s'agissait tout d'abord de saisir le concept de la Programmation Orientée Co
 dont il est appliqué pour Vahana VR.\\
 Cette approche propose d'utiliser différents \emph{composants}
 qui vont interagir entre eux~: ici les \textit{plugins} entrées/sorties avec Vahana VR. On entend
-par composant, des bibliothèques (fichiers .dll) qui peuvent être chargées et utilisées
+par composants, ou \textit{plugins}, des bibliothèques (fichiers .dll) qui peuvent être chargées et utilisées
 par un programme client, ici Vahana VR. Tout comme les dépendances\footnote{Présentées dans 
 la section \cf{integration-dependances-player}.}, un composant va fournir un ensemble
 de fonctions, déclarées dans les \textit{headers} qui accompagnent ces
@@ -111,8 +111,7 @@ au logiciel qui peut y faire appel si besoin, ou non.\cite{poc}\\
 L'intérêt d'une telle approche est qu'elle permet d'introduire de la modularité dans 
 l'architecture du projet, les \textit{plugins} peuvent être développés séparément du logiciel
 client. Et surtout, ils peuvent être distribués séparément du logiciel ou être remplacés
-au besoin sans remplacer tout le logiciel. 
-Un composant peut également être réutilisé par d'autres programmes.\\
+au besoin sans remplacer tout le logiciel. Un composant peut également être réutilisé par d'autres programmes.\\
 Enfin, si l'analogie avec les dépendances pouvait être faite jusqu'ici, contrairement à ces
 dernières dont l'utilisation est réalisée \enquote{en dur} dans le code, un composant est
 utilisé indirectement via ses interfaces. Car, c'est à son lancement que le programme charge les composants
@@ -141,7 +140,50 @@ interface implémentées par le \textit{plugin}, le logiciel va pouvoir faire ex
 du \textit{plugin} de création de l'entrée -- ou sortie --.\\
 
 \subsection{Conception type d'un \textit{plugin}}
-sdk, driver, programme test
+Cinq plugins furent écrits et maintenus durant ce stage. L'approche retenue fut de créer
+un nouveau plugin par constructeur. Ces plugins s'appuient en effet sur du matériel
+externe à VideoStitch, comme des caméras ou des cartes d'acquisition. Les plugins
+développés sont les suivant~:
+\begin{itemize}
+  \item Plugin d'entrée/sortie SDI pour les cartes d'acquisition DeckLink
+  \footnote{\url{https://www.blackmagicdesign.com/fr/products/decklink/models}}.
+  \item Plugin d'entrée HDMI pour les cartes d'acquisition Yuan
+  \footnote{\url{https://www.blackmagicdesign.com/fr/products/decklink/models}}.
+  \item Plugin d'entrée HDMI pour les cartes d'acquisition Magewell
+  \footnote{\url{https://www.blackmagicdesign.com/fr/products/decklink/models}}.
+  \item Plugin d'entrée PCIe pour les caméras xiB de Ximea
+  \footnote{\url{http://www.ximea.com/en/products/application-specific-oem-and-custom-cameras/pci-express-high-speed-cameras}}.
+  \item Plugin d'entrée GigE\footnote{Standard pour les caméras industrielle utilisant 
+  la transmission par Ethernet\cite{gige}.} pour les caméras Genie TS de Teledyne Dalsa\footnote{\url{http://www.teledynedalsa.com/imaging/products/cameras/area-scan/genie-ts/}}.
+\end{itemize}
+Les trois premiers plugins proposent une acquisition pour des normes standard, HMDI et SDI, 
+et permettent d'utiliser n'importe quelle caméra compatible avec ces standards, quand les
+deux restant proposent une capture pour des caméras d'un constructeur en particulier.
+Les premiers plugins sont systématiquement distribués avec Vahana VR. Les deux derniers
+furent développé à la demande d'un client et ne sont distribués selon les besoins.\\
+\newline
+Leurs développement ont suivis relativement les même étapes.
+Tout d'abord, il s'agissait d'installer la caméra ou la carte d'acquisition sur la 
+machine de développement et de la mettre en fonctionnement. Le constructeur va fournir
+deux ressources~: le pilote pour que le système puisse utiliser le matériel, et un
+SDK pour qu'un développeur puisse développer une application utilisant ce matériel.
+La figure~\ref{entree-sortie-schema} résume les interactions de Vahana au matériel d'entrée/sortie.
+\begin{figure}
+  \centering
+  \setlength{\unitlength}{8mm}
+  \begin{picture}(5,8)
+    \linethickness{0.3mm}
+    \thicklines
+    \put(1,8){\framebox(3,1){Vahana VR}}        \put(2,8){\vector(0,-1){1}} \put(3,7){\vector(0,1){1}}
+    \put(1,6){\framebox(3,1){\textit{Plugin}}}  \put(2,6){\vector(0,-1){1}} \put(3,5){\vector(0,1){1}}
+    \put(1,4){\framebox(3,1){SDK constructeur}} \put(2,4){\vector(0,-1){1}} \put(3,3){\vector(0,1){1}}
+    \put(1,2){\framebox(3,1){Driver}}           \put(2,2){\vector(0,-1){1}} \put(3,1){\vector(0,1){1}}
+    \put(1,0){\framebox(3,1){Matériel}}
+  \end{picture}
+  \caption{Schéma des interactions de Vahana VR au matériel d'entrée/sorties}
+  \label{entree-sortie-schema}
+\end{figure}
+\ \\
 
 doc, samples
 
@@ -152,13 +194,15 @@ writer
 discovery
 
 \subsection{Quelques difficultés et solutions spécifiques}
-yuan et wrapper
+Chaque plugin s'appuyant sur un SDK d'un constructeur différent, un certain nombre
+de problèmes furent rencontrés pour réaliser l'implémentation totale des interfaces.
+Quelques difficultés et leurs solutions sont notables.\\
 
-decklink et design pattern decorator
+\subsubsection{Partage des ressources Yuan}
 
-loadunpacker teledyne
+\subsubsection{Augmentation des interfaces DeckLink}
 
-ximea cuda
+\subsubsection{Lecture des images Ximea}
 
 
 \section{Déploiement}
@@ -182,13 +226,17 @@ Le Buildbot fut alors mis à jour également d'un nouveau builder prenant en cha
 Une liste d'étapes similaires au listing~\ref{windows-apps} (p.\pageref{windows-apps}) furent écrites pour
 compiler automatiquement les \textit{plugins} et les mettre à disposition sur une page de 
 téléchargement interne.\\
-Enfin, le script \mintinline{shell-session}{update.sh} a été augmenté pour télécharger
+Le script \mintinline{shell-session}{update.sh} a alors été augmenté pour télécharger
 la dernière version des \textit{plugins} et les copier dans la copie du dépôt VideoStitch-apps
 du développeur appelant le script. Les \textit{plugins} ont été déplacés sur un autre dépôt
 mais sont toujours nécessaires pour générer utiliser Vahana VR avec toutes ses
-capacités.
+capacités.\\
+Enfin, à l'installateur de Vahana furent ajouté les plugins pour DeckLink, Magewell
+et Yuan, couvrant les besoins usuels du logiciel.
 
 \subsection{Documentation}
+Deux documentations ont été ensuite écrites.\\
+Chaque plugin fut 
 grandes lignes, comment shippé avec \textit{plugin} et vahana
 
 \subsection{Tests et \textit{QA} de l'intégration des \textit{plugins}}
