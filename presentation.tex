@@ -31,7 +31,7 @@ des trois autres produits de VideoStitch basés sur \nameref{videostitch-sdk-sec
 \cf{videostitch-studio-section}, \cf{vahana-vr-section}, \cf{videostitch-player-section}.\\
 Liesbeth De Mey, stagiaire, est en charge de réaliser des \textit{screencast} et 
 des tutoriels vidéos des produits de l'entreprise. Enfin, Jean Duthon et Marie
-Chatelin, stagiaire UTCéens en TN09 également, sont en charge, respectivement,
+Chatelin, stagiaires UTCéens également en TN09, sont en charge, respectivement,
 de la \textit{QA}\footnote{\textit{Quality Assurance}} et de l'intégration continue
 des quatre produits pour Jean, et d'assister l'équipe au développement des logiciels
 pour Marie. Leurs rapports contiennent de plus amples détails sur le déroulé de 
@@ -39,7 +39,7 @@ leurs stages.
 
 \subsection{Historique}
 VideoStitch a été fondée par ce même Nicolas Burtey en janvier 2012.\\
-Photographe diplômé de l'Ecole Lumière, s'étant fait connaître par la photo panoramique 
+Photographe diplômé de l'École Lumière, s'étant fait connaître par la photo panoramique 
 et la photo fish-eye, M. Burtey évolue par la suite dans le domaine de la vidéo panoramique.\\
 \begin{wrapfigure}[6]{l}{6cm}
   \centering
@@ -53,12 +53,12 @@ La vidéo panoramique, étant alors un procédé très jeune encore inconnu du g
 lente et difficile à réaliser: beaucoup de tâches doivent être faites de manière 
 manuelle et répétitive, avec des outils inadaptés car non prévus à cette utilisation.
 Si la création de photos panoramiques et à 360\degree est aisée, il manque toutefois 
-un logiciel complet et mature qui permetrait l'édition et le montage de vidéos paramiques.\\
+un logiciel complet et mature qui permettrait l'édition et le montage de vidéos panoramiques.\\
 \newline
 M. Burtey décide alors de créer VideoStitch pour concevoir cet outil, un logiciel 
 d'édition et de montage de vidéos panoramiques : VideoStitch Studio.
 Quand ce logiciel atteint une version stable, en 2014, VideoStitch oriente alors 
-ses efforts vers un nouveau logiciel, Vahana VR, permettant cette fois-ci une réalisation 
+ses efforts vers un nouveau logiciel, Vahana VR, permettant cette fois ci une réalisation 
 et une diffusion en direct de vidéos panoramiques à 360\degree.\\
 Le but de la société est de permettre une réalisation aisée et de qualité de vidéos 
 panoramiques à 360\degree, de la capture des images à la diffusion de la vidéo finale, 
@@ -70,7 +70,7 @@ en passant par sa réalisation complète.
 Une image panoramique, ou panorama, est une superposition d'images qui sont assemblées
 pour composer une vue bien plus large que ne le permet une image seule. La figure~ 
 \ref{rochester-ny} présente un exemple d'assemblage d'un panorama.\\
-Concrètement, avec un appareil photograhique, cela consiste à prendre plusieurs vues
+Concrètement, avec un appareil photographique, cela consiste à prendre plusieurs vues
 successives en tournant l'appareil autour d'un axe entre deux clichés. 
 Les photos obtenues forment ainsi une série d'un même sujet et doivent pouvoir 
 se recouvrir en partie pour être ensuite assemblées en une seule image panoramique. 
@@ -86,8 +86,8 @@ ou PTgui\cite{PTgui}.
 \newline
 La vidéo panoramique consiste à filmer avec plusieurs caméras en même temps, chacune
 capturant une partie du panorama, pour assembler les images capturées en une seule
-vidéo par le même princique que la photo panoramique.\\
-Avec suffisament de caméras, il est possible de couvrir un angle de prise de vue 
+vidéo par le même principe que la photo panoramique.\\
+Avec suffisamment de caméras, il est possible de couvrir un angle de prise de vue 
 de 360\degree à l'horizontale et de 180\degree à la verticale. Le panorama créé
 forme alors une sphère virtuelle, comme le montre la figure~\ref{camera-projection}. 
 C'est ce qu'on appelle la vidéo 360.
@@ -99,7 +99,7 @@ C'est ce qu'on appelle la vidéo 360.
 \end{figure}
 \newline
 Cependant, comme le montre la figure~\ref{rochester-ny}, un panorama reste une image
-$-$ ou une vidéo $-$, c'est-à-dire une matrice plane consistuée de pixels\footnote{Pour
+$-$ ou une vidéo $-$, c'est-à-dire une matrice plane constituée de pixels\footnote{Pour
  \enquote{picture element}}. Or une vidéo 360 représentant une sphère virtuelle, ou
 plutôt sa surface, elle sera nécessairement une \emph{projection} de cette sphère, 
 c'est-à-dire une correspondance mathématique entre cette surface en 3 dimensions 
@@ -126,7 +126,7 @@ planisphère de la figure~\ref{planisphère}.
 \end{figure}
 \newline
 Un lecteur vidéo 360 est alors nécessaire pour lire correctement la vidéo~: 
-il va reconstruire la sphère, pour y projetter le panorama et y placer le
+il va reconstruire la sphère, pour y projeter le panorama et y placer le
 spectateur au centre de cette sphère. Dès lors, le spectateur peut déplacer le 
 regard tout autour de lui pour embrasser le panorama : on entre dans le champs de 
 la réalité virtuelle\footnote{La réalité virtuelle est ici comprise dans son sens
@@ -168,7 +168,7 @@ la conception de vidéos 360. Le \textit{workflow} de travail avec le logiciel e
 \subsubsection{Importation des vidéos}
 \label{importation-videos}
 Le cas le plus commun est de capturer la vidéo 360 à l'aide de 6 caméras GoPro 
-installées sur une monture spécialisée\footnote{Aussi appellée \textit{rig}} comme sur la figure~\ref{rig}. 
+installées sur une monture spécialisée\footnote{Aussi appelée \textit{rig}} comme sur la figure~\ref{rig}. 
 Les caméras sont configurées pour filmer en HD, et, munies de leurs optiques 
 d'origine, six sont nécessaires pour filmer toute la sphère du panorama.
 \begin{figure}
@@ -189,7 +189,7 @@ d'origine, six sont nécessaires pour filmer toute la sphère du panorama.
 \end{figure}
 
 \subsubsection{Synchronisation des vidéos}
-Lors de la capture, les caméras sont bien souvent démarées en décalées. Il s'agit
+Lors de la capture, les caméras sont bien souvent démarrées en décalées. Il s'agit
 donc de resynchroniser les vidéos enregistrées.\\
 Pour cela, la méthode la plus pratique est le \textit{motion},
 où le logiciel analyse les mouvements de chaque vidéo : en effet les caméras étant fixées
@@ -212,13 +212,13 @@ Une fois les points trouvés, les vidéos peuvent être superposées et être as
 \end{figure}
 
 \subsubsection{Correction d'exposition}
-Chaque caméra ayant filmé dans une direction, les différentes vidéos auronts chacune 
+Chaque caméra ayant filmé dans une direction, les différentes vidéos auront chacune 
 des expositions différentes. De même, les balances des blancs peuvent différer
-entre les vidéos. Le logiciel corrige localement ces deux paramètres pour homogéiniser
+entre les vidéos. Le logiciel corrige localement ces deux paramètres pour homogénéiser
 le panorama final.
 
 \subsubsection{Stabilisation}
-La stabilisation consiste à  lisser les micro-mouvements des vidéos, qui ont 
+La stabilisation consiste à lisser les micros mouvements des vidéos, qui ont 
 pu se produire lors de la capture, par exemple si la monture s'est déplacée dans l'espace lors
 de l'enregistrement. Cette étape est nécessaire : regarder dans un casque de réalité
 virtuelle une vidéo non stabilisée est très désagréable.
@@ -249,7 +249,7 @@ est obtenu quand l'horizon est redressé.
 \subsubsection{Exportation}
 \label{exportation}
 Enfin, la vidéo 360 peut être exportée sous la forme d'un équirectangulaire, avec
-possibilité d'intégrer le son d'unes des caméras.
+possibilité d'intégrer le son d'une des caméras.
 
 \begin{figure}
   \centering
@@ -272,7 +272,7 @@ assemblées automatiquement. Le logiciel assure lui-même la bonne synchronisati
 des vidéos.\\
 Le panorama peut être alors exporté sur différents flux en même temps : 
 streaming RTMP, via une carte d'acquisition pour une sortie HDMI ou SDI, sur le
-disque dur. Ce logiciel ouvre la possibilité du \textit{streaming} 360 à des événéments 
+disque dur. Ce logiciel ouvre la possibilité du \textit{streaming} 360 à des événements 
 \textit{live}, comme les concerts, le sport, les défilés ou encore les conférences.
 \begin{figure}
   \centering
@@ -330,7 +330,7 @@ Il est possible de se voir soi-même en direct, créant un dédoublement du corp
   \caption{CUDA}
 \end{wrapfigure}
 Ces applications s'appuient toute trois sur une librairie développée séparément,
-en C++/CUDA. C'est cette librairie qui implémente et éxecute tous les algorithmes
+en C++/CUDA. C'est cette librairie qui implémente et exécute tous les algorithmes
 de synchronisation, calibration, gestions des flux vidéos et audio et corrections
 vidéos.
 Toutes ces opérations sont très coûteuses en temps de calcul. C'est pourquoi
@@ -349,7 +349,7 @@ Si VideoStitch est pendant un certain temps restée une petite start-up dévelop
 un outil de post-production pour vidéos 360 \footnote{\cf{videostitch-studio}}, 
 l'entreprise ambitionne désormais d'être le leader du marché.\\
 Le marché est encore jeune, mais se décidera certainement en 2015 et s'alignera
-probablement sur un leader. La technologie sera suffisament mature, et des rachats
+probablement sur un leader. La technologie sera suffisamment mature, et des rachats
 par de grands groupe sont probable, comme cela s'est produit dans le marché de la
 réalité virtuelle en 2014, avec le rachat de l'Oculus Rift par Facebook 
 \cite{facebook-vr} par exemple.\\

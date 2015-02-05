@@ -3,10 +3,10 @@
 \section{Définition de la mission}
 \subsection{Contexte}
 Dès le début du développement de Vahana VR, la question des entrées et des sorties
-du logicel s'était posée. En effet, Studio étant un logiciel de montage de vidéos
+du logiciel s'était posée. En effet, Studio étant un logiciel de montage de vidéos
 360, ses seules entrées sont des fichiers vidéos, issus des caméras de la monture. De même, la seule sortie
 est le fichier vidéo 360, comme présenté dans la section \cf{exportation}.\\
-Ce qui est ici appellé \emph{entrées} sont les données envoyées au programme, quand
+Ce qui est ici appelé \emph{entrées} sont les données envoyées au programme, quand
 les \emph{sorties} sont les données émises par ce programme en retour.\\
 Pour permettre la vidéo 360 en direct, Vahana VR, contrairement à Studio, s'affranchit des fichiers
 vidéos importés et propose de capturer directement les images des caméras, via
@@ -37,7 +37,7 @@ une carte d'acquisition, en plus de l'export de la vidéo 360 sur le disque dur.
 \subsection{Problématique}
 Dès lors, Vahana VR étant destiné à des sociétés de production, il doit
 être compatible avec un maximum de standards, caméras et cartes d'acquisitions vidéos
-pour être facilement adopté. Cependant, tout matériel informatique récquérant des pilotes
+pour être facilement adopté. Cependant, tout matériel informatique requérant des pilotes
 \footnote{Programme permettant au système d'exploitation d'interagir avec le matériel couvert par ce pilote\cite{pilote-informatique}.}
 , et, les besoins des clients en entrées/sorties n'étant pas les mêmes, il n'était
 alors pas possible de concevoir un logiciel monolithique contenant tous les programmes 
@@ -45,7 +45,7 @@ d'entrées/sorties supportés~: l'installation de Vahana VR aurait requis au cli
 une installation de l'ensemble des pilotes.\\
 De plus, un client pourrait souhaiter utiliser du matériel entrée/sortie encore
 non supporté. Il serait intéressant qu'il puisse réaliser son propre développement
-dans l'ecosystème de Vahana VR; ainsi le logiciel pourrait devenir virtuellement
+dans l'écosystème de Vahana VR; ainsi le logiciel pourrait devenir virtuellement
 compatible avec n'importe quel standard, caméra ou carte d'acquisition.\\
 Il fallait donc développer un système assurant à la fois la compatibilité
 entre Vahana VR et ces matériels, et intégrant les contraintes exposées.\\
@@ -60,7 +60,7 @@ Les objectifs retenus pour cette mission ont donc été~:
   norme de diffusion audio/vidéo numérique\cite{hdmi}.} et SDI\footnote{\textit{Serial Digital Interface}, 
   protocole de diffusion vidéo numérique\cite{sdi}.}.
   \item Développer les sorties HDMI et SDI.
-  \item Développer des entrées-sorties Ethernet et PCIe\footnote{\textit{PCI Express}, standard
+  \item Développer des entrées/sorties Ethernet et PCIe\footnote{\textit{PCI Express}, standard
   de connexion de cartes d'extension sur la carte mère d'un ordinateur\cite{pci-express}.}
   spécifiques, à la demande d'un client.
   \item Déployer l'ensemble des \textit{plugins} sur un dépôt séparé.
@@ -101,7 +101,7 @@ Les objectifs retenus pour cette mission ont donc été~:
 Il s'agissait tout d'abord de saisir le concept de la Programmation Orientée Composant, et la manière
 dont il est appliqué pour Vahana VR.\\
 Cette approche propose d'utiliser différents \emph{composants}
-qui vont interragir entre eux~: ici les \textit{plugins} entrées/sorties avec Vahana VR. On entend
+qui vont interagir entre eux~: ici les \textit{plugins} entrées/sorties avec Vahana VR. On entend
 par composant, des bibliothèques (fichiers .dll) qui peuvent être chargées et utilisées
 par un programme client, ici Vahana VR. Tout comme les dépendances\footnote{Présentées dans 
 la section \cf{integration-dependances-player}.}, un composant va fournir un ensemble
@@ -168,7 +168,7 @@ cependant plus sens qu'ils soient déplacés dans un dépôt distinct, car étan
 de Vahana VR. Cette opération nécessitait, comme dans la section \cf{integration-apps}, un déplacement du dossier
 de développement et de l'historique des modifications. La technique présentée en annexe~
 \ref{deplacer-historique-depots} (p.\pageref{deplacer-historique-depots}) fut de
-nouveau utilisée avec succès, déplacant le contenu du dossier \mintinline{shell-session}{src/plugins/}
+nouveau utilisée avec succès, déplaçant le contenu du dossier \mintinline{shell-session}{src/plugins/}
 du dépôt VideoStitch-apps vers le dossier \mintinline{shell-session}{src/} sur le dépôt VideoStitch-IO.\\
 \newline
 Ce nouveau dépôt a été organisé de manière sensiblement équivalente à celui de VideoStitch-apps, 
@@ -184,7 +184,7 @@ compiler automatiquement les \textit{plugins} et les mettre à disposition sur u
 téléchargement interne.\\
 Enfin, le script \mintinline{shell-session}{update.sh} a été augmenté pour télécharger
 la dernière version des \textit{plugins} et les copier dans la copie du dépôt VideoStitch-apps
-du développeur appellant le script. Les \textit{plugins} ont été déplacés sur un autre dépôt
+du développeur appelant le script. Les \textit{plugins} ont été déplacés sur un autre dépôt
 mais sont toujours nécessaires pour générer utiliser Vahana VR avec toutes ses
 capacités.
 

@@ -34,7 +34,7 @@ Il s'agit tout d'abord de comprendre comment était organisé le \textit{workflo
 de VideoStitch Studio.
 Les codes sources et les dépendances avaient été réparties en quatre dépôts Git~: 
 \begin{itemize}
-  \item VideoStitch-lib, contenant les codes sources de VideoStitch SDK
+  \item VideoStitch-sdk, contenant les codes sources de VideoStitch SDK
   \item VideoStitch-base, contenant des code sources partagés avec le dépôt du VideoStitch Player
   \item VideoStitch-apps, contenant les codes sources de VideoStitch Studio
   \item VideoStitch-deps\footnote{Présentées plus en détails dans \cf{integration-dependances-player}}, 
@@ -98,7 +98,7 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
   \caption[Diagramme de séquence du \textit{workflow} de développement de Studio (juillet 2014)]{Diagramme de séquence du \textit{workflow} de développement de Studio (juillet 2014)\footnotemark}
 	\label{workflow-studio-diagram}
 \end{figure}
-\footnotetext{Ecrit en anglais pour des raisons de cohérence entre les commandes utilisés.}
+\footnotetext{Écrit en anglais pour des raisons de cohérence entre les commandes utilisés.}
   
 \subsection{Problématique}
 Représenter ce flux présente l'intérêt de pouvoir ensuite le simplifier et d'automatiser
@@ -153,7 +153,7 @@ quand la configuration \textit{release} est utilisée comme une version finale e
 Enfin, le choix de la plateforme dépend du processeur et du
 système d'exploitation du client. Les produits de VideoStitch sont distribués
 seulement en 64 bits~: les machines pour les faire fonctionner demandent du matériel
-récent donc compatible 64 bits. De plus cela réduit la maintenante à une seule plateforme.\\
+récent donc compatible 64 bits. De plus cela réduit la maintenance à une seule plateforme.\\
 \newline
 Le dépôt VideoStitch-deps était déjà logiquement organisé sous cette même forme,
 présentée par le listing~\ref{videostitch-deps}.
@@ -232,12 +232,12 @@ fichiers de configurations, images, etc.\cite{logiciel}}. L'architecture ne néc
 a été fixée à la hiérarchie présentée par le listing~\ref{videostitch-apps}.\\
 \newline
 L'architecture convenant, les fichiers projets Qt nécessitaient d'être refactorisés,
-c'est-à-dire les réécrires pour les adapter aux nouveaux besoins.\\
+c'est-à-dire les réécrire pour les adapter aux nouveaux besoins.\\
 Les applications Qt définissent des projets (extension .pro) décrivant
 les fichiers sources, les ressources et les dépendances utilisées par le logiciel, ainsi que les
 paramètres pour le compilateur et l'éditeur de liens (\textit{linker}). Ce sont à 
 partir de ces fichiers que le programme qmake construit les instructions de la chaîne
-de compilation qui seront éxecutés par jom\cite{qt}. C'est ce qui permet la portabilité
+de compilation qui seront exécutés par jom\cite{qt}. C'est ce qui permet la portabilité
 des projets Qt~: un seul projet est écrit, et l'application peut être compilée sur
 plusieurs systèmes.\\
 Dans ce cas ci, les trois applications étant proches, il était intéressant de partager
@@ -246,7 +246,7 @@ regroupé dans les programmes libvideostitch-base et libvideostitch-gui.
 \ \\
 \newline
 Enfin, quelques scripts ont été réécrits. Comme vu avec la section \cf{workflow-studio}, le
-développeur doit récuperer la bibliothèque du VideoStitch SDK et, sur Windows,
+développeur doit récupérer la bibliothèque du VideoStitch SDK et, sur Windows,
 les dépendances. Ces ressources se trouvent sur des dépôts séparés, c'est pourquoi
 il était nécessaire de pouvoir les récupérer facilement. Git étant l'outil le plus
 utilisé et son utilisation se réalisant en ligne de commande,
@@ -272,7 +272,7 @@ Son utilisation est très simple~: le listing~\ref{update.sh} présente une copi
 \ \\
 Dans le cas de lib, le script va détecter le système de l'utilisateur, puis télécharger avec le programme curl
 la dernière version compilée du VideoStitch SDK pour le système et la configuration voulue, pour copier
-les headers et les bibliothèques dans les dossiers attendus sur le dépôt VideoStitch-apps.
+les \textit{headers} et les bibliothèques dans les dossiers attendus sur le dépôt VideoStitch-apps.
 Le script automatise simplement une action de recherche d'une version compilée par Buildbot
 pour en extraire et copier les fichiers.\\
 Dans le cas de deps, le script va créer une copie locale de VideoStitch-deps, puis
@@ -380,7 +380,7 @@ générer Studio sur Windows, Mac et Linux, il suffisait de rajouter les différ
 \newline
 Pour exemple, le listing~\ref{windows-apps} présente un extrait de l'utilisation 
 du \textit{builder} du dépôt VideoStitch-apps pour Windows, qui a été précédemment 
-définis avec l'id \mintinline{shell-session}{windows_apps}~:
+définis avec l'identifiant \mintinline{shell-session}{windows_apps}~:
 \begin{listing}
   \begin{minted}{python}
   windows_apps = BuildFactory() # Initiate a new build
@@ -415,7 +415,7 @@ ainsi le support du DK1 et du DK2.
 
 \subsubsection{Passer le \textit{Health and Safety Warning} de l'Oculus}
 Le nouvel Oculus SDK a vu l'apparition de nouvelles clauses légales et d'un écran
-d'avertissement appellé \textit{Health and Safety Warning}, tel que sur la figure~\ref{hsw-oculus}
+d'avertissement appelé \textit{Health and Safety Warning}, tel que sur la figure~\ref{hsw-oculus}
 lors du démarrage d'une vidéo dans le casque\cite{oculus-developer-guide}.\\
 Il s'agissait alors d'ajouter une possibilité de passer cet écran, en pressant une
 manuellement une touche du clavier. Cela ne pouvait être fait automatiquement afin de respecter les clauses.
