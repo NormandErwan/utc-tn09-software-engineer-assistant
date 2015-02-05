@@ -139,7 +139,8 @@ créer une nouvelle entrée -- ou sortie -- pour tel \textit{plugin}. Et via les
 interface implémentées par le \textit{plugin}, le logiciel va pouvoir faire exécuter le code
 du \textit{plugin} de création de l'entrée -- ou sortie --.\\
 
-\subsection{Conception type d'un \textit{plugin}}
+\subsection{Conception des \textit{plugins}}
+\subsubsection{Prise en main}
 Cinq plugins furent écrits et maintenus durant ce stage. L'approche retenue fut de créer
 un nouveau plugin par constructeur. Ces plugins s'appuient en effet sur du matériel
 externe à VideoStitch, comme des caméras ou des cartes d'acquisition. Les plugins
@@ -186,33 +187,45 @@ La figure~\ref{entree-sortie-schema} résume les interactions de Vahana au maté
 Le plugin développé correspond au patron de conception\footnote{Ou \textit{design pattern},
 qui est une bonne pratique de conception logicielle.} \emph{adaptateur}, c'est-à-dire qu'il convertit les interfaces
 et le fonctionnement du SDK du constructeur sous une autre interface, celle attendue
-par le programme client, Vahana VR\cite{adapter-design-pattern}.\\
-\newline
+par le programme client, Vahana VR\cite{adapter-design-pattern}.
+
+\subsubsection{Implémentations}
 Ces interfaces attendues sont définies dans Vahana, et développer un plugin consiste
-à en réaliser les implémentations, comme le montre la figure~\ref{plugins-interface}.
-La séparation des interfaces et de leur implémentations correspond au patron de conception
-\emph{pont}\cite{bridge-design-pattern}~: l'implémentation, concrète, hérite de l'interface 
-et peut évoluer à volonter sans besoin de changer cette dernière.
-\begin{figure}
-  \caption{Diagramme des interfaces de Vahana VR et exemple de leurs implémentations dans un plugin}
-  \label{plugins-interface}
-\end{figure}
-\ \\
-Tous les plugins développés implémentent la classe \cppinline{Input}. Cela recquiert de l'attention sur quelques
-fonctions~:
+à en réaliser les implémentations~: ce fut la seconde partie du développement.\\
+Tous les plugins développés implémentent l'interface \cppinline{Input}. Quelques fonctions recquiert 
+de l'attention~:
 \begin{itemize}
-  \item \cppinline{handle} : indique le type du plugin, c'est ce qui permet de distinguer
-  ce plugin d'un autre, car ils répondent tous à la même interface.
-  \item \cppinline{create} : tente la création de l'entrée avec les paramètres donnés,
-  si réussi la méthode renvoie un pointeur sur l'objet \cppinline{Input} créé, sinon
+  \item \cppinline{Input* create(const Config* parameters)} : appellée si \cppinline{handle}
+  a réussi, cette fonction tente la création de l'entrée avec les paramètres donnés
+  et renvoie un pointeur sur l'objet \cppinline{Input} créé, si cela a réussi, sinon
   un pointeur nul.
-  \item \cppinline{readFrame} : appellée par Vahana VR, le plugin doit renvoyer la
+  \item \cppinline{std::string name()} : permet de distinguer les plugins entre eux (en
+  effet, ils partagent tous la même interface), pour appeller la fonction \cppinline{create} 
+  du bon plugin.
+  \item \cppinline{bool readFrame(uint32_t* video)} : appellée par Vahana VR, le plugin doit renvoyer la
   dernière image capturée par la caméra -- ou carte d'acquisition. Cette fonction
-  est appellée au moins 25 fois par seconde, une vidéo n'étant finalement qu'une succession très rapide d'images.
+  est appellée au moins 25 fois par seconde, une vidéo n'étant finalement 
+  qu'une succession très rapide d'images.\\
+  L'image doit être renvoyée dans le format de couleur RGBA.
 \end{itemize}
-L'implémentation de la classe \cppinline{Output} est similaire à la classe \cppinline{Input},
-à la différence qu'elle envoie des images (méthode \cppinline{writeFrame}) et ne les lit pas (méthode \cppinline{readFrame}).\\
+La création d'un \cppinline{Input} réclame quelques paramètres, qui sont envoyés 
+au travers de l'argument \cppinline{parameters}. Cette configuration demandée par
+l'utilisateur contient, par exemple, quelle caméra utiliser,
+la résolution de l'image capturée (largeur et hauteur en pixel) ou encore le nombre d'images
+par seconde qui seront capturées (règle le nombre d'appels de Vahana VR à la fonction \cppinline{readFrame}). 
+Cette liste est enrichie de divers paramètres selon le plugin, et les capacités du SDK du constructeur.\\
+L'implémentation de l'interface \cppinline{Output} est similaire à l'interface \cppinline{Input},
+à la différence qu'elle envoie des images, avec la méthode \cppinline{writeFrame}, et ne les lit pas (méthode \cppinline{readFrame}).\\
 \newline
+L'interface \cppinline{Discovery} permet d'indiquer à Vahana VR, et par extension
+à l'utilisateur, les ensembles de de paramètres et valeurs utilisables pour le plugin. 
+L'implémentation de cette interface s'effectue sur quelques fonctions~:
+\begin{itemize}
+  \item \cppinline{std::string name()} : tout comme \cppinline{Input}, permet de distinguer les plugins entre eux.
+  \item \cppinline{std::vector<Device> devices()} : indique la liste des entrées/sorties
+  disponibles; un \cppinline{Device} est simplement
+  \item \cppinline{std::vector<DisplayMode> supportedVideoModes(const Plugin::Device& device)}
+\end{itemize}
 
 \subsection{Quelques difficultés et solutions spécifiques}
 Chaque plugin s'appuyant sur un SDK d'un constructeur différent, un certain nombre
