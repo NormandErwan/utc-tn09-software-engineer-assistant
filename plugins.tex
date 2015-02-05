@@ -11,8 +11,8 @@ les \emph{sorties} sont les données émises par ce programme en retour.\\
 Pour permettre la vidéo 360 en direct, Vahana VR, contrairement à Studio, s'affranchit des fichiers
 vidéos importés et propose de capturer directement les images des caméras, via
 des cartes d'acquisitions branchées sur la machine utilisée. De même, Vahana VR peut émettre 
-plusieurs fluxs en sortie permettant, par exemple, le \textit{streaming} ou la réémissions vers
-une carte d'acquisition, en plus de l'export de la vidéo 360 sur le disque dur.\\
+plusieurs fluxs en sortie permettant, par exemple, le \textit{streaming} RTMP ou la réémission vers
+une carte d'acquisition SDI ou HDMI, en plus de l'export de la vidéo 360 sur le disque dur.\\
 \begin{figure}
   \centering
   \setlength{\unitlength}{8mm}
@@ -117,7 +117,7 @@ il va rechercher ceux implémentant les interfaces attendues. En effet,
 le code de la bibliothèque est inconnu car compilé, seul sont connues les fonctions 
 attendues du \textit{plugin}.\\
 \newline
-Un exemple de \textit{plugins}, est typiquement les extensions d'un navigateur web. Ces composants
+Un exemple de \textit{plugins} sont typiquement les extensions d'un navigateur web. Ces composants
 ont été écrits pour le navigateur, en répondant à une interface attendue par ce logiciel,
 et peuvent être activés ou désactivés à volonté par l'utilisateur.\\
 L'intérêt d'une telle approche est qu'elle permet d'introduire de la modularité dans 
@@ -199,7 +199,7 @@ par le programme client, Vahana VR\cite{adapter-design-pattern}.
 \subsubsection{Implémentations}
 Ces interfaces attendues sont définies dans Vahana, et développer un \textit{plugin} consiste
 à en réaliser les implémentations~: ce fut la seconde partie du développement.\\
-Tous les \textit{plugins} développés implémentent l'interface \cppinline{Input},
+Tous les \textit{plugins} développés implémentent l'interface \cppinline{Input}
 et ses fonctions~:
 \begin{itemize}
   \item \cppinline{ing handle(const Config* parameters)} : indique si le
@@ -225,10 +225,11 @@ l'utilisateur contient, par exemple~:
   \item Le nom du plugin cherché.
   \item Quelle caméra du plugin utiliser.
   \item La résolution désirée de la vidéo à capturer (largeur et hauteur en pixel).
-  \item Le nombre d'images par seconde qui seront capturées. C'est ce paramètre qui règle le nombre 
-  d'appels que Vahana VR va réaliser à la fonction \cppinline{readFrame}.
+  \item Le \textit{framerate}, c'est-à-dire le nombre d'images par seconde qui 
+  seront capturées. C'est ce paramètre qui règle le nombre 
+  d'appels par secondes que Vahana VR va faire de la fonction \cppinline{readFrame}.
 \end{itemize}
-Cette liste est enrichie d'autres paramètres selon le \textit{plugin} et 
+Cette liste est enrichie par d'autres paramètres selon chaque \textit{plugin} et 
 les capacités du SDK du constructeur. Par exemple, Ximea propose des réglages
 de l'objectif de la caméra.\\
 \newline
@@ -237,15 +238,20 @@ L'interface \cppinline{Discovery} permet d'indiquer à Vahana VR, et par extensi
 création des entrées/sorties du \textit{plugin}. 
 L'implémentation de cette interface s'effectue avec quelques fonctions~:
 \begin{itemize}
-  \item \cppinline{std::string name()} : indique le nom du plugin, qui sera utilisé
+  \item \cppinline{std::string name()}~: indique le nom du plugin, qui sera utilisé
   dans par les paramètres de configuration.
-  \item \cppinline{std::vector<Device> devices()} : indique la liste des entrées/sorties
+  \item \cppinline{std::vector<Device> devices()}~: indique la liste des entrées/sorties
   disponibles~: pour les cartes d'acquision cela correspond à l'ensemble des ports
   entrées/sorties présents sur la carte; quand aux caméras, seules celles branchées apparraîtront. 
   Un \cppinline{Device} est simplement le numéro de la caméra, ou du port, ainsi
   que son type~: entrée, sortie, ou les deux.
-  \item \cppinline{std::vector<DisplayMode> supportedDisplayModes(const Device& device)}
-  \item \cppinline{std::vector<PixelFormat> supportedPixelFormat(const Device& device)}
+  \item \cppinline{std::vector<DisplayMode> supportedDisplayModes(const Device& device)}~:
+  retourne l'ensemble des couples résolution-\textit{framerate} supportés par le \textit{device}.
+  \item \cppinline{std::vector<PixelFormats> supportedPixelFormat(const Device& device)}~:
+  retourne l'ensemble des formats de couleur supportés par le \textit{device}. Un 
+  certain nombre d'encodages de la couleur existent et une sortie peut attendre un
+  format bien particulier, tout comme une entrée peut retourner des images sous un
+  format précis.
 \end{itemize}
 
 \subsection{Quelques difficultés et solutions spécifiques}
