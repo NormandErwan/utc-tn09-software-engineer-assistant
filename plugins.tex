@@ -92,145 +92,166 @@ Les objectifs retenus pour cette mission ont donc été~:
     \includegraphics[width=3cm]{images/pcie-cable.jpg}
     \captionof{subfigure}{PCIe}
   \end{minipage}
-  \caption{Illustration des différents connecteurs utilisées par Vahana VR}
+  \caption{Illustration des différents connecteurs utilisés par Vahana VR}
 \end{figure}
 
 
 \section{Réalisation}
 \subsection{Architecture de la solution}
 Il s'agissait tout d'abord de saisir le concept de la Programmation Orientée Composant, et la manière
-dont il est appliqué pour Vahana VR.\\
-Cette approche propose d'utiliser différents \emph{composants}
-qui vont interagir entre eux~: ici les \textit{plugins} entrées/sorties avec Vahana VR. On entend
-par composants, ou \textit{plugins}, des bibliothèques (fichiers .dll) qui peuvent être chargées et utilisées
-par un programme client, ici Vahana VR. Tout comme les dépendances\footnote{Présentées dans 
+dont il est appliqué pour Vahana VR.
+Cette approche propose d'utiliser différents \emph{composants}, c'est-à-dire des briques logicielles
+qui peuvent interagir entre elles. Tout comme les dépendances\footnote{Présentées dans 
 la section \cf{integration-dependances-player}.}, un composant va fournir un ensemble
-de fonctions, déclarées dans les \textit{headers} qui accompagnent ces
-bibliothèques. Ces fonctions sont donc regroupées dans un module externe
-au logiciel qui peut y faire appel si besoin, ou non.\cite{poc}\\
-L'intérêt d'une telle approche est qu'elle permet d'introduire de la modularité dans 
-l'architecture du projet, les \textit{plugins} peuvent être développés séparément du logiciel
-client. Et surtout, ils peuvent être distribués séparément du logiciel ou être remplacés
-au besoin sans remplacer tout le logiciel. Un composant peut également être réutilisé par d'autres programmes.\\
-Enfin, si l'analogie avec les dépendances pouvait être faite jusqu'ici, contrairement à ces
-dernières dont l'utilisation est réalisée \enquote{en dur} dans le code, un composant est
-utilisé indirectement via ses interfaces. Car, c'est à son lancement que le programme charge les composants
-\emph{dynamiquement} présents et qui respectent l'interface attendue, celle du
-\textit{header} du composant~: le code de la bibliothèque est inconnu car compilé, seul sont
-connues les fonctions attendues du composant.\cite{plugin}\\
+de fonctions, présentes dans des bibliothèques (fichiers .dll sous Windows). Elles sont
+déclarées dans les \textit{headers} qui accompagnent ces bibliothèques, afin de 
+pouvoir être utilisées par les autres composants.\cite{poc}\\
+Ici, on parle un peu plus spécifiquement de \textit{plugins} et de \emph{programme client}.
+Les \textit{plugins} peuvent être chargées et utilisées par un programme client, 
+ici Vahana VR. Leurs fonctions sont donc regroupées en des modules externes
+au logiciel qui peut y faire appel si besoin, ou non. Leurs interfaces sont, cette
+fois, définies dans le logiciel.\cite{plugin}\\
+Un \textit{plugin} est donc utilisé indirectement via ses interfaces et \emph{dynamiquement}.
+Car c'est à son lancement que le programme charge les \textit{plugins}~:
+il va rechercher ceux implémentant les interfaces attendues. En effet,
+le code de la bibliothèque est inconnu car compilé, seul sont connues les fonctions 
+attendues du \textit{plugin}.\\
+\newline
 Un exemple de \textit{plugins}, est typiquement les extensions d'un navigateur web. Ces composants
 ont été écrits pour le navigateur, en répondant à une interface attendue par ce logiciel,
 et peuvent être activés ou désactivés à volonté par l'utilisateur.\\
+L'intérêt d'une telle approche est qu'elle permet d'introduire de la modularité dans 
+l'architecture du projet, les \textit{plugins} pouvant être développés séparément du logiciel
+client. Et surtout, ils peuvent être distribués séparément du logiciel ou être remplacés
+au besoin sans remplacer tout le logiciel. Cela peut présenter une difficulté d'analyse~:
+quoi externaliser dans des plugins ? et sous quelles interfaces ? Car si les interfaces
+changent, le composant doit obligatoirement être remplacé et mis-à-jour, brisant la compatibilité
+des anciennes versions.\cite{poc}\\ 
 \newline
-Concrètement, sont définie dans les \textit{headers} de Vahana VR toutes les interfaces.
-Un \textit{plugin} pour Vahana VR peut implémenter trois interfaces~:
+Concrètement, Vahana VR définit trois interfaces à implémenter pour les \textit{plugins}~:
 \begin{itemize}
   \item Une interface pour créer une entrée.
   \item Une interface pour créer une sortie.
   \item Une interface \textit{discovery} dont le rôle est d'indiquer les possibilités
     de créations entrées/sorties.
 \end{itemize}
-Ainsi, lors de son exécution, Vahana VR va chercher les bibliothèques présents dans le dossier
-\mintinline{shell-session}{plugins} à sa racine et va charger les \textit{plugins} implémentant
-au moins un de ces interfaces. Le logiciel possède désormais une collection d'entrées
+Le diagramme de classes UML de la figure~\ref{uml-interfaces} les détaille.\\
+\begin{figure}
+  \centering
+  \caption{Diagramme de classes des interfaces}
+  \label{uml-interfaces}
+\end{figure}
+Ainsi, lors de son exécution, Vahana VR va chercher les bibliothèques présentes dans le dossier
+\shellinline{plugins} à sa racine et va charger les \textit{plugins} implémentant
+au moins un de ces interfaces. Une fois chargés, le logiciel possède désormais une collection d'entrées
 ou de sorties potentielles. En fonction de données renvoyée par les \textit{discovery},
 l'utilisateur peut demander, dans l'interface de Vahana VR, de 
-créer une nouvelle entrée -- ou sortie -- pour tel \textit{plugin}. Et via les
+créer une nouvelle entrée -- ou sortie -- pour \textit{plugin}. Et via les
 interface implémentées par le \textit{plugin}, le logiciel va pouvoir faire exécuter le code
-du \textit{plugin} de création de l'entrée -- ou sortie --.\\
+de création de l'entrée -- ou sortie -- du \textit{plugin}.\\
 
 \subsection{Conception des \textit{plugins}}
-\subsubsection{Prise en main}
-Cinq plugins furent écrits et maintenus durant ce stage. L'approche retenue fut de créer
-un nouveau plugin par constructeur. Ces plugins s'appuient en effet sur du matériel
-externe à VideoStitch, comme des caméras ou des cartes d'acquisition. Les plugins
-développés sont les suivant~:
+Cinq \textit{plugins} furent écrits et maintenus pour répondre aux besoins. Ils s'appuient 
+tous sur du matériel, comme des caméras ou des cartes d'acquisitions, conçu par 
+des entreprise externes à VideoStitch.
+L'approche retenue a donc été de créer un nouveau \textit{plugin} par constructeur~:
 \begin{itemize}
-  \item Plugin d'entrée/sortie SDI pour les cartes d'acquisition DeckLink
+  \item Entrée/sortie SDI et HDMI avec les cartes d'acquisition DeckLink
   \footnote{\url{https://www.blackmagicdesign.com/fr/products/decklink/models}}.
-  \item Plugin d'entrée HDMI pour les cartes d'acquisition Yuan
-  \footnote{\url{https://www.blackmagicdesign.com/fr/products/decklink/models}}.
-  \item Plugin d'entrée HDMI pour les cartes d'acquisition Magewell
-  \footnote{\url{https://www.blackmagicdesign.com/fr/products/decklink/models}}.
-  \item Plugin d'entrée PCIe pour les caméras xiB de Ximea
+  \item Entrée HDMI avec les cartes d'acquisition Yuan
+  \footnote{\url{http://www.yuan.com.tw/en/products/capture/capture_mod.htm}}.
+  \item Entrée HDMI avec les cartes d'acquisition Magewell
+  \footnote{\url{http://www.magewell.com/hardware?lang=en}}.
+  \item Entrée PCIe avec les caméras xiB de Ximea
   \footnote{\url{http://www.ximea.com/en/products/application-specific-oem-and-custom-cameras/pci-express-high-speed-cameras}}.
-  \item Plugin d'entrée GigE\footnote{Standard pour les caméras industrielle utilisant 
-  la transmission par Ethernet\cite{gige}.} pour les caméras Genie TS de Teledyne Dalsa\footnote{\url{http://www.teledynedalsa.com/imaging/products/cameras/area-scan/genie-ts/}}.
+  \item Entrée Ethernet GigE\footnote{Standard pour les caméras industrielle utilisant 
+  la transmission par Ethernet\cite{gige}.} avec les caméras Genie TS de Teledyne Dalsa\footnote{\url{http://www.teledynedalsa.com/imaging/products/cameras/area-scan/genie-ts/}}.
 \end{itemize}
-Les trois premiers plugins proposent une acquisition pour des normes standard, HMDI et SDI, 
-et permettent d'utiliser n'importe quelle caméra compatible avec ces standards, quand les
-deux restant proposent une capture pour des caméras d'un constructeur en particulier.
-Les premiers plugins sont systématiquement distribués avec Vahana VR. Les deux derniers
-furent développé à la demande d'un client et ne sont distribués selon les besoins.\\
-\newline
-Leurs développements ont suivis relativement les même étapes.
+\ \\
+Leurs développements respectifs ont suivis les même étapes~:
+
+\subsubsection{Prise en main}
 Tout d'abord, il s'agissait d'installer la caméra ou la carte d'acquisition sur la 
 machine de développement et de la mettre en fonctionnement. Le constructeur va fournir
 deux ressources~: le pilote pour que le système puisse utiliser le matériel, et un
 SDK pour qu'un développeur puisse développer une application utilisant ce matériel.
-La figure~\ref{entree-sortie-schema} résume les interactions de Vahana au matériel d'entrée/sortie.
 \begin{figure}
   \centering
-  \setlength{\unitlength}{8mm}
-  \begin{picture}(5,8)
+  \setlength{\unitlength}{4mm}
+  \begin{picture}(10,14)
     \linethickness{0.3mm}
     \thicklines
-    \put(1,8){\framebox(3,1){Vahana VR}}        \put(2,8){\vector(0,-1){1}} \put(3,7){\vector(0,1){1}}
-    \put(1,6){\framebox(3,1){\textit{Plugin}}}  \put(2,6){\vector(0,-1){1}} \put(3,5){\vector(0,1){1}}
-    \put(1,4){\framebox(3,1){SDK constructeur}} \put(2,4){\vector(0,-1){1}} \put(3,3){\vector(0,1){1}}
-    \put(1,2){\framebox(3,1){Driver}}           \put(2,2){\vector(0,-1){1}} \put(3,1){\vector(0,1){1}}
-    \put(1,0){\framebox(3,1){Matériel}}
+    \put(2,12){\framebox(6,2){Vahana VR}}       \put(4,12){\vector(0,-1){1}} \put(6,11){\vector(0,1){1}}
+    \put(2,9){\framebox(6,2){\textit{Plugin}}}  \put(4,9){\vector(0,-1){1}}  \put(6,8){\vector(0,1){1}}
+    \put(0,6){\framebox(10,2){SDK constructeur}} \put(4,6){\vector(0,-1){1}}  \put(6,5){\vector(0,1){1}}
+    \put(2,3){\framebox(6,2){Driver}}           \put(4,3){\vector(0,-1){1}}  \put(6,2){\vector(0,1){1}}
+    \put(2,0){\framebox(6,2){Matériel}}
   \end{picture}
-  \caption{Schéma des interactions de Vahana VR au matériel d'entrée/sorties}
+  \caption{Schéma des interactions de Vahana VR au matériel d'entrées/sorties}
   \label{entree-sortie-schema}
 \end{figure}
-Le plugin développé correspond au patron de conception\footnote{Ou \textit{design pattern},
-qui est une bonne pratique de conception logicielle.} \emph{adaptateur}, c'est-à-dire qu'il convertit les interfaces
-et le fonctionnement du SDK du constructeur sous une autre interface, celle attendue
+La figure~\ref{entree-sortie-schema} résume les interactions de Vahana au matériel d'entrée/sortie~:
+les \textit{plugins} correspondent au patron de conception\footnote{Ou \textit{design pattern},
+qui est une bonne pratique de conception logicielle.} \emph{adaptateur}, c'est-à-dire qu'ils convertissent les interfaces
+et le fonctionnement du SDK du constructeur sous d'autres interfaces, celles attendues
 par le programme client, Vahana VR\cite{adapter-design-pattern}.
 
 \subsubsection{Implémentations}
-Ces interfaces attendues sont définies dans Vahana, et développer un plugin consiste
+Ces interfaces attendues sont définies dans Vahana, et développer un \textit{plugin} consiste
 à en réaliser les implémentations~: ce fut la seconde partie du développement.\\
-Tous les plugins développés implémentent l'interface \cppinline{Input}. Quelques fonctions recquiert 
-de l'attention~:
+Tous les \textit{plugins} développés implémentent l'interface \cppinline{Input},
+et ses fonctions~:
 \begin{itemize}
+  \item \cppinline{ing handle(const Config* parameters)} : indique si le
+  plugin peut prendre en charge ces paramètres pour créer l'entrée.
   \item \cppinline{Input* create(const Config* parameters)} : appellée si \cppinline{handle}
   a réussi, cette fonction tente la création de l'entrée avec les paramètres donnés
-  et renvoie un pointeur sur l'objet \cppinline{Input} créé, si cela a réussi, sinon
+  et renvoie un pointeur sur l'objet \cppinline{Input} créé si cela a réussi, sinon
   un pointeur nul.
-  \item \cppinline{std::string name()} : permet de distinguer les plugins entre eux (en
-  effet, ils partagent tous la même interface), pour appeller la fonction \cppinline{create} 
-  du bon plugin.
-  \item \cppinline{bool readFrame(uint32_t* video)} : appellée par Vahana VR, le plugin doit renvoyer la
-  dernière image capturée par la caméra -- ou carte d'acquisition. Cette fonction
-  est appellée au moins 25 fois par seconde, une vidéo n'étant finalement 
-  qu'une succession très rapide d'images.\\
+  \item \cppinline{bool readFrame(uint32_t* frame)} : cette fonction renvoie la
+  dernière image capturée par la caméra -- ou carte d'acquisition --. Elle est
+  appellée autant de fois que précisé dans les paramètres de la configuration,
+  généralement au moins 25 fois par seconde pour obtenir une image fluide.\\
   L'image doit être renvoyée dans le format de couleur RGBA.
 \end{itemize}
-La création d'un \cppinline{Input} réclame quelques paramètres, qui sont envoyés 
-au travers de l'argument \cppinline{parameters}. Cette configuration demandée par
-l'utilisateur contient, par exemple, quelle caméra utiliser,
-la résolution de l'image capturée (largeur et hauteur en pixel) ou encore le nombre d'images
-par seconde qui seront capturées (règle le nombre d'appels de Vahana VR à la fonction \cppinline{readFrame}). 
-Cette liste est enrichie de divers paramètres selon le plugin, et les capacités du SDK du constructeur.\\
 L'implémentation de l'interface \cppinline{Output} est similaire à l'interface \cppinline{Input},
-à la différence qu'elle envoie des images, avec la méthode \cppinline{writeFrame}, et ne les lit pas (méthode \cppinline{readFrame}).\\
+à la différence qu'elle envoie des images, avec la méthode \cppinline{writeFrame}, 
+à l'instar de la méthode \cppinline{readFrame}.\\
+\newline
+La création d'un \cppinline{Input} réclame donc quelques paramètres et leurs valeurs, envoyés 
+au travers de l'argument \cppinline{parameters}. Cette configuration fournie par
+l'utilisateur contient, par exemple~:
+\begin{itemize}
+  \item Le nom du plugin cherché.
+  \item Quelle caméra du plugin utiliser.
+  \item La résolution désirée de la vidéo à capturer (largeur et hauteur en pixel).
+  \item Le nombre d'images par seconde qui seront capturées. C'est ce paramètre qui règle le nombre 
+  d'appels que Vahana VR va réaliser à la fonction \cppinline{readFrame}.
+\end{itemize}
+Cette liste est enrichie d'autres paramètres selon le \textit{plugin} et 
+les capacités du SDK du constructeur. Par exemple, Ximea propose des réglages
+de l'objectif de la caméra.\\
 \newline
 L'interface \cppinline{Discovery} permet d'indiquer à Vahana VR, et par extension
-à l'utilisateur, les ensembles de de paramètres et valeurs utilisables pour le plugin. 
-L'implémentation de cette interface s'effectue sur quelques fonctions~:
+à l'utilisateur, les ensembles de de paramètres et valeurs utilisables pour la
+création des entrées/sorties du \textit{plugin}. 
+L'implémentation de cette interface s'effectue avec quelques fonctions~:
 \begin{itemize}
-  \item \cppinline{std::string name()} : tout comme \cppinline{Input}, permet de distinguer les plugins entre eux.
+  \item \cppinline{std::string name()} : indique le nom du plugin, qui sera utilisé
+  dans par les paramètres de configuration.
   \item \cppinline{std::vector<Device> devices()} : indique la liste des entrées/sorties
-  disponibles; un \cppinline{Device} est simplement
-  \item \cppinline{std::vector<DisplayMode> supportedVideoModes(const Plugin::Device& device)}
+  disponibles~: pour les cartes d'acquision cela correspond à l'ensemble des ports
+  entrées/sorties présents sur la carte; quand aux caméras, seules celles branchées apparraîtront. 
+  Un \cppinline{Device} est simplement le numéro de la caméra, ou du port, ainsi
+  que son type~: entrée, sortie, ou les deux.
+  \item \cppinline{std::vector<DisplayMode> supportedDisplayModes(const Device& device)}
+  \item \cppinline{std::vector<PixelFormat> supportedPixelFormat(const Device& device)}
 \end{itemize}
 
 \subsection{Quelques difficultés et solutions spécifiques}
-Chaque plugin s'appuyant sur un SDK d'un constructeur différent, un certain nombre
+Chaque \textit{plugin} s'appuyant sur un SDK d'un constructeur différent, un certain nombre
 de problèmes furent rencontrés pour réaliser l'implémentation totale des interfaces.
-Quelques difficultés et leurs solutions sont notables.\\
+Quelques difficultés et leurs solutions sont notables.
 
 \subsubsection{Partage des ressources Yuan}
 
@@ -265,12 +286,13 @@ la dernière version des \textit{plugins} et les copier dans la copie du dépôt
 du développeur appelant le script. Les \textit{plugins} ont été déplacés sur un autre dépôt
 mais sont toujours nécessaires pour générer utiliser Vahana VR avec toutes ses
 capacités.\\
-Enfin, les plugins DeckLink, Magewell et Yuan furent ajoutés à l'installateur de Vahana VR, 
-permettant de couvrir les besoins usuels du logiciel.
+Enfin, les \textit{plugins} DeckLink, Magewell et Yuan furent ajoutés à l'installateur de Vahana VR, 
+permettant de couvrir les besoins usuels du logiciel et les caméras les plus répandues
+sur le marché~: les entrées/sorties SDI et HDMI.
 
 \subsection{Documentation}
 Deux documentations ont ensuite été écrites.\\
-Chaque plugin fut
+Chaque \textit{plugin} fut
 Puis une documentation générale fut écrite sur le wiki interne. 
 
 \subsection{Tests et \textit{QA} de l'intégration des \textit{plugins}}

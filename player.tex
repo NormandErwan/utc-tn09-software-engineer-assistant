@@ -26,7 +26,7 @@ logiciel proprement dit\cite{software-build}\cite{build-automation}~:
 \end{itemize}
 \ \newline
 Cette mission porte essentiellement sur l'amélioration de la chaîne de compilation
-des applications, la création des installateurs.
+des applications et la création des installateurs.
 
 \subsection{Le \textit{workflow} de développement de VideoStitch Studio}
 \label{workflow-studio}
@@ -408,7 +408,7 @@ jour et le bon fonctionnement du casque a été testé. Une nouvelle version de 
 SDK avait été mise à disposition, VideoStitch-deps a donc été mis à jour avec les nouvelles
 bibliothèques et \textit{headers} tout comme les machines Buildbot Mac et Linux.\\
 \newline
-Une classe \mintinline{c++}{OculusRift} avait déjà été définie pour permettre l'utilisation
+Une classe \cppinline{OculusRift} avait déjà été définie pour permettre l'utilisation
 de l'Oculus SDK. Après la lecture de la documentation de ce SDK et celle du code,
 le Player a été mis à jour pour utiliser l'API de cette nouvelle version, assurant
 ainsi le support du DK1 et du DK2.
@@ -429,15 +429,15 @@ manuellement une touche du clavier. Cela ne pouvait être fait automatiquement a
 L'implémentation se réalisa avec la création d'une fonction pour désactiver le HSW
 (listing~\ref{player-oculusrift}) et avec une capture d'une touche du clavier pour faire appel à 
 cette fonction (listing~\ref{player-mainwindow}) via le système signal/slot de Qt.\\
-La classe \mintinline{c++}{OculusRift} propose une gestion de l'oculus et une utilisation
+La classe \cppinline{OculusRift} propose une gestion de l'oculus et une utilisation
 à l'ensemble de l'application du Player, via un certain nombre de fonctions publiques
 et de slots Qt\footnote{Un slot est une fonction pouvant être appellée de manière asynchrone 
-par un signal provenant de la même classe ou d'une autre.}. La fenêtre principale \mintinline{c++}{MainWindow}
-de l'application utilise la fonction prédéfinie \mintinline{c++}{keyPressEvent} fournie
+par un signal provenant de la même classe ou d'une autre.}. La fenêtre principale \cppinline{MainWindow}
+de l'application utilise la fonction prédéfinie \cppinline{keyPressEvent} fournie
 par Qt qui \enquote{écoute} les touches pressées par l'utilisateur dans le Player.
 Ici, quelque soit la touche, un signal est envoyé pour demander la désactivation du HSW.
 \begin{listing}
-  \begin{minted}[firstnumber=109]{c++}
+  \begin{minted}[firstnumber=109]{cpp}
     void OculusRift::disableHSW() {
       ovrHSWDisplayState hsw;
       ovrHmd_GetHSWDisplayState(hmd, &hsw);
@@ -451,7 +451,7 @@ Ici, quelque soit la touche, un signal est envoyé pour demander la désactivati
 \end{listing}
 
 \begin{listing}
-  \begin{minted}[firstnumber=90]{c++}
+  \begin{minted}[firstnumber=90]{cpp}
   connect(this, SIGNAL(disableOculusHSW()), oculusRift, SLOT(disableHSW()));
   
   void MainWindow::keyPressEvent(QKeyEvent *e) { 
