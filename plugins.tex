@@ -183,16 +183,36 @@ La figure~\ref{entree-sortie-schema} résume les interactions de Vahana au maté
   \caption{Schéma des interactions de Vahana VR au matériel d'entrée/sorties}
   \label{entree-sortie-schema}
 \end{figure}
-Le plugin développé est donc un \emph{adaptateur}, c'est-à-dire qu'il convertit les interfaces
+Le plugin développé correspond au patron de conception\footnote{Ou \textit{design pattern},
+qui est une bonne pratique de conception logicielle.} \emph{adaptateur}, c'est-à-dire qu'il convertit les interfaces
 et le fonctionnement du SDK du constructeur sous une autre interface, celle attendue
 par le programme client, Vahana VR\cite{adapter-design-pattern}.\\
 \newline
 Ces interfaces attendues sont définies dans Vahana, et développer un plugin consiste
 à en réaliser les implémentations, comme le montre la figure~\ref{plugins-interface}.
+La séparation des interfaces et de leur implémentations correspond au patron de conception
+\emph{pont}\cite{bridge-design-pattern}~: l'implémentation, concrète, hérite de l'interface 
+et peut évoluer à volonter sans besoin de changer cette dernière.
 \begin{figure}
   \caption{Diagramme des interfaces de Vahana VR et exemple de leurs implémentations dans un plugin}
   \label{plugins-interface}
 \end{figure}
+\ \\
+Tous les plugins développés implémentent la classe \cppinline{Input}. Cela recquiert de l'attention sur quelques
+fonctions~:
+\begin{itemize}
+  \item \cppinline{handle} : indique le type du plugin, c'est ce qui permet de distinguer
+  ce plugin d'un autre, car ils répondent tous à la même interface.
+  \item \cppinline{create} : tente la création de l'entrée avec les paramètres donnés,
+  si réussi la méthode renvoie un pointeur sur l'objet \cppinline{Input} créé, sinon
+  un pointeur nul.
+  \item \cppinline{readFrame} : appellée par Vahana VR, le plugin doit renvoyer la
+  dernière image capturée par la caméra -- ou carte d'acquisition. Cette fonction
+  est appellée au moins 25 fois par seconde, une vidéo n'étant finalement qu'une succession très rapide d'images.
+\end{itemize}
+L'implémentation de la classe \cppinline{Output} est similaire à la classe \cppinline{Input},
+à la différence qu'elle envoie des images (méthode \cppinline{writeFrame}) et ne les lit pas (méthode \cppinline{readFrame}).\\
+\newline
 
 \subsection{Quelques difficultés et solutions spécifiques}
 Chaque plugin s'appuyant sur un SDK d'un constructeur différent, un certain nombre
