@@ -13,11 +13,11 @@ L'opération se déroule en deux étapes.
 \paragraph{}
 Premièrement il faut préparer le dossier du dépôt A, comme le montre le listing~
 \ref{preparation-dossier}.
-Après une création d'une nouvelle copie du dépôt A (ligne 1),
+Après une création d'une nouvelle copie locale du dépôt A avec \mintinline{bash}{git clone} (ligne 1),
 la commande \mintinline{bash}{git filter-branch} va supprimer tous les fichiers et
 toutes les modifications qui ne concerne pas le dossier (ligne 2). Le dépôt contient
-désormais à sa racine le contenu du dossier. Il faut le déplacer vers le nom du
-dossier souhaité (lignes 3) puis enregistrer cette modification avec \mintinline{bash}{git commit} (lignes 4).
+désormais à sa racine le contenu de ce dossier. Il faut le déplacer vers le nom du
+dossier souhaité pour le dépôt B (ligne 3) puis enregistrer cette modification avec \mintinline{bash}{git commit} (ligne 4).
 \begin{listing}
   \begin{minted}{bash}
     git clone <repository A url> && cd <repository A url>
@@ -32,8 +32,8 @@ dossier souhaité (lignes 3) puis enregistrer cette modification avec \mintinlin
 \paragraph{}
 Ensuite, il s'agit de déplacer le dossier tel que le montre le listing~\ref{deplacement-dossier}.
 Après avoir créé une copie du dépôt B (ligne 1), la gestion décentralisée des dépôts
-par Git permet de créer une connexion au dépôt A (ligne 2) et d'en tirer les fichiers
-et historique (ligne 3). C'est tout, la copie du dépôt A peut être supprimée (ligne 4).
+par Git permet de créer une \emph{connexion à la copie locale} du dépôt A (ligne 2) et d'en tirer fichiers
+et historique (ligne 3). Le dossier a été déplacé, la copie du dépôt A peut être supprimée (ligne 4).
 \begin{listing}
   \begin{minted}{bash}
     git clone <repository B url> && cd <repository B url>
