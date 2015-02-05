@@ -162,7 +162,7 @@ deux restant proposent une capture pour des caméras d'un constructeur en partic
 Les premiers plugins sont systématiquement distribués avec Vahana VR. Les deux derniers
 furent développé à la demande d'un client et ne sont distribués selon les besoins.\\
 \newline
-Leurs développement ont suivis relativement les même étapes.
+Leurs développements ont suivis relativement les même étapes.
 Tout d'abord, il s'agissait d'installer la caméra ou la carte d'acquisition sur la 
 machine de développement et de la mettre en fonctionnement. Le constructeur va fournir
 deux ressources~: le pilote pour que le système puisse utiliser le matériel, et un
@@ -183,8 +183,16 @@ La figure~\ref{entree-sortie-schema} résume les interactions de Vahana au maté
   \caption{Schéma des interactions de Vahana VR au matériel d'entrée/sorties}
   \label{entree-sortie-schema}
 \end{figure}
-\ \\
-
+Le plugin développé est donc un \emph{adaptateur}, c'est-à-dire qu'il convertit les interfaces
+et le fonctionnement du SDK du constructeur sous une autre interface, celle attendue
+par le programme client, Vahana VR\cite{adapter-design-pattern}.\\
+\newline
+Ces interfaces attendues sont définies dans Vahana, et développer un plugin consiste
+à en réaliser les implémentations, comme le montre la figure~\ref{plugins-interface}.
+\begin{figure}
+  \caption{Diagramme des interfaces de Vahana VR et exemple de leurs implémentations dans un plugin}
+  \label{plugins-interface}
+\end{figure}
 
 \subsection{Quelques difficultés et solutions spécifiques}
 Chaque plugin s'appuyant sur un SDK d'un constructeur différent, un certain nombre
@@ -229,7 +237,8 @@ permettant de couvrir les besoins usuels du logiciel.
 
 \subsection{Documentation}
 Deux documentations ont ensuite été écrites.\\
-Chaque plugin fut 
+Chaque plugin fut
+Puis une documentation générale fut écrite sur le wiki interne. 
 
 \subsection{Tests et \textit{QA} de l'intégration des \textit{plugins}}
 
