@@ -4,30 +4,44 @@
 \subsection{Contexte}
 Dès le début du développement de Vahana VR, la question des entrées et des sorties
 du logicel s'était posée. En effet, Studio étant un logiciel de montage de vidéos
-360, ses seules entrées sont des fichiers vidéos, issus des caméras de la monture,
-comme présenté dans la section \cf{importation-videos}. De même, la sortie proposée 
-est l'équirectangulaire représentant la vidéo 360 obtenue, comme présenté dans la section \cf{exportation}.\\
+360, ses seules entrées sont des fichiers vidéos, issus des caméras de la monture. De même, la seule sortie
+est le fichier vidéo 360, comme présenté dans la section \cf{exportation}.\\
 Ce qui est ici appellé \emph{entrées} sont les données envoyées au programme, quand
 les \emph{sorties} sont les données émises par ce programme en retour.\\
-Et, contrairement à Studio, pour permettre la vidéo 360 en direct, Vahana VR s'affranchit des fichiers
+Pour permettre la vidéo 360 en direct, Vahana VR, contrairement à Studio, s'affranchit des fichiers
 vidéos importés et propose de capturer directement les images des caméras, via
-des cartes d'acquisitions branchées sur la machine utilisée. De même, le logiciel peut émettre 
-plusieurs fluxs en sortie permettant, par exemple, le \textit{streaming} ou encore la réémissions vers
-une carte d'acquisition, l'export d'un equirectangulaire sous forme de fichier
-sur le disque dur étant toujours possible.\\
+des cartes d'acquisitions branchées sur la machine utilisée. De même, Vahana VR peut émettre 
+plusieurs fluxs en sortie permettant, par exemple, le \textit{streaming} ou la réémissions vers
+une carte d'acquisition, en plus de l'export de la vidéo 360 sur le disque dur.\\
 \begin{figure}
   \centering
+  \setlength{\unitlength}{8mm}
+  \begin{picture}(16,5)
+    \linethickness{0.3mm}
+    \thicklines
+    \put(4,0.5){\small Entrées}
+    \put(4,4.2){\vector(2,-1){2}} \put(2.2,4.2){$1$ audio }
+    \put(4,3){\vector(2,0){2}}    \put(2,2.5){$n$ vidéos}
+    \put(4,1.8){\vector(2,1){2}}  \put(4.1,2.2){$\Shortstack{. . . .}$}
+    \put(7,0.5){\small Stitch 360}
+    \put(6,2){\framebox(4,2){\large Vahana VR}}
+    \put(11,0.5){\small Sorties}
+    \put(10,3){\vector(3,2){2}}  \put(12.25,4.2){HDMI}
+    \put(10,3){\vector(4,1){2}}  \put(12.25,3.4){SDI}
+    \put(10,3){\vector(4,-1){2}} \put(12.25,2.4){RTMP}
+    \put(10,3){\vector(3,-2){2}} \put(12.25,1.6){Disque dur}
+  \end{picture}
   \caption{Schéma des entrées/sorties de Vahana VR}
 \end{figure}
 
 \subsection{Problématique}
-Dès lors, Vahana VR étant destiné à des sociétés de production, le logiciel doit
+Dès lors, Vahana VR étant destiné à des sociétés de production, il doit
 être compatible avec un maximum de standards, caméras et cartes d'acquisitions vidéos
 pour être facilement adopté. Cependant, tout matériel informatique récquérant des pilotes
 \footnote{Programme permettant au système d'exploitation d'interagir avec le matériel couvert par ce pilote\cite{pilote-informatique}.}
-, et, les besoins des clients en entrées-sorties n'étant pas les mêmes, il n'était
+, et, les besoins des clients en entrées/sorties n'étant pas les mêmes, il n'était
 alors pas possible de concevoir un logiciel monolithique contenant tous les programmes 
-d'entrées-sorties supportés~: chaque installation du logiciel aurait requis au client 
+d'entrées/sorties supportés~: l'installation de Vahana VR aurait requis au client 
 une installation de l'ensemble des pilotes.\\
 De plus, un client pourrait souhaiter utiliser du matériel entrée/sortie encore
 non supporté. Il serait intéressant qu'il puisse réaliser son propre développement
