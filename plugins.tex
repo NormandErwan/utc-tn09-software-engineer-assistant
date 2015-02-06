@@ -174,7 +174,9 @@ Leurs développements respectifs ont suivis les même étapes~:
 Tout d'abord, il s'agissait d'installer la caméra ou la carte d'acquisition sur la 
 machine de développement et de la mettre en fonctionnement. Le constructeur va fournir
 deux ressources~: le pilote pour que le système puisse utiliser le matériel, et un
-SDK pour qu'un développeur puisse développer une application utilisant ce matériel.
+SDK pour qu'un développeur puisse écrire une application utilisant ce matériel.
+Ce SDK est donc une dépendance du plugin~: ses \textit{headers} et bibliothèques
+ont été ajoutés au dépendances sur le dépôt VideoStitch-deps.\\
 \begin{figure}
   \centering
   \setlength{\unitlength}{4mm}
@@ -228,6 +230,10 @@ l'utilisateur contient, par exemple~:
   \item Le \textit{framerate}, c'est-à-dire le nombre d'images par seconde qui 
   seront capturées. C'est ce paramètre qui règle le nombre 
   d'appels par secondes que Vahana VR va faire de la fonction \cppinline{readFrame}.
+  \item Le \textit{pixel format} utilisé, c'est-à-dire le format de couleur. Un 
+  certain nombre d'encodages des couleurs pour un pixel existent et une sortie peut attendre un
+  format bien particulier, tout comme une entrée peut retourner des images sous un
+  format précis.
 \end{itemize}
 Cette liste est enrichie par d'autres paramètres selon chaque \textit{plugin} et 
 les capacités du SDK du constructeur. Par exemple, Ximea propose des réglages
@@ -248,16 +254,68 @@ L'implémentation de cette interface s'effectue avec quelques fonctions~:
   \item \cppinline{std::vector<DisplayMode> supportedDisplayModes(const Device& device)}~:
   retourne l'ensemble des couples résolution-\textit{framerate} supportés par le \textit{device}.
   \item \cppinline{std::vector<PixelFormats> supportedPixelFormat(const Device& device)}~:
-  retourne l'ensemble des formats de couleur supportés par le \textit{device}. Un 
-  certain nombre d'encodages de la couleur existent et une sortie peut attendre un
-  format bien particulier, tout comme une entrée peut retourner des images sous un
-  format précis.
-\end{itemize}
+  retourne l'ensemble des formats de couleur supportés par le \textit{device}.\end{itemize}
+\ \\
+La documentation accompagnant les SDK est ensuite lue, tout comme les programmes
+examples fournis, pour comprendre les possiblités offertes, définir les différents
+paramètres qui seront utilisés, et, enfin, implémenter les fonctions des interfaces.\\
+Un résumé global de ces implémentations peut être décrit, les approches des différents SDK restant globalement
+les mêmes.
+Par exemple, voici l'implémentation des méthodes \shellinline{create(const Config* parameters)} 
+et \shellinline{devices()}, dont les fonctionnements sont assez similaires~:
+\begin{enumerate}
+  \item Tout d'abord, une initialisation du SDK du constructeur est réalisée. Si
+  elle échoue, le driver n'est alors pas installé.
+  \item Seulement pour \shellinline{create} sont récupéré l'ensemble des paramètres
+  de la configuration et la validité de leurs valeurs est testée.
+  \item Une itération est réalisée sur tous les \textit{devices} disponibles.\\
+  \shellinline{create} va sélectionner celui précisé dans les paramètres, quand \shellinline{devices}
+  va tous les garder en mémoire.
+  \item Un pointeur\footnote{Ou encore appelé \textit{handle} dans les SDK utilisant 
+  le système COM de Microsoft.} est récupéré sur chaque \textit{device} sélectionné
+  à l'étape précédente.
+  \item Grace à ce pointeur, le \textit{device} est configuré~: selon les paramètres
+  pour \shellinline{create} ou afin de préparer la détection des paramètres supportés pour
+  \shellinline{devices}.
+  \item Seulement pour \shellinline{create} est lancée la capture vidéo.
+  \item Enfin la méthode se termine et retourne un pointeur sur l'objet implémentant
+  l'interface \shellinline{Input} pour \shellinline{create}; ou la liste des \shellinline{devices}
+  pour la fonction \shellinline{devices}.
+\end{enumerate}
+Si une de ses étape échoue, la méthode s'arrête à son tour et écrit un message d'erreur
+qui pourra être récupéré et affiché par Vahana VR à l'utilisateur.\\
+\newline
+Enfin, la fonction \shellinline{readFrame} consiste simplement en deux étapes~:
+\begin{enumerate}
+  \item Lire la dernière image capturée par l'entrée.
+  \item Transformer l'image du format de couleur de capture vers le format de couleurs
+  RGBA. En effet, les applications VideoStitch, pour optimiser les algorithmes,
+  ne travaillent qu'avec ce format. Ainsi un certain nombre de fonctions de transformations, utilisant
+  CUDA\footnote{Voir la section \cf{videostitch-sdk}.}, sont disponibles.
+  La méthode appelle simplement celle qui correspond et copie le résultat dans le
+  tampon \cppinline{uint32_t* frame}.
+\end{enumerate}
 
-\subsection{Quelques difficultés et solutions spécifiques}
+\subsection{Quelques problèmes et solutions spécifiques}
 Chaque \textit{plugin} s'appuyant sur un SDK d'un constructeur différent, un certain nombre
 de problèmes furent rencontrés pour réaliser l'implémentation totale des interfaces.
 Quelques difficultés et leurs solutions sont notables.
+
+\subsubsection{Fonctions de rappel}
+La fonction \shellinline{readFrame} a souvent été mise en \oe uvre par un systèmes
+de fonctions de rappels~: bien souvent pour récupérer les images, il fallait passer au 
+SDK lors de la configuration de l'entrée un pointeur sur une fonction\cite{fonction-de-rappel}.
+Ainsi à chaque image capturée par la caméra ou le port, cette fonction de rappel sera appellée
+par le SDK avec le contenu de l'image en argument. Ce contenu est donc écrit dans
+une variable du plugin qui sera lue par la méthode \shellinline{readFrame}.\\
+Dès lors, il peut se créer un problème de synchronisation entre ces deux fonctions.
+La ressource partagée doit être protégée d'une double utilisation~: une exclusion
+mutuelle\cite{exclusion-mutuelle} a été mise en place. De plus, la ressource ne doit 
+être écrite qu'une fois qu'elle a été lue~: les deux fonctions ont donc été placées 
+dans des threads séparés et une condition variable a été utilisée. C'est une primite
+de synchronisation C++ qui permet de bloquer deux threads jusqu'à l'un reçoive une
+notification de l'autre\cite{condition-variable}~: que la variable a été lue pour
+la fonction de rappel, et que la variable a été écrite pour la fonction \shellinline{readFrame}.
 
 \subsubsection{Partage des ressources Yuan}
 
