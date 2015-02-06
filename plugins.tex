@@ -285,15 +285,15 @@ et \shellinline{devices()}, dont les fonctionnements sont assez similaires~:
 Si une de ses étape échoue, la méthode s'arrête à son tour et écrit un message d'erreur
 qui pourra être récupéré et affiché par Vahana VR à l'utilisateur.\\
 \newline
-Enfin, la fonction \shellinline{readFrame} consiste simplement en deux étapes~:
+De même, la fonction \shellinline{readFrame} consiste toujours en deux étapes~:
 \begin{enumerate}
   \item Lire la dernière image capturée par l'entrée.
-  \item Transformer l'image du format de couleur de capture vers le format de couleurs
-  RGBA. En effet, les applications VideoStitch, pour optimiser les algorithmes,
-  ne travaillent qu'avec ce format. Ainsi un certain nombre de fonctions de transformations, utilisant
-  CUDA\footnote{Voir la section \cf{videostitch-sdk}.}, sont disponibles.
-  La méthode appelle simplement celle qui correspond et copie le résultat dans le
-  tampon \cppinline{uint32_t* frame}.
+  \item Transformer l'image du format de couleurs de capture vers le format de couleurs
+  RGBA. En effet, pour optimiser les algorithmes, les applications VideoStitch
+  ne travaillent qu'avec ce format. Ainsi un certain nombre de fonctions, utilisant
+  CUDA\footnote{Voir la section \cf{videostitch-sdk-section}.}, sont disponibles pour opérer ces transformations vers le RGBA.
+  La méthode appelle simplement la fonction nécessaire et en copie le résultat dans le
+  tampon \cppinline{uint32_t* frame} pour Vahana VR.
 \end{enumerate}
 
 \subsection{Quelques problèmes et solutions spécifiques}
