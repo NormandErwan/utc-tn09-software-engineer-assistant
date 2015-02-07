@@ -41,7 +41,7 @@ pour être facilement adopté. Cependant, tout matériel informatique requérant
 \footnote{Programme permettant au système d'exploitation d'interagir avec le matériel couvert par ce pilote\cite{pilote-informatique}.}
 , et, les besoins des clients en entrées/sorties n'étant pas les mêmes, il n'était
 alors pas possible de concevoir un logiciel monolithique contenant tous les programmes 
-d'entrées/sorties supportés~: l'installation de Vahana VR aurait requis au client 
+d'entrées/sorties supportés~: l'installation de Vahana VR aurait également requis au client 
 une installation de l'ensemble des pilotes.\\
 De plus, un client pourrait souhaiter utiliser du matériel entrée/sortie encore
 non supporté. Il serait intéressant qu'il puisse réaliser son propre développement
@@ -135,25 +135,20 @@ Concrètement, Vahana VR définit trois interfaces à implémenter pour les \tex
   \item Une interface \textit{discovery} dont le rôle est d'indiquer les possibilités
     de créations entrées/sorties.
 \end{itemize}
-Le diagramme de classes UML de la figure~\ref{uml-interfaces} les détaille.\\
-\begin{figure}
-  \centering
-  \caption{Diagramme de classes des interfaces}
-  \label{uml-interfaces}
-\end{figure}
+\ \\
 Ainsi, lors de son exécution, Vahana VR va chercher les bibliothèques présentes dans le dossier
 \shellinline{plugins} à sa racine et va charger les \textit{plugins} implémentant
 au moins un de ces interfaces. Une fois chargés, le logiciel possède désormais une collection d'entrées
 ou de sorties potentielles. En fonction de données renvoyée par les \textit{discovery},
 l'utilisateur peut demander, dans l'interface de Vahana VR, de 
 créer une nouvelle entrée -- ou sortie -- pour \textit{plugin}. Et via les
-interface implémentées par le \textit{plugin}, le logiciel va pouvoir faire exécuter le code
+interfaces implémentées par le \textit{plugin}, le logiciel va pouvoir faire exécuter le code
 de création de l'entrée -- ou sortie -- du \textit{plugin}.\\
 
 \subsection{Conception des \textit{plugins}}
 Cinq \textit{plugins} furent écrits et maintenus pour répondre aux besoins. Ils s'appuient 
 tous sur du matériel, comme des caméras ou des cartes d'acquisitions, conçu par 
-des entreprise externes à VideoStitch.
+des entreprises externes à VideoStitch.
 L'approche retenue a donc été de créer un nouveau \textit{plugin} par constructeur~:
 \begin{itemize}
   \item Entrée/sortie SDI et HDMI avec les cartes d'acquisition DeckLink
@@ -168,7 +163,7 @@ L'approche retenue a donc été de créer un nouveau \textit{plugin} par constru
   la transmission par Ethernet\cite{gige}.} avec les caméras Genie TS de Teledyne Dalsa\footnote{\url{http://www.teledynedalsa.com/imaging/products/cameras/area-scan/genie-ts/}}.
 \end{itemize}
 \ \\
-Leurs développements respectifs ont suivis les même étapes~:
+Leurs développements respectifs ont suivi les même étapes~:
 
 \subsubsection{Prise en main}
 Tout d'abord, il s'agissait d'installer la caméra ou la carte d'acquisition sur la 
@@ -176,7 +171,7 @@ machine de développement et de la mettre en fonctionnement. Le constructeur va 
 deux ressources~: le pilote pour que le système puisse utiliser le matériel, et un
 SDK pour qu'un développeur puisse écrire une application utilisant ce matériel.
 Ce SDK est donc une dépendance du plugin~: ses \textit{headers} et bibliothèques
-ont été ajoutés au dépendances sur le dépôt VideoStitch-deps.\\
+ont été ajoutés aux dépendances sur le dépôt VideoStitch-deps.\\
 \begin{figure}
   \centering
   \setlength{\unitlength}{4mm}
@@ -240,7 +235,7 @@ les capacités du SDK du constructeur. Par exemple, Ximea propose des réglages
 de l'objectif de la caméra.\\
 \newline
 L'interface \cppinline{Discovery} permet d'indiquer à Vahana VR, et par extension
-à l'utilisateur, les ensembles de de paramètres et valeurs utilisables pour la
+à l'utilisateur, les ensembles de paramètres et valeurs utilisables pour la
 création des entrées/sorties du \textit{plugin}. 
 L'implémentation de cette interface s'effectue avec quelques fonctions~:
 \begin{itemize}
@@ -248,7 +243,7 @@ L'implémentation de cette interface s'effectue avec quelques fonctions~:
   dans par les paramètres de configuration.
   \item \cppinline{std::vector<Device> devices()}~: indique la liste des entrées/sorties
   disponibles~: pour les cartes d'acquision cela correspond à l'ensemble des ports
-  entrées/sorties présents sur la carte; quand aux caméras, seules celles branchées apparraîtront. 
+  entrées/sorties présents sur la carte; quant aux caméras, seules celles branchées apparraîtront. 
   Un \cppinline{Device} est simplement le numéro de la caméra, ou du port, ainsi
   que son type~: entrée, sortie, ou les deux.
   \item \cppinline{std::vector<DisplayMode> supportedDisplayModes(const Device& device)}~:
@@ -266,7 +261,7 @@ et \shellinline{devices()}, dont les fonctionnements sont assez similaires~:
 \begin{enumerate}
   \item Tout d'abord, une initialisation du SDK du constructeur est réalisée. Si
   elle échoue, le driver n'est alors pas installé.
-  \item Seulement pour \shellinline{create} sont récupéré l'ensemble des paramètres
+  \item Seulement pour \shellinline{create} sont récupérés l'ensemble des paramètres
   de la configuration et la validité de leurs valeurs est testée.
   \item Une itération est réalisée sur tous les \textit{devices} disponibles.\\
   \shellinline{create} va sélectionner celui précisé dans les paramètres, quand \shellinline{devices}
@@ -275,20 +270,20 @@ et \shellinline{devices()}, dont les fonctionnements sont assez similaires~:
   le système COM de Microsoft.} est récupéré sur chaque \textit{device} sélectionné
   à l'étape précédente.
   \item Grace à ce pointeur, le \textit{device} est configuré~: selon les paramètres
-  pour \shellinline{create} ou afin de préparer la détection des paramètres supportés pour
+  pour \shellinline{create} ou afin de détecter les paramètres supportés pour
   \shellinline{devices}.
   \item Seulement pour \shellinline{create} est lancée la capture vidéo.
   \item Enfin la méthode se termine et retourne un pointeur sur l'objet implémentant
   l'interface \shellinline{Input} pour \shellinline{create}; ou la liste des \shellinline{devices}
   pour la fonction \shellinline{devices}.
 \end{enumerate}
-Si une de ses étape échoue, la méthode s'arrête à son tour et écrit un message d'erreur
+Si une de ces étapes échoue, la méthode s'arrête à son tour et écrit un message d'erreur
 qui pourra être récupéré et affiché par Vahana VR à l'utilisateur.\\
 \newline
 De même, la fonction \shellinline{readFrame} consiste toujours en deux étapes~:
 \begin{enumerate}
   \item Lire la dernière image capturée par l'entrée.
-  \item Transformer l'image du format de couleurs de capture vers le format de couleurs
+  \item Transformer l'image du format de couleur de capture vers le format de couleur
   RGBA. En effet, pour optimiser les algorithmes, les applications VideoStitch
   ne travaillent qu'avec ce format. Ainsi un certain nombre de fonctions, utilisant
   CUDA\footnote{Voir la section \cf{videostitch-sdk-section}.}, sont disponibles pour opérer ces transformations vers le RGBA.
@@ -302,7 +297,7 @@ de problèmes furent rencontrés pour réaliser l'implémentation totale des int
 Quelques difficultés et leurs solutions sont notables.
 
 \subsubsection{Fonctions de rappel}
-La fonction \shellinline{readFrame} a souvent été mise en \oe uvre par un systèmes
+La fonction \shellinline{readFrame} a souvent été mise en \oe uvre par un système
 de fonctions de rappels~: bien souvent pour récupérer les images, il fallait passer au 
 SDK lors de la configuration de l'entrée un pointeur sur une fonction\cite{fonction-de-rappel}.
 Ainsi à chaque image capturée par la caméra ou le port, cette fonction de rappel sera appellée
@@ -312,7 +307,7 @@ Dès lors, il peut se créer un problème de synchronisation entre ces deux fonc
 La ressource partagée doit être protégée d'une double utilisation~: une exclusion
 mutuelle\cite{exclusion-mutuelle} a été mise en place. De plus, la ressource ne doit 
 être écrite qu'une fois qu'elle a été lue~: les deux fonctions ont donc été placées 
-dans des threads séparés et une condition variable a été utilisée. C'est une primite
+dans des threads séparés et une condition variable a été utilisée. C'est une primitive
 de synchronisation C++ qui permet de bloquer deux threads jusqu'à l'un reçoive une
 notification de l'autre\cite{condition-variable}~: que la variable a été lue pour
 la fonction de rappel, et que la variable a été écrite pour la fonction \shellinline{readFrame}.
@@ -364,7 +359,7 @@ Ces documentations sont toutes rappatriées et fusionnées à celle de Vahana VR
 qui est ajoutée à l'installateur.\\
 \newline
 En outre, une documentation générale fut écrite sur le wiki interne. Cette version revient
-plus spéciquement sur chaque plugin~: quels interfaces sont implémentées, comment
+plus spécifiquement sur chaque plugin~: quels interfaces sont implémentées, comment
 et pourquoi. Un état de l'avancement et de fonctionnement de chaque plugin 
 a été tenu à jour.
 
@@ -374,11 +369,11 @@ dans Vahana VR grâce aux interfaces, qui étaient déjà connues. L'utilisation
 se révéla particulièrement pratique~: il suffisait de remplacer les bibliothèques par de nouvelles versions pour
 obtenir les nouvelles capacitées implémentées.\\
 \newline
-Ce développement en parallèle fut très utile, car l'équipe de développement étant 
+Ce travail en parallèle fut très utile, car l'équipe de développement étant 
 cliente de ses plugins, de nombreux tests furent effectués pour s'assurer d'une part 
 de la bonne implémentation des plugins, et d'autre part de leur bonne intégration dans Vahana VR.
 Combiné à l'utilisation des pratiques agiles, les tickets de cette mission ont vu
-un certains nombre d'aller retour entre leur \textit{QA} par l'équipe et leur développement,
+un certains nombre d'aller-retour entre leur \textit{QA} par l'équipe et leur développement,
 que ce soit pour des bogues ou des cas d'usages non prévus.\\
 Pour achever cet audit qualité, de nombreuses démonstrations complète ont été faites
 sur des machines de démonstration vierge d'environnement de développement, et quelques
@@ -386,8 +381,8 @@ clients, dits \textit{early adopter}, ont pu avoir accès aux plugins, alors enc
 développement, notamment pour les utiliser sur des caméras, cartes d'acquisition ou
 écrans (pour récupérer les sorties) n'ayant pas été testés en interne. Pour exemple,
 il est arrivé à deux reprise d'organiser une journée de travail en conversation
-avec un client pour obtenir une version fonctionnelle à ses besoin. D'après ses
-retours, je corrigeais le plugin, et le renvoyais compilé afin qu'il le remplace
+avec un client pour obtenir une version fonctionnelle à ses besoins. D'après ses
+retours, le plugin était corrigé et renvoyé compilé afin qu'il le remplace
 simplement dans son dossier d'installation et le teste à nouveau.\\
 Par ces pratiques, les plugins ont au final gagné en qualité et stabilité.\\
 \newline
@@ -412,7 +407,7 @@ client de ces composants, des tests importants et utiles de qualité ont pu êtr
 sur ces plugins. Une grande partie du succès de ce logiciel qui sortira prochainnement
 tiendra à sa capacité à supporter de nombreuses entrées/sorties vidéo.\\
 \newline
-Il reste cependant du travail a effectuer~: les interfaces entrées/sorties devraient
+Il reste cependant du travail à effectuer~: les interfaces entrées/sorties devraient
 être augmentées pour prendre en charge l'audio, et l'interface \textit{discovery}
 devrait intégrer une détection de signal des paramètres actuellement configurés
 sur les caméras branchées en entrée ou sur les écrans en sorties.\\

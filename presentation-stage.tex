@@ -7,13 +7,13 @@ work on a challenging and immersive 360 video software}}.\\
 Bien que le sujet soit assez général, le domaine de l'entreprise se trouvait être très intéressant
 et durant l'entretien qui s'est déroulé à la mi-mai, quelques sujets ont été
 abordés~: Nicolas Burtey a proposé de travailler sur le VideoStitch Player d'une part,
-à la suite d'Alexis Pontin et pour terminer son travail, et d'autre part de
-travailler au développement du nouveau produit,
+à la suite d'Alexis Pontin et pour terminer son travail, et d'autre part de participer
+au développement du nouveau produit,
 Vahana VR, qui allait débuter dans quelques semaines.\\
 M. Burtey n'était pas encore certain de développer Vahana VR, 
 et envisageait également à la conception du \textit{stitch} stéréoscopique 3D\footnote{Qui
 consiste, brièvement, en la conception de deux équirectangulaires pour la même
-scène filmée~: un pour chaque œil en exploitant l'effet de la parallaxe, recréant 
+scène filmée~: un pour chaque œil qui, en exploitant l'effet de la parallaxe, recrée 
 un effet de relief\cite{videostitch-stereo}
 \cite{image-stereoscopique}}~: il proposa également un sujet sur 
 la prise en charge de la 360 stéréo dans Videostitch Studio.\\
@@ -46,7 +46,7 @@ Ces deux méthodes sont des \emph{méthodologies agiles}\cite{methode-agile}.\\
 \newline
 Scrum présente un certain nombres de pratiques; les éléments utilisés 
 dans le cadre de VideoStitch sont essentiellement des événements et des artefacts 
-décrits dans le\textit{Scrum guide}\cite{scrum-guide}~:
+décrits dans le \textit{Scrum guide}\cite{scrum-guide}~:
 \begin{itemize}
   \item \textbf{Sprint}~: le principe de la méthode repose sur le découpage du projet en 
 	périodes de temps, nommées \emph{sprint}, dont la durée à VideoStitch fut de 
@@ -65,15 +65,15 @@ décrits dans le\textit{Scrum guide}\cite{scrum-guide}~:
 		des éléments d'amélioration, qui après vote, seront mis en place dès le sprint
 		suivant.
 		\item \textit{Planification du sprint suivant}~: l'équipe détermine le but du sprint
-		suivant, et à partir du \textit{backlog} en détermine son contenu concret en liste de tâches.
+		suivant, et à partir du \textit{backlog} précise son contenu concret en liste de tâches.
 	\end{enumerate}
   \item \textbf{Backlog}~: c'est une liste de l'ensemble des tâches (appelées \emph{tickets})
-  de tout ce qui est nécessaire pour enrichir le projet. Elle initialement créée avant
+  de tout ce qui est nécessaire pour enrichir le projet. Elle initialement crée avant
   le début du projet, et enrichie lors des sprints en fonction de l'apparition des besoins nouveaux.
   \item \textbf{Status des tickets}~: après être choisis du \textit{backlog} au sprint courant, 
   un ticket doit passer trois statuts pour être considéré comme réalisé~:
     \begin{enumerate}
-      \item \textit{Selected for development}~: le ticket n'est pas réalisée.
+      \item \textit{Selected for development}~: le ticket n'est pas réalisé.
       \item \textit{In progress}~: le ticket est en cours de réalisation par un développeur.
       \item \textit{QA}~: le ticket est réalisé et attends une validation d'une autre personne.
       \item \textit{Done}~: le ticket est réalisé et validé. 
@@ -97,10 +97,6 @@ Le présent stage a suivi l'équipe dans ses sprints, en l'assistant parfois sur
 tickets, tout en maintenant en priorité les deux missions de fond présentées plus haut, dans 
 la section \cf{le-sujet}.\\
 \newline
-Pour assurer le bon déroulement des sprints, le logiciel de suivi des tickets et 
-de projets Jira\footnote{url{https://fr.atlassian.com/software/jira/}} est utilisé,
-il permet de gérer le \textit{backlog} et fourni une interface à l'équipe sur le status des
-tickets~: chacun voit ce sur quoi travaille les autres.\\
 En outre, un wiki interne est utilisé pour documenter et mutualiser les différentes
 connaissances et apprentissages de l'équipe.\\
 Enfin, toutes les communications écrites et orales se font en anglais, du fait
@@ -111,8 +107,8 @@ de la présence dans l'équipe de personnes de langue natale espagnole, allemand
 \paragraph{}
 Les quatre produits de VideoStitch sont codés en \emph{C++}, avec utilisation des dernières possibilités
 de C++11; VideoStitch SDK utilise également la bibliothèque \emph{CUDA} pour les calculs intensifs et parallélisables.
-Le compilateur de chaque OS est utilisé~: g++ pour Linux, clang pour Max OS X et 
-cl du Windows SDK, également utilisé par Visual Studio.
+Le compilateur natif de chaque OS est utilisé~: g++ pour Linux, clang pour Max OS X et 
+cl sous Windows.
 \paragraph{}
 \begin{wrapfigure}[7]{l}{2.5cm}
   \centering
@@ -129,12 +125,12 @@ asynchrone~: en addition à l'appel de fonctions, telle qu'existant depuis le C,
 un objet peut émettre des \textit{signaux}. D'autres objets peuvent recevoir à leur tour
 ces signaux pour exécuter des fonctions, appelées dans ce cas \textit{slot}.\cite{qt}
 \paragraph{}
-\begin{wrapfigure}[5]{r}{3.5cm}
+\begin{wrapfigure}[6]{r}{3.5cm}
   \centering
   \includegraphics[width=3cm]{images/git-logo.png}
   \caption{Logo de Git}
 \end{wrapfigure}
-Tous les codes sources sont partagés et versionnés grâce au système de gestion de version 
+Tous les codes source sont partagés et versionnés grâce au système de gestion de version 
 distribué \emph{Git}\cite{gestion-versions}. Ce logiciel permet à l'équipe de travailler
 avec des \emph{dépôts}~: un dépôt Git est simplement un dossier associé à une base
 de donnée archivant l'historique de toutes les modifications qui y ont été effectuées. Chaque développeur
@@ -143,7 +139,7 @@ transmettent régulièrement les modifications qu'ils ont apportées pour synchr
 les historiques de toutes les copies~: ainsi, chaque membre de l'équipe sait qui a modifié quoi et quand.\\
 En pratique, comme le montre la figure~\ref{git-diagram}, un serveur est utilisé pour sauvegarder les modifications faites en
 servant de pont entre les développeurs~: chacun y propose ses modifications et l'interroge
-sur les modifications des autres.
+sur celles des autres.
 \paragraph{}
 \begin{wrapfigure}[7]{l}{2.5cm}
   \centering

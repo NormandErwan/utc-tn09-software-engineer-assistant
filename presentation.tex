@@ -26,10 +26,10 @@ des salons ou des conférences. En outre, M. Burtey suit l'avancement des produi
 en passant un jour ou deux dans la semaine avec l'équipe des développeurs.\\
 Nicolas Lopez, Wieland Morgenstern et Henri Rebecq travaillent sur le c\oe ur du
 projet, \cf{videostitch-sdk-section}, mettant au point algorithmes et nouvelles fonctionnalités.\\
-Andrés Peralta, Julien Fond et Raphaël Lemoine travaillent quand à eux à la conception 
+Andrés Peralta, Julien Fond et Raphaël Lemoine travaillent quant à eux à la conception 
 des trois autres produits de VideoStitch basés sur \nameref{videostitch-sdk-section}~: 
 \cf{videostitch-studio-section}, \cf{vahana-vr-section}, \cf{videostitch-player-section}.\\
-Liesbeth De Mey, stagiaire, est en charge de réaliser des \textit{screencast} et 
+Liesbeth De Mey, stagiaire, est en charge de réaliser des démonstrations et 
 des tutoriels vidéos des produits de l'entreprise. Enfin, Jean Duthon et Marie
 Chatelin, stagiaires UTCéens également en TN09, sont en charge, respectivement,
 de la \textit{QA}\footnote{\textit{Quality Assurance}} et de l'intégration continue
@@ -47,7 +47,7 @@ et la photo fish-eye, M. Burtey évolue par la suite dans le domaine de la vidé
   \caption{Logo de Loop'In}
 \end{wrapfigure}
 Il crée sa société de production vidéo, Loop'In, avec laquelle il réalise une 
-certain nombre de vidéos panoramiques à 360\degree pour des sociétés de production (publicité essentiellement). 
+certain nombre de vidéos panoramiques à 360\degree pour le compte de divers clients (publicité essentiellement). 
 Des exemples de ces vidéos sont disponibles à cette adresse : \url{http://www.loop-in.com/galerie/}.
 La vidéo panoramique, étant alors un procédé très jeune encore inconnu du grand public, est 
 lente et difficile à réaliser: beaucoup de tâches doivent être faites de manière 
@@ -60,7 +60,7 @@ d'édition et de montage de vidéos panoramiques : VideoStitch Studio.
 Quand ce logiciel atteint une version stable, en 2014, VideoStitch oriente alors 
 ses efforts vers un nouveau logiciel, Vahana VR, permettant cette fois ci une réalisation 
 et une diffusion en direct de vidéos panoramiques à 360\degree.\\
-Le but de la société est de permettre une réalisation aisée et de qualité de vidéos 
+Le but de la société est de permettre une production aisée et de qualité de vidéos 
 panoramiques à 360\degree, de la capture des images à la diffusion de la vidéo finale, 
 en passant par sa réalisation complète.
 
@@ -128,7 +128,7 @@ planisphère de la figure~\ref{planisphère}.
 Un lecteur vidéo 360 est alors nécessaire pour lire correctement la vidéo~: 
 il va reconstruire la sphère, pour y projeter le panorama et y placer le
 spectateur au centre de cette sphère. Dès lors, le spectateur peut déplacer le 
-regard tout autour de lui pour embrasser le panorama : on entre dans le champs de 
+regard tout autour de lui pour embrasser le panorama : on entre dans le champ de 
 la réalité virtuelle\footnote{La réalité virtuelle est ici comprise dans son sens
   de \enquote{Simulation sensorielle immersive de la réalité}\cite{definition-rv}}.
 
@@ -163,8 +163,7 @@ et propose actuellement quatre produits\cite{videostitch-products}.
 %  \caption{Logo de VideoStitch Studio}
 %\end{wrapfigure}
 Premier logiciel de l'entreprise, sortis en version stable en 2013 pour Windows, Mac OS X et Linux,
-il permet une utilisation post-production de captures vidéos 360, c'est-à-dire 
-la conception de vidéos 360. Le \textit{workflow} de travail avec le logiciel est le suivant : 
+il permet une conception de vidéos 360. Le \textit{workflow} de travail avec le logiciel est le suivant : 
 \subsubsection{Importation des vidéos}
 \label{importation-videos}
 Le cas le plus commun est de capturer la vidéo 360 à l'aide de 6 caméras GoPro 
@@ -197,9 +196,9 @@ sur la même monture, elles ont donc décris les mêmes mouvements dans l'espace
 en décalé sur les vidéos.
 
 \subsubsection{Calibration}
-A cette étape est reconstituée la sphère; ce qui consiste à retrouver la 
+À cette étape est reconstituée la sphère; ce qui consiste à retrouver la 
 position relative de chaque caméra par rapport à la monture.\\
-A un même instant des vidéos, choisis par l'utilisateur, le logiciel trouve des
+À un même instant des vidéos, choisis par l'utilisateur, le logiciel trouve des
 points de contrôle entre les images des différentes caméras, c'est-à-dire des
 points identiques de la scène présents sur au moins deux images. C'est ici que les 
 zones de recouvrements entre les images trouvent leur importance.\\
@@ -212,7 +211,7 @@ Une fois les points trouvés, les vidéos peuvent être superposées et être as
 \end{figure}
 
 \subsubsection{Correction d'exposition}
-Chaque caméra ayant filmé dans une direction, les différentes vidéos auront chacune 
+Chaque caméra ayant filmé dans une direction, les captures vidéos auront chacune 
 des expositions différentes. De même, les balances des blancs peuvent différer
 entre les vidéos. Le logiciel corrige localement ces deux paramètres pour homogénéiser
 le panorama final.
@@ -300,7 +299,7 @@ C'est un lecteur de vidéo 360, développé par Alexis Pontin lors de son TN10 a
 semestre de Printemps 2014, sous Windows, Mac OS X et Linux. Le logiciel permet de lire des vidéos 360 depuis un 
 fichier vidéo équirectangulaire ou depuis un flux RTMP de Vahana VR. La vidéo peut-être
 lue dans un mode interactif avec utilisation de la souris pour déplacer le regard,
-ou en mode Oculus Rift, où la vidéo est projetée dans le casque de réalité virtuelle.
+ou en mode Oculus Rift, où elle est projetée dans le casque de réalité virtuelle.
 L'utilisation du casque est tout à fait naturelle : le casque disposant d'un gyroscope
 et d'un accéléromètre, il renvoie au lecteur la position de la tête de l'utilisateur.\\
 Regarder une vidéo avec l'Oculus Rift depuis un flux RTMP de Vahana VR est une 
@@ -338,7 +337,7 @@ la techologie CUDA de nVidia est utilisée pour exploiter le potentiel de la car
 graphique\footnote{Ou \textit{GPU} pour \textit{Graphics Processing Unit}}. 
 En effet un \textit{GPU} est composé de milliers de c\oe urs fonctionnant en parallèles.
 Or la librairie travaille sur des images vidéos, c'est-à-dire des matrices de pixels,
-avec des calculs massivement parallélisable\cite{videostitch-cuda}.\\
+avec des calculs massivement parallélisables\cite{videostitch-cuda}.\\
 \newline
 Cette librairie est distribuée sous forme de \textit{SDK}\footnote{\textit{Software Development Kit}}, sous Windows, Mac OS X et Linux, 
 pour des clients souhaitant concevoir leur propre caméra ou un logiciel exploitant
@@ -350,11 +349,11 @@ un outil de post-production pour vidéos 360 \footnote{\cf{videostitch-studio}},
 l'entreprise ambitionne désormais d'être le leader du marché.\\
 Le marché est encore jeune, mais se décidera certainement en 2015 et s'alignera
 probablement sur un leader. La technologie sera suffisamment mature, et des rachats
-par de grands groupe sont probable, comme cela s'est produit dans le marché de la
+par de grands groupe sont probables, comme cela s'est produit dans le marché de la
 réalité virtuelle en 2014, avec le rachat de l'Oculus Rift par Facebook 
 \cite{facebook-vr} par exemple.\\
 Ce marché permettra également l'émergence de nouveaux contenus 360 pour les appareils
-de réalité virtuelle, comme par exemple du cinéma ou de la télévision 360.
+de réalité virtuelle, comme du cinéma ou de la télévision 360.
 VideoStitch Studio et Vahana VR sont déjà des outils pertinents pour créer ces 
 nouveaux types de contenus, en particulier Vahana VR pour le streaming 360 en direct.
 Pour cela il est important que Vahana VR soit le premier produit sur le marché

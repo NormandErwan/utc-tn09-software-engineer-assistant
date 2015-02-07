@@ -11,7 +11,7 @@ d'opérations effectuées par [...] un groupe de personnes}\cite{workflow}, ici 
 de VideoStitch. Un \textit{workflow} est une représentation des différentes tâches à accomplir pour installer
 un poste de travail vierge, et compiler une des applications.
 Ce n'est pas l'architecture des logiciels, ni leur développement en lui-même,
-mais comment, à partir des sources et des dépendances, il possible d'arriver au produit
+mais comment, à partir des sources et des dépendances, il est possible d'arriver au produit
 compilé et distribuable au client.\\
 Ce processus met en \oe uvre les concepts présentés à la section 
 \cf{outils-utilisés}, s'articulant autour du développement
@@ -30,13 +30,13 @@ des applications et la création des installateurs.
 
 \subsection{Le \textit{workflow} de développement de VideoStitch Studio}
 \label{workflow-studio}
-Il s'agit tout d'abord de comprendre comment était organisé le \textit{workflow} 
+Il s'agissait tout d'abord de comprendre comment était organisé le \textit{workflow} 
 de VideoStitch Studio.
-Les codes sources et les dépendances avaient été réparties en quatre dépôts Git~: 
+Les codes source et les dépendances avaient été réparties en quatre dépôts Git~: 
 \begin{itemize}
-  \item VideoStitch-sdk, contenant les codes sources de VideoStitch SDK
-  \item VideoStitch-base, contenant des code sources partagés avec le dépôt du VideoStitch Player
-  \item VideoStitch-apps, contenant les codes sources de VideoStitch Studio
+  \item VideoStitch-sdk, contenant les codes source de VideoStitch SDK
+  \item VideoStitch-base, contenant des code source partagés avec le dépôt du VideoStitch Player
+  \item VideoStitch-apps, contenant les codes source de VideoStitch Studio
   \item VideoStitch-deps\footnote{Présentées plus en détails dans \cf{integration-dependances-player}}, 
   contenant les dépendances Windows de VideoStitch Studio 
   nécessaires à sa compilation
@@ -51,7 +51,7 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
 (écrits en bash pour Linux / Mac et en batch pour Windows) pour faire le lien entre les dépôts~:
 \begin{enumerate}
   \item Cloner les dépôts VideoStitch-deps, VideoStitch-base et VideoStitch-apps.
-  \item Copier, via un script présent sur VideoStitch-base, les codes sources partagés.
+  \item Copier, via un script présent sur VideoStitch-base, les codes source partagés.
   \item Copier, via un script batch présent sur VideoStitch-deps, les dépendances pour Windows.
   \item Récupérer la dernière version du VideoStitch SDK compilée par Buildbot, 
   via un script présent sur VideoStitch-apps.
@@ -82,7 +82,7 @@ Ces étapes étaient essentiellement des appels à des commandes et à des scrip
 
     \begin{call}{u}{Copy VideoStitch-deps}{d}{}
     \end{call}
-    \begin{call}{u}{Copy VideoStitch-base}{b}{}
+    \begin{call}{u}{Copy VideoStitch-base}{s}{}
     \end{call}
 
     \begin{call}{u}{updatelib.sh}{a}{}
@@ -147,7 +147,7 @@ Une bibliothèque logicielle sous Windows se constitue de trois types de fichier
 À cela s'ajoute des spécificités autre à celle du système d'exploitation~: un programme, et donc
 ses dépendances, est spécifique à la plateforme visée (32 bits ou 64 bits)\cite{64-bit-computing}
 mais aussi à la configuration compilée (\textit{debug} ou \textit{release})\cite{msdn-debug-release}.\\
-La configuration \textit{debug} permet aux développeur de générer une version pour le débogage,
+La configuration \textit{debug} permet aux développeurs de générer une version pour le déboguage,
 quand la configuration \textit{release} est utilisée comme une version finale et optimisée destinée
 à l'usage du programme.\\
 Enfin, le choix de la plateforme dépend du processeur et du
@@ -180,7 +180,7 @@ sont utilisées dans les même versions. \\
 \newline
 Ainsi, dans le cadre du Player, deux dépendances ont été ajoutées~:
 \begin{itemize}
-  \item \textbf{libVLC}~: SDK de VLC, cette bibliothèque fournit des capacités multimédias.\cite{libvlc}
+  \item \textbf{libVLC}~: SDK de VLC, cette bibliothèque fournit des capacités de lecture multimédia.\cite{libvlc}
   \item \textbf{Oculus SDK}~: cette bibliothèque permet à une application d'exploiter le 
   casque de réalité virtuelle Oculus Rift.\cite{oculus-developer-guide}
 \end{itemize}
@@ -188,7 +188,7 @@ Les dépendances Qt et crashrpt\footnote{Envoi de rapports automatiques lors d'u
 \textit{crash} du logiciel \url{https://code.google.com/p/crashrpt/}} étaient déjà 
 présentes et utilisées par Studio.\\
 En parallèle, les dépendances libVLC et Oculus SDK ont été installées sur les Buidlbots Mac et Linux.\\
-Quand aux dépendances utilisées par Vahana VR, elles étaient les même que celles 
+Quant aux dépendances requises par Vahana VR, elles étaient les même que celles 
 utilisées Studio, donc déjà présentes dans le dépôt.\\
 
 \subsection{Intégration au \textit{workflow} du VideoStitch Player et de Vahana VR}
@@ -198,7 +198,7 @@ La première étape a été de rapatrier le dépôt VideoStitch-base et de l'inc
 avec son historique dans le dépôt VideoStitch-apps. L'annexe \ref{deplacer-historique-depots}
 présente plus en détail l'opération permettant, grâce à Git, de déplacer un ensemble 
 de fichiers d'un dépôt à un autre tout en préservant l'historique des modifications du dépôt importé.\\
-De la même manière, furent importés les codes sources de Player et Vahana VR de 
+De la même manière, furent importés les codes source de Player et Vahana VR de 
 leurs dépôts respectifs.\\
 \begin{listing}
   \dirtree{%
@@ -212,7 +212,7 @@ leurs dépôts respectifs.\\
     .3 include.
     .3 lib.
     .2 packager\DTcomment{Scripts de conception des installateurs}.
-    .2 src\DTcomment{Codes sources des applications}.
+    .2 src\DTcomment{Codes source des applications}.
     .3 libvideostitch\DTcomment{Contient les headers copiés du VideoStitch SDK}.
     .3 libvideostitch-base\DTcomment{Programme commun au Player, Studio et Vahana VR}.
     .3 videostitch-player-gui\DTcomment{VideoStitch Player}.
@@ -234,15 +234,15 @@ a été fixée à la hiérarchie présentée par le listing~\ref{videostitch-app
 L'architecture convenant, les fichiers projets Qt nécessitaient d'être refactorisés,
 c'est-à-dire les réécrire pour les adapter aux nouveaux besoins.\\
 Les applications Qt définissent des projets (extension .pro) décrivant
-les fichiers sources, les ressources et les dépendances utilisées par le logiciel, ainsi que les
+les fichiers source, les ressources et les dépendances utilisées par le logiciel, ainsi que les
 paramètres pour le compilateur et l'éditeur de liens (\textit{linker}). Ce sont à 
 partir de ces fichiers que le programme qmake construit les instructions de la chaîne
 de compilation qui seront exécutés par jom\cite{qt}. C'est ce qui permet la portabilité
 des projets Qt~: un seul projet est écrit, et l'application peut être compilée sur
 plusieurs systèmes.\\
 Dans ce cas ci, les trois applications étant proches, il était intéressant de partager
-la configuration des différents projets. Les codes sources communs avaient déjà été
-regroupé dans les programmes libvideostitch-base et libvideostitch-gui.
+la configuration des différents projets. Les codes source communs avaient déjà été
+regroupés dans les programmes libvideostitch-base et libvideostitch-gui.
 \ \\
 \newline
 Enfin, quelques scripts ont été réécrits. Comme vu avec la section \cf{workflow-studio}, le
@@ -270,12 +270,12 @@ Son utilisation est très simple~: le listing~\ref{update.sh} présente une copi
   \label{update.sh}
 \end{listing}
 \ \\
-Dans le cas de lib, le script va détecter le système de l'utilisateur, puis télécharger avec le programme curl
+Dans le cas de \shellinline{lib}, le script va détecter le système de l'utilisateur, puis télécharger avec le programme curl
 la dernière version compilée du VideoStitch SDK pour le système et la configuration voulue, pour copier
 les \textit{headers} et les bibliothèques dans les dossiers attendus sur le dépôt VideoStitch-apps.
 Le script automatise simplement une action de recherche d'une version compilée par Buildbot
 pour en extraire et copier les fichiers.\\
-Dans le cas de deps, le script va créer une copie locale de VideoStitch-deps, puis
+Dans le cas de \shellinline{deps}, le script va créer une copie locale de VideoStitch-deps, puis
 en copier les headers et les bibliothèques dans les dossiers de VideoStitch-apps.\\
 \newline
 La figure~\ref{workflow-final} montre la nouvelle utilisation du workflow désormais disponible.
@@ -397,7 +397,7 @@ définis avec l'identifiant \mintinline{shell-session}{windows_apps}~:
 Enfin, quelques apports mineurs et rapides ont été apportés, pour améliorer l'usage
 du Player lors des présentations dans les salons et conférences.
 \subsubsection{Support de l'Oculus Rift DK2}
-Le player propose deux modes de vues, comme présenté dans la section \cf{videostitch-player-section}~:
+Le Player propose deux modes de vues, comme présenté dans la section \cf{videostitch-player-section}~:
 une vue interactive, avec un déplacement dans la sphère 360 avec la souris et un affichage
 sur un écran standard, et une seconde vue utilisant le casque de réalité virtuelle 
 Oculus Rift pour le déplacement et l'affichage, créant une vue totalement immersive.\\
@@ -435,7 +435,7 @@ et de slots Qt\footnote{Un slot est une fonction pouvant être appellée de mani
 par un signal provenant de la même classe ou d'une autre.}. La fenêtre principale \cppinline{MainWindow}
 de l'application utilise la fonction prédéfinie \cppinline{keyPressEvent} fournie
 par Qt qui \enquote{écoute} les touches pressées par l'utilisateur dans le Player.
-Ici, quelque soit la touche, un signal est envoyé pour demander la désactivation du HSW.
+Ici, quel que soit la touche, un signal est envoyé pour demander la désactivation du HSW.
 \begin{listing}
   \begin{minted}[firstnumber=109]{cpp}
     void OculusRift::disableHSW() {
@@ -467,9 +467,9 @@ Ici, quelque soit la touche, un signal est envoyé pour demander la désactivati
 Les modifications apportées, même si elles ont été parfois mineures, ont cependant permis dans leur globalité~:
 \begin{itemize}
  \item De permettre une installation d'un nouvel environnement de développement et
- de sont usage relativement aisé, comme le montre la figure~\ref{workflow-final}.
+ de son usage relativement aisé, comme le montre la figure~\ref{workflow-final}.
  \item De compiler depuis un même dépôt, quelque que soit l'OS de la machine, les trois applications de VideoStitch.
- \item D'automatiser la compilations et la génération des paquets de ces trois applications 
+ \item D'automatiser la compilation et la génération des paquets de ces trois applications 
  sur Buidlbot, rendant les dernières versions immédiatement utilisables par n'importe 
  quelle personne de VideoStitch.
  \item D'apporter les modifications nécessaires à l'usage du Player.
