@@ -3,7 +3,7 @@
 ## Description
 This is my B.Eng. internship report, wrote in LaTeX (in French). Here is the link to the generated pdf file: https://lnkd.in/dmENrrJ.
 
-## Abstract
+## Report abstract
 I was a software engineer assistant during 8 months, from July 2014 to February 2015, as part as my B.Eng. formation, in a start-up who develop 360° video capturing and editing software. I was part of a small Scrum team.
 
 I have contributed to improve the architecture of three software: Several redundant code was needed to be shared between the different software of the company. I have then successfully integrated two new products. 
